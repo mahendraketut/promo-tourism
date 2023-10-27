@@ -10,10 +10,12 @@ export class HeaderComponent {
   logoImage: any;
   logoSquare: any;
   urlLogo: any;
+  isSearchBarEnable: boolean;
 
   constructor() {
     this.logoImage = '/assets/img/logo-landscape.png';
     this.logoSquare = 'assets/img/favicon.png';
     this.urlLogo = '';
+    this.isSearchBarEnable = false;
   }
 }
