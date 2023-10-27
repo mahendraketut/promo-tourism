@@ -1,0 +1,10 @@
+/* Adjust the position and styling as needed */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff; /* Customize the background color */
+  padding: 16px; /* Customize the padding */
+  border-top: 1px solid #e5e5e5; /* Customize the border styling */
+  text-align: center;
+}
