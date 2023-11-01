@@ -23,7 +23,7 @@ export class FooterComponent {
   constructor() {
     this.logoFooter = 'assets/img/logo-landscape.png';
     this.year = new Date().getFullYear();
-    this.companyName = 'PT Artha Boga Sejahtera';
+    this.companyName = 'PT InJourney Indonesia Persada';
 
     // Social Media Contoller:
     // Facebook
@@ -36,7 +36,7 @@ export class FooterComponent {
     this.isTwitterActive = true;
     this.twitterLink = '#';
     // GitHub
-    this.isGitHubActive = true;
+    this.isGitHubActive = false;
     this.gitHubLink = '#';
     // Dribble
     this.isDribbleActive = false;

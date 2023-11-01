@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +12,21 @@ export class HeaderComponent {
   logoSquare: any;
   urlLogo: any;
   isSearchBarEnable: boolean;
+  isCartEnable: boolean;
 
-  constructor() {
+  constructor(private router: Router) {
     this.logoImage = '/assets/img/logo-landscape.png';
     this.logoSquare = 'assets/img/favicon.png';
     this.urlLogo = '';
     this.isSearchBarEnable = false;
+    this.isCartEnable = false;
+  }
+
+  goToLogin() {
+    this.router.navigate(['auth/login']);
+  }
+  // function goToRegister that will used to route
+  goToRegister() {
+    this.router.navigate(['auth/register']);
   }
 }
