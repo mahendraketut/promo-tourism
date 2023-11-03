@@ -1,0 +1,27 @@
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: white; /* You can adjust the background color */
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 15px 25px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #000; /* You can adjust the text color */
+  display: block;
+}
+
+.sidenav a:hover {
+  background-color: #f1f1f1; /* You can adjust the hover background color */
+}
+
+.sidenav.close {
+  width: 0;
+}
