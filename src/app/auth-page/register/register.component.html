@@ -15,12 +15,12 @@
       <h2
         class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
       >
-        Sign Up to your ProTo
+        Sign Up to ProTo
       </h2>
     </div>
-
+    
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" action="#" method="POST">
+      <form [formGroup]="userDataForm" class="space-y-6" action="#" method="POST" (ngSubmit)="onSubmit()">
         <!-- email input: start -->
         <div>
           <label
@@ -35,9 +35,17 @@
               type="email"
               autocomplete="email"
               required
-              placeholder="celepang alamat email cai ne"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Email Address"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              formControlName="userEmail"
+              (input)="userDataForm.get('userEmail').updateValueAndValidity()"
             />
+            <div *ngIf="userDataForm.get('userEmail').touched && userDataForm.get('userEmail').hasError('email')">
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"> Oops!</span> Invalid Email Address!</p>
+            </div>
+            <div *ngIf="userDataForm.get('userEmail').touched && userDataForm.get('userEmail').hasError('required')">
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500"> Required</p>
+            </div> 
           </div>
         </div>
         <!-- email input: end -->
@@ -50,15 +58,24 @@
             >Phone Number</label
           >
           <div class="mt-2">
+            <!-- Phone number input here -->
             <input
               id="phone-number"
               name="phone-number"
               type="tel"
               autocomplete="phone-number"
               required
-              placeholder="celepang nomor telepon cai ne"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Phone Number"
+              (input)="userDataForm.get('userPhone').updateValueAndValidity()"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              formControlName="userPhone"
             />
+            <div *ngIf="userDataForm.get('userPhone').touched && userDataForm.get('userPhone').hasError('minlength')">
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"> Oops!</span> Invalid Phone Number!</p>
+            </div>
+            <div *ngIf="userDataForm.get('userPhone').touched && userDataForm.get('userPhone').hasError('required')">
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500"> Required</p>
+            </div> 
           </div>
         </div>
         <!-- Phone number input: end -->
@@ -71,15 +88,20 @@
             >Full Name</label
           >
           <div class="mt-2">
+            <!-- Full name input here -->
             <input
               id="full-name"
               name="full-name"
               type="text"
               autocomplete="full-name"
               required
-              placeholder="celepang nama lengkap cai ne"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Full Name"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              formControlName="userName"
             />
+            <div *ngIf="userDataForm.get('userName').touched && userDataForm.get('userName').hasError('required')">
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500"> Required</p>
+            </div> 
           </div>
         </div>
         <!-- Full name input: end -->
@@ -92,15 +114,20 @@
             >Address</label
           >
           <div class="mt-2">
+            <!-- phone number input here -->
             <input
               id="address"
               name="address"
               type="text"
               autocomplete="address"
               required
-              placeholder="celepang alamat cai ne"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Address"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              formControlName="userAddress"
             />
+            <div *ngIf="userDataForm.get('userAddress').touched && userDataForm.get('userAddress').hasError('required')">
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500"> Required</p>
+            </div> 
           </div>
         </div>
         <!-- address using plugin: end -->
@@ -116,15 +143,24 @@
               >
             </div>
             <div class="mt-2">
+              <!-- Password Input Here -->
               <input
                 id="password"
                 name="password"
                 type="password"
-                placeholder="lift bomba"
+                placeholder="Enter Password"
                 autocomplete="current-password"
                 required
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                (input)="userDataForm.get('userEmail').updateValueAndValidity()"
+                class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                formControlName="userPass"
               />
+              <div *ngIf="userDataForm.get('userPass').touched && userDataForm.get('userPass').hasError('required')">
+                <p class="mt-2 text-sm text-red-600 dark:text-red-500"> Required</p>
+              </div>
+              <div *ngIf="userDataForm.get('userPass').touched && userDataForm.get('userPass').hasError('minlength')">
+                <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"> Oops!</span> Minimum 8 Characters!</p>
+              </div> 
             </div>
           </div>
           <div>
@@ -136,16 +172,24 @@
               >
             </div>
             <div class="mt-2">
+              <!-- Repeat Pass Here -->
               <input
                 id="repeat-password"
                 name="password"
                 type="password"
-                placeholder="lift bomba"
+                placeholder="Repeat Password"
                 autocomplete="current-password"
                 required
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                formControlName="userPassConfirm"
               />
+              <div *ngIf="userDataForm.get('userPassConfirm').touched && userDataForm.get('userPassConfirm').hasError('required')">
+                <p class="mt-2 text-sm text-red-600 dark:text-red-500"> Required</p>
+              </div> 
             </div>
+          </div>
+          <div *ngIf="userDataForm.get('userPassConfirm').touched && userDataForm.hasError('passwordMismatch', 'userPassConfirm')">
+            <p class="text-sm text-red-600 dark:text-red-500"><span class="font-medium"> Oops!</span> Password Mismatch!</p>
           </div>
         </div>
         <!-- password input: end -->
@@ -153,12 +197,12 @@
         <!-- checkbox input with i agree: start -->
         <div class="flex items-center">
           <input
-            id="remember_me"
-            name="remember_me"
+            id="agree_tos"
+            name="agree_tos"
             type="checkbox"
             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
           />
-          <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+          <label for="agree-tos" class="ml-2 block text-sm text-gray-900">
             I agree to the
             <a
               href="#"
@@ -170,7 +214,7 @@
         <!-- checkbox input with i agree: end -->
 
         <!-- alert: start -->
-        <div
+        <div *ngIf="userDataForm.touched && userDataForm.invalid && submittedClicked == true"
           class="flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50"
           role="alert"
         >
@@ -187,8 +231,7 @@
           </svg>
           <span class="sr-only">Info</span>
           <div>
-            <span class="font-medium">Warning alert!</span> your password is not
-            match
+            <span class="font-medium">Warning alert!</span> Please Fill All the Fields Correctly.
           </div>
         </div>
         <!-- alert: end -->

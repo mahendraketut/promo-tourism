@@ -13,6 +13,7 @@ import { RegisterComponent } from './auth-page/register/register.component';
 import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,10 @@ import { HelpComponent } from './landing-page/help/help.component';
     ProductComponent,
     HelpComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, 
+    AppRoutingModule,
+    ReactiveFormsModule
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
