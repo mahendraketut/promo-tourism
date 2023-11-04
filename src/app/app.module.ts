@@ -29,10 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProductComponent,
     HelpComponent,
   ],
-  imports: [BrowserModule, 
-    AppRoutingModule,
-    ReactiveFormsModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

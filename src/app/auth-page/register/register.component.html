@@ -218,7 +218,9 @@
             required
             class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             formControlName="userPassConfirm"
-            (input)="userDataForm.get('userPassConfirm').updateValueAndValidity()"
+            (input)="
+              userDataForm.get('userPassConfirm').updateValueAndValidity()
+            "
           />
           <div
             *ngIf="
@@ -236,51 +238,49 @@
           userDataForm.hasError('passwordMismatch', 'userPassConfirm')
         "
       >
-        <p class="text-sm text-red-600 dark:text-red-500">
-           Password Mismatch!
-        </p>
+        <p class="text-sm text-red-600 dark:text-red-500">Password Mismatch!</p>
       </div>
     </div>
     <!-- password input: end -->
 
+    <!-- TODO: Sudah ya hen, i agree with terms and privacy nya -->
     <!-- checkbox input with i agree: start -->
-    <div class="flex items-center">
-      <input
-        id="agree_tos"
-        name="agree_tos"
-        type="checkbox"
-        class="form-control h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-        formControlName="agreeTOS"
-        (input)="userDataForm.get('agreeTOS').updateValueAndValidity()"
-      />
-      <label for="agree-tos" class="ml-2 block text-sm text-gray-900">
-        I agree to the
-        <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500"
-          >terms and conditions</a
-        >
-      </label>
+    <div class="grid grid-rows-1 gap-1 mb-0">
+      <div class="flex items-center">
+        <input
+          id="agree_tos"
+          name="agree_tos"
+          type="checkbox"
+          class="form-control h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          formControlName="agreeTOS"
+          (input)="userDataForm.get('agreeTOS').updateValueAndValidity()"
+        />
+        <label for="agree-tos" class="ml-2 block text-sm text-gray-900">
+          I agree to the
+          <a
+            href="#"
+            class="font-semibold text-indigo-600 hover:text-indigo-500"
+            >terms and conditions</a
+          >
+        </label>
+      </div>
+      <div
+        *ngIf="
+          !userDataForm.get('agreeTOS').value &&
+          userDataForm.get('userEmail').valid &&
+          userDataForm.get('userPhone').valid &&
+          userDataForm.get('userName').valid &&
+          userDataForm.get('userAddress').valid &&
+          userDataForm.get('userPass').valid &&
+          userDataForm.get('userPassConfirm').valid &&
+          submittedClicked
+        "
+        class="mt-0"
+      >
+        <p class="text-sm text-red-600 dark:text-red-500">Required</p>
+      </div>
     </div>
-
-
-
-
-
-
-    <!-- TUT TOLONG RAPIIN, naikin dikit keatas-->
-    <div
-          *ngIf="
-          !userDataForm.get('agreeTOS').value && userDataForm.get('userEmail').valid && userDataForm.get('userPhone').valid
-          && userDataForm.get('userName').valid && userDataForm.get('userAddress').valid && userDataForm.get('userPass').valid &&
-          userDataForm.get('userPassConfirm').valid && submittedClicked">
-          <p class="text-sm text-red-600 dark:text-red-500">Required</p>
-        </div>
     <!-- checkbox input with i agree: end -->
-
-
-
-
-
-
 
     <!-- alert: start -->
     <div
@@ -300,18 +300,27 @@
         />
       </svg>
       <span class="sr-only">Info</span>
-      <div *ngIf="!userDataForm.get('agreeTOS').value && userDataForm.get('userEmail').valid && userDataForm.get('userPhone').valid
-      && userDataForm.get('userName').valid && userDataForm.get('userAddress').valid && userDataForm.get('userPass').valid &&
-      userDataForm.get('userPassConfirm').valid; else otherError">
-        <span class="font-medium">Warning alert!</span> Please Agree to Our Terms and Conditions.
+      <div
+        *ngIf="
+          !userDataForm.get('agreeTOS').value &&
+            userDataForm.get('userEmail').valid &&
+            userDataForm.get('userPhone').valid &&
+            userDataForm.get('userName').valid &&
+            userDataForm.get('userAddress').valid &&
+            userDataForm.get('userPass').valid &&
+            userDataForm.get('userPassConfirm').valid;
+          else otherError
+        "
+      >
+        <span class="font-medium">Warning alert!</span> Please Agree to Our
+        Terms and Conditions.
       </div>
       <ng-template #otherError>
         <div>
           <span class="font-medium">Warning alert!</span> Please Fill All the
-        Fields Correctly.
+          Fields Correctly.
         </div>
       </ng-template>
-      
     </div>
     <!-- alert: end -->
 
