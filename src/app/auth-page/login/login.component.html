@@ -9,11 +9,10 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="#" method="POST">
+    <form [formGroup]="userLoginForm" class="space-y-6" action="#" method="POST" (ngSubmit)="onSubmit()">
       <div>
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900"
-          >Email address</label
-        >
+          >Email Address</label>
         <div class="mt-2">
           <input
             id="email"
@@ -21,9 +20,18 @@
             type="email"
             autocomplete="email"
             required
-            placeholder="celepang alamat email cai ne"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            formControlName="userEmail"
+            placeholder="Email Address"
+            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           />
+          <div
+            *ngIf="
+              userLoginForm.get('userEmail').touched &&
+              userLoginForm.get('userEmail').hasError('required')
+            "
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">Required</p>
+          </div>
         </div>
       </div>
 
@@ -45,16 +53,17 @@
             id="password"
             name="password"
             type="password"
-            placeholder="lift bomba"
+            placeholder="Password"
             autocomplete="current-password"
             required
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            formControlName="userPass"
           />
         </div>
       </div>
 
       <!-- alert: start -->
-      <div
+      <div *ngIf="userLoginForm.invalid && loginClicked == true"
         class="flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50"
         role="alert"
       >
@@ -70,10 +79,22 @@
           />
         </svg>
         <span class="sr-only">Info</span>
-        <div>
+        <!-- <div>
           <span class="font-medium">Warning alert!</span> your credential isn't
           match with our data
+        </div> -->
+        <div
+          *ngIf="
+              userLoginForm.get('userEmail').invalid || userLoginForm.get('userPass').invalid;
+            else otherError"
+            >
+            <span class="font-medium">Warning alert!</span> Please Fill All the Fields Correctly.
         </div>
+        <ng-template #otherError>
+          <div>
+            <span class="font-medium">Warning alert!</span> Your Credentials Doesn't Match Any of Our Records.
+          </div>
+        </ng-template>
       </div>
       <!-- alert: end -->
 

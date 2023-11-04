@@ -17,11 +17,11 @@ export class AuthPageComponent {
 
   ngOnInit(): void {
     // Get a reference to the video element
-    const video: HTMLVideoElement = this.videoElement.nativeElement;
+    // const video: HTMLVideoElement = this.videoElement.nativeElement;
 
     // Add an event listener to reset the video when the page is loaded
-    video.addEventListener('loadedmetadata', () => {
-      video.currentTime = 0;
-    });
+    // video.addEventListener('loadedmetadata', () => {
+    //   video.currentTime = 0;
+    // });
   }
 }
