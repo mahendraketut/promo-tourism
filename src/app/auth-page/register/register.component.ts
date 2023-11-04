@@ -63,7 +63,7 @@ export class RegisterComponent {
           title: 'Success!',
           text: 'Yeay, your account already registered!',
           confirmButtonText: 'OK',
-          timer: 2500,
+
           iconColor: '#4F46E5',
           color: '#4F46E5',
           confirmButtonColor: '#4F46E5',
