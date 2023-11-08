@@ -25,7 +25,7 @@ const UserSchema = mongoose.Schema({
     name: {
         required: true,
         type: String,
-        max: 20
+        max: 40
     },
     roles:{
         type: [Schema.Types.ObjectId],
