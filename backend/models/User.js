@@ -1,13 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 
 const UserSchema = mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        min: 3,
-        max: 20,
-        unique: true
-    },
+    
     email: {
         type: String,
         required: true,
@@ -20,6 +14,7 @@ const UserSchema = mongoose.Schema({
         min: 6
     },
     isAdmin: {
+        required: true,
         type: Boolean,
         default: false
     },
@@ -27,18 +22,16 @@ const UserSchema = mongoose.Schema({
         type: String,
         max: 80
     },
-    firstName: {
-        type: String,
-        max: 20
-    },
-    lastName: {
+    name: {
+        required: true,
         type: String,
         max: 20
     },
     roles:{
         type: [Schema.Types.ObjectId],
         ref: "Role",
-        required: true
+        required: true,
+        default: ['user']
     }
 
 }, {timestamps: true});
