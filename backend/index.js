@@ -15,6 +15,31 @@ app.use('/api/role', roleRoutes);
 import authRoutes from "./routes/auth.js";
 app.use('/api/auth', authRoutes);
 
+// //Error Handling
+// app.use((err, req, res, next) => {
+//     const statusCode = err.status || 500;
+//     const errorMessage = err.message || "Something went wrong";
+//     return res.status(statusCode).json({
+//         success: false,
+//         status: statusCode,
+//         message:errorMessage,
+//         stack: err.stack
+//     });
+// });
+
+//Response Handling
+app.use((obj, req, res, next) => {
+    const statusCode = obj.status || 500;
+    const message = obj.message || "Something went wrong";
+    return res.status(statusCode).json({
+        success: [200, 201, 204].some(a => a === statusCode) ? true : false,
+        status: statusCode,
+        message:message,
+        data: obj.data
+    });
+});
+
+
 
 //database connection to mongo
 const connectMongoDB = async() => {
