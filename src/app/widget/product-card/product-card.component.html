@@ -1,0 +1,39 @@
+<div
+  class="bg-white border border-gray-200 rounded-2xl h-full min-w-48 max-w-full lg:hover:-translate-y-2 duration-300"
+>
+  <a [routerLink]="route" class="">
+    <div class="relative w-full h-44 rounded-2xl">
+      <img
+        class="w-full h-full object-cover object-center border-gray-200 rounded-2xl p-2"
+        [src]="image"
+      />
+    </div>
+
+    <div class="flex flex-col justify-center p-2">
+      <h1 class="text-lg font-bold h-14 line-clamp-2">{{ title }}</h1>
+      <div>
+        <div class="bottom-0">
+          <div class="flex items-center mt-1">
+            <span
+              *ngFor="let _ of [].constructor(rating); let i = index"
+              class="text-yellow-400"
+            >
+              <i class="fas fa-star"></i>
+            </span>
+
+            <span class="text-gray-400 ms-2">({{ rating }})</span>
+          </div>
+          <p class="text-sm font-bold mt-2">
+            {{ price | currency : "MYR" }}
+          </p>
+          <p
+            *ngIf="discount != 0"
+            class="bg-red-200 w-fit p-1 rounded-2xl line-through font-normal text-xs"
+          >
+            {{ discount | currency : "MYR" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

@@ -8,12 +8,17 @@ import { AppComponent } from './app.component';
 import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
+import { HomeComponent } from './landing-page/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent,
     children: [
+      {
+        path: '',
+        component: HomeComponent,
+      },
       {
         path: 'about',
         component: AboutComponent,
