@@ -1,139 +1,83 @@
-<nav class="bg-slate-50 border-gray-200">
+<nav class="sticky top-0 z-50 bg-slate-50 border-gray-200 w-full">
   <div
-    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 sm:w-full"
   >
-    <!-- urlLogo and logoSquare url can be seen at header.component.ts -->
-    <a [href]="urlLogo" class="flex items-center">
-      <img [src]="logoSquare" class="h-8 mr-3" alt="PromoTourism Logo" />
-      <span
+    <a class="flex items-center" href=""
+      ><img
+        alt="PromoTourism Logo"
+        class="h-8 mr-3"
+        src="assets/img/favicon.png"
+      /><span
         class="self-center text-2xl font-semibold text-blue-500 whitespace-nowrap"
       >
         Promo</span
       ><span class="self-center text-2xl font-normal text-blue-500"
         >Tourism</span
-      >
-    </a>
-
-    <!-- search bar: start -->
-    <div class="pt-2 relative mx-auto text-gray-600" *ngIf="isSearchBarEnable">
-      <input
-        class="focus:border-2 border-blue-700 bg-white h-10 px-5 pr-16 rounded-full text-sm focus:outline-none"
-        type="search"
-        name="search"
-        placeholder="Search for any package"
-      />
-      <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
-        <svg
-          class="text-gray-600 h-4 w-4 fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          version="1.1"
-          id="Capa_1"
-          x="0px"
-          y="0px"
-          viewBox="0 0 56.966 56.966"
-          style="enable-background: new 0 0 56.966 56.966"
-          xml:space="preserve"
-          width="512px"
-          height="512px"
-        >
-          <path
-            d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z"
-          />
-        </svg>
-      </button>
-    </div>
-    <!-- search bar: end -->
-
-    <!-- navigation: start -->
+      ></a
+    >
     <div class="flex md:order-2">
       <a
-        class="block mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
-        href=""
+        routerLink=""
+        class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
         routerLinkActive="text-blue-700 font-bold"
         >Home</a
-      >
-      <a
-        class="block mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
-        href=""
-        routerLinkActive="text-blue-700 font-bold"
+      ><a
         routerLink="about"
+        class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
+        routerLinkActive="text-blue-700 font-bold"
         >About</a
-      >
-      <a
-        class="block mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
-        href=""
-        routerLinkActive="text-blue-700 font-bold"
+      ><a
         routerLink="product"
-        >Product</a
-      >
-      <a
-        class="block mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
-        href=""
+        class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
         routerLinkActive="text-blue-700 font-bold"
+        >Product</a
+      ><a
         routerLink="help"
+        class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
+        routerLinkActive="text-blue-700 font-bold"
         >Help</a
-      >
-      <a
-        class="block mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
-        href=""
+      ><a
+        routerLink=""
+        class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
         routerLinkActive="text-blue-700 font-bold"
         >ProSeller</a
       >
     </div>
-    <!-- navigation: end -->
-
     <div class="flex md:order-2">
-      <!-- cart start -->
-      <a
-        *ngIf="isCartEnable"
-        class="inline-flex items-center mx-3 md:hover:text-blue-700"
-        href=""
-        ><i class="fa-solid fa-cart-shopping"></i
-      ></a>
-      <!-- cart end -->
-
-      <!-- add vertical split line -->
-      <div
-        *ngIf="isCartEnable"
-        class="border-r border-gray-300 dark:border-gray-700 h-8 mx-3 inline-flex items-center"
-      ></div>
-
-      <!-- register button start -->
       <button
         type="button"
-        (click)="goToRegister()"
+        routerLink="auth/register"
         class="text-gray-900 bg-transparent font-medium rounded-lg text-sm px-4 py-2 text-center hidden md:inline-block md:visible md:hover:text-blue-700 md:mr-0"
+        tabindex="0"
+        router-link="auth/register"
       >
-        Register
-      </button>
-      <!-- register button end -->
-
-      <!-- login button start -->
-      <button
+        Register</button
+      ><button
         type="button"
-        (click)="goToLogin()"
+        routerLink="auth/login"
         class="text-white rounded-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-2 text-center mr-3 md:mr-0"
+        tabindex="0"
+        router-link="auth/login"
       >
-        Login
-      </button>
-      <!-- login button end -->
-
-      <!-- mobile menu button start -->
-      <button
-        data-collapse-toggle="navbar-cta"
+        <i
+          class="fa-solid fa-arrow-right-from-bracket me-1"
+          style="text-align: center"
+        ></i
+        >Login</button
+      ><button
         type="button"
-        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-        aria-controls="navbar-cta"
-        aria-expanded="false"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden focus:outline-none"
+        id="mobile-nav-toggle"
+        (click)="toggleMobileNav()"
       >
-        <span class="sr-only">Open main menu</span>
-        <svg
-          class="w-5 h-5"
+        <span class="sr-only">Open main menu</span
+        ><svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 17 14"
+          class="w-5 h-5"
+          id="mobile-nav-icon"
         >
           <path
             stroke="currentColor"
@@ -141,49 +85,79 @@
             stroke-linejoin="round"
             stroke-width="2"
             d="M1 1h15M1 7h15M1 13h15"
-          />
+          ></path>
         </svg>
       </button>
-      <!-- mobile menu button end -->
     </div>
-
-    <!-- <div
-      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-      id="navbar-cta"
-    >
-      <ul
-        class="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg bg-slate-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-slate-50 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
-      >
-        <li>
+  </div>
+  <!-- mobile nav: start -->
+  <div
+    class="right-0 left-0 px-4 rounded-t-3xl bg-gray-50 text-black md:hidden hidden"
+    [ngClass]="{
+      block: isShown,
+      hidden: !isShown,
+      'animate__animated animate__fadeInDown': isShown,
+      'animate__animated animate__fadeOutUp': !isShown
+    }"
+  >
+    <div class="flex flex-row w-full h-14 mt-5 bg-white rounded-3xl gap-2">
+      <div class="rounded-full m-1">
+        <img
+          alt="User icon"
+          class="w-full h-full object-cover"
+          src="/assets/img/avatar.png"
+        />
+      </div>
+      <div class="flex flex-col justify-center flex-grow">
+        <span class="text-xl font-bold">Hi, User</span
+        ><span class="text-sm">Welcome Back!</span>
+      </div>
+      <div class="flex flex-col justify-center w-14 h-14">
+        <a routerLink="auth/login" router-link="auth/login" href="/auth/login"
+          ><i
+            class="fa-solid fa-arrow-right-from-bracket"
+            style="text-align: center"
+          ></i
+        ></a>
+      </div>
+    </div>
+    <div class="w-full mt-5 px-5 rounded-3xl">
+      <ul class="my-5">
+        <li class="py-5 text-md w-full">
           <a
-            href="#"
-            class="block mx-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-            aria-current="page"
-            >Home</a
+            routerLink=""
+            routerLinkActive="text-blue-700 font-bold"
+            class="text-blue-700 font-bold"
+            ><i class="fa-solid fa-house"></i
+            ><span class="ms-5 focus:font-bold">Home</span></a
           >
         </li>
-        <li>
-          <a
-            href="#"
-            class="block mx-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
-            >About</a
+        <li class="py-5 text-md w-full">
+          <a routerLink="about" routerLinkActive="text-blue-700 font-bold"
+            ><i class="fa-solid fa-hands"></i
+            ><span class="ms-5 focus:font-bold">About</span></a
           >
         </li>
-        <li>
-          <a
-            href="#"
-            class="block mx-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
-            >Services</a
+        <li class="py-5 text-md w-full">
+          <a routerLink="product" routerLinkActive="text-blue-700 font-bold"
+            ><i class="fa-solid fa-store"></i
+            ><span class="ms-5 focus:font-bold">Product</span></a
           >
         </li>
-        <li>
-          <a
-            href="#"
-            class="block mx-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
-            >Contact</a
+        <li class="py-5 text-md w-full">
+          <a routerLink="help" routerLinkActive="text-blue-700 font-bold"
+            ><i class="fa-solid fa-circle-exclamation"></i
+            ><span class="ms-5 focus:font-bold">Help</span></a
+          >
+        </li>
+        <li class="py-5 text-md w-full">
+          <a href="" routerLinkActive="text-blue-700 font-bold"
+            ><i class="fa-solid fa-cash-register"></i
+            ><span class="ms-5 focus:font-bold">ProSeller</span></a
           >
         </li>
       </ul>
-    </div> -->
+    </div>
   </div>
+  <!-- mobile nav: end -->
 </nav>

@@ -13,6 +13,7 @@ export class HeaderComponent {
   urlLogo: any;
   isSearchBarEnable: boolean;
   isCartEnable: boolean;
+  isShown: boolean;
 
   constructor(private router: Router) {
     this.logoImage = '/assets/img/logo-landscape.png';
@@ -20,6 +21,7 @@ export class HeaderComponent {
     this.urlLogo = '';
     this.isSearchBarEnable = false;
     this.isCartEnable = false;
+    this.isShown = false;
   }
 
   goToLogin() {
@@ -28,5 +30,9 @@ export class HeaderComponent {
   // function goToRegister that will used to route
   goToRegister() {
     this.router.navigate(['auth/register']);
+  }
+
+  toggleMobileNav() {
+    this.isShown = !this.isShown;
   }
 }

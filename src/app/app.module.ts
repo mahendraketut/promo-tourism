@@ -14,6 +14,9 @@ import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProductCardComponent } from './widget/product-card/product-card.component';
+import { HomeComponent } from './landing-page/home/home.component';
+import { DetailProductComponent } from './product/detail-product/detail-product.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     AboutComponent,
     ProductComponent,
     HelpComponent,
+    ProductCardComponent,
+    HomeComponent,
+    DetailProductComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],

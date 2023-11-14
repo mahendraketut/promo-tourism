@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
+import { HomeComponent } from './landing-page/home/home.component';
+import { DetailProductComponent } from './product/detail-product/detail-product.component';
 
 const routes: Routes = [
   {
@@ -15,12 +17,20 @@ const routes: Routes = [
     component: LandingPageComponent,
     children: [
       {
+        path: '',
+        component: HomeComponent,
+      },
+      {
         path: 'about',
         component: AboutComponent,
       },
       {
         path: 'product',
         component: ProductComponent,
+      },
+      {
+        path: 'detailproduct',
+        component: DetailProductComponent,
       },
       {
         path: 'help',
