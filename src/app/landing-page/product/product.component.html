@@ -1,28 +1,33 @@
-<!-- breadcrumb: start -->
-<nav class="text-black font-bold text-xs my-8" aria-label="Breadcrumb">
-  <ol class="list-none p-0 inline-flex">
-    <li class="flex items-center">
-      <a href="#">Home</a>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 mx-2"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-          clip-rule="evenodd"
-        />
-      </svg>
-    </li>
-    <li class="flex items-center text-gray-500">
-      <a routerLink="">Products</a>
-    </li>
-  </ol>
-</nav>
-<!-- breadcrumb: end -->
+<div class="container">
+    <p class="alert alert-danger" *ngIf="products == 0">No products</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Prc</th>
+                <th>Qty</th>
+                <th>Description</th>
+                <th>Dscnt</th>
+                <th>Cat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products; let i = index">
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.discount }}</td>
+                <td>{{ product.category }}</td>
+                <td>
+                    <button class="btn btn-danger" (click)="deleteProduct(product, i)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
 
-<!-- list product: start -->
+    </table>
+</div>
 
-<!-- list product: end -->
+
+<p>AAAAAAAAAAAA</p>

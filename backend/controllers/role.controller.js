@@ -1,4 +1,6 @@
 import Role from "../models/Role.js";
+import { CreateError } from "../utils/error.js";
+import { CreateSuccess } from "../utils/success.js";
 //TODO: bersihin response handling yang lama nanti
 export const createRole = async (req, res, next) => {
     try {
@@ -55,7 +57,7 @@ export const getAllRoles = async (req, res, next) => {
         // {} means all without filters
         const roles = await Role.find({});
         // return res.status(200).send(roles);
-        return next(CreateSuccess(200, roles));
+        return next(CreateSuccess(200,"showing all roles" ,roles));
     } catch (error) {
         // return res.status(500).send("Internal Error!");
         return next(CreateError(500, error));

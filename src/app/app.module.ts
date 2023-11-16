@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,8 @@ import { DetailProductComponent } from './product/detail-product/detail-product.
 import { OrderComponent } from './landing-page/order/order.component';
 import { MerchantComponent } from './merchant/merchant.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +42,12 @@ import { MerchantComponent } from './merchant/merchant.component';
     OrderComponent,
     MerchantComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+  imports: [BrowserModule,
+    AppRoutingModule, 
+    ReactiveFormsModule,
+    HttpClientModule,
+    CommonModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -56,7 +56,6 @@ export const login = async (req, res, next) => {
         }
         const validPassword = await bcrypt.compare(req.body.password, user.password);
         if (!validPassword) {
-            // return res.status(400).send("Invalid password");
             return next(CreateError(400, "Invalid password"));
         }
         console.log("psw valid");
@@ -72,10 +71,10 @@ export const login = async (req, res, next) => {
                 roles: roles,
                 data:user,
             });
-        // return next(CreateSuccess(200, "Logged in successfully!"));
+        
 
     } catch (error) {
-        // return res.status(500).send(error);
+      
         return next(CreateError(500, error));
     }
 };

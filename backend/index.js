@@ -1,11 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 
 const app = express();
 dotenv.config();
 
 app.use(express.json());
+app.use(cors());
 
 //import role routes
 import roleRoutes from "./routes/role.js";
@@ -14,6 +16,10 @@ app.use('/api/role', roleRoutes);
 //import auth routes
 import authRoutes from "./routes/auth.js";
 app.use('/api/auth', authRoutes);
+
+import productRoutes from "./routes/product.js";
+app.use('/api/product', productRoutes);
+
 
 // //Error Handling
 // app.use((err, req, res, next) => {
