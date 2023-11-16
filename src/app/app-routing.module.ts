@@ -10,6 +10,8 @@ import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
 import { HomeComponent } from './landing-page/home/home.component';
 import { DetailProductComponent } from './product/detail-product/detail-product.component';
+import { OrderComponent } from './landing-page/order/order.component';
+import { MerchantComponent } from './merchant/merchant.component';
 
 const routes: Routes = [
   {
@@ -33,10 +35,18 @@ const routes: Routes = [
         component: DetailProductComponent,
       },
       {
+        path: 'order',
+        component: OrderComponent,
+      },
+      {
         path: 'help',
         component: HelpComponent,
       },
     ],
+  },
+  {
+    path: 'merchant',
+    component: MerchantComponent,
   },
 
   {

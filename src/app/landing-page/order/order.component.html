@@ -1,0 +1,75 @@
+<!-- breadcrumb: start -->
+<nav class="text-black font-bold text-xs my-8" aria-label="Breadcrumb">
+  <ol class="list-none p-0 inline-flex">
+    <li class="flex items-center">
+      <a href="#">Home</a>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 mx-2"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </li>
+    <li class="flex items-center text-gray-500">
+      <a routerLink="">Order</a>
+    </li>
+  </ol>
+</nav>
+<!-- breadcrumb: end -->
+<!-- order lists: start -->
+<h1 class="font-bold text-2xl my-5">All Transaction</h1>
+<div class="mx-auto rounded-2xl border border-gray-50 p-5">
+  <div class="flex items-center w-full mb-5">
+    <h2 class="font-bold me-5">Status</h2>
+    <div class="relative overflow-x-auto scrollbar-hide">
+      <div class="pt-2 grid grid-rows-1 grid-flow-col gap-4 mx">
+        <button
+          class="p-2 border rounded-full mx-1 w-40 hover:bg-blue-50 hover:border-blue-100 hover:border-2"
+        >
+          Waiting Payment
+        </button>
+        <button
+          class="p-2 border rounded-full mx-1 hover:bg-blue-50 hover:border-blue-100 hover:border-2"
+        >
+          Completed
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="w-full rounded-2xl border my-2 p-2">
+    <div class="flex justify-between items-center">
+      <p class="text-sm">
+        {{ dateOrder | date : "dd MMMM yyyy" }} | INV202311202
+      </p>
+      <p class="text-sm p-2 bg-green-100 rounded-2xl font-bold">Completed</p>
+    </div>
+    <div class="w-full flex justify-between my-5">
+      <div class="w-5/6">
+        <div class="flex items-center my-1">
+          <img
+            class="w-20 h-20 object-cover object-center border-gray-200 rounded-2xl"
+            [src]="image"
+          />
+          <div class="ms-5">
+            <h1 class="font-bold text-xl">Cara Bok</h1>
+            <p class="text-sm">1 Item x 10000</p>
+            <p class="text-sm">Description: none</p>
+          </div>
+        </div>
+      </div>
+      <div class="hidden items-center justify-end w-1/6 md:flex">
+        <p class="text-xl text-right font-semibold">Total: Rp. 1.000.000</p>
+      </div>
+    </div>
+    <div class="block w-full md:hidden">
+      <p class="text-sm font-semibold">Total: Rp. 1.000.000</p>
+    </div>
+  </div>
+</div>
+<!-- order lists: end -->
