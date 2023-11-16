@@ -17,6 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProductCardComponent } from './widget/product-card/product-card.component';
 import { HomeComponent } from './landing-page/home/home.component';
 import { DetailProductComponent } from './product/detail-product/detail-product.component';
+import { OrderComponent } from './landing-page/order/order.component';
+import { MerchantComponent } from './merchant/merchant.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { DetailProductComponent } from './product/detail-product/detail-product.
     ProductCardComponent,
     HomeComponent,
     DetailProductComponent,
+    OrderComponent,
+    MerchantComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],
