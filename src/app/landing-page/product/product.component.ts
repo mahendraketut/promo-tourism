@@ -14,17 +14,14 @@ export class ProductComponent implements OnInit {
     this.readProduct();
   }
   ngOnInit() {}
-  // readProduct(){
-  //   this.productService.getProducts().subscribe((data) => {
-  //    this.products = data;
-  //   })    
-  // }
+  //Gets all products from the product service.
   readProduct(){
     this.productService.getProducts().subscribe((data) => {
         this.products = data;
         console.log("data: ",data);
     });
 }
+//Deletes a product using the product service.
   deleteProduct(product, index) {
     if(window.confirm('Are you sure?')) {
         this.productService.deleteProduct(product._id).subscribe((data) => {

@@ -2,7 +2,7 @@ import Product from "../models/Product.js";
 import { CreateError } from "../utils/error.js";
 import { CreateSuccess } from "../utils/success.js";
 
-
+//Creates a new product then adds it to the database.
 export const createProduct = async (req, res, next) => {
     try {
         const product = new Product({
@@ -22,8 +22,7 @@ export const createProduct = async (req, res, next) => {
     }
 }
 
-
-
+//Retreives all the products from the database.
 export const getAllProducts = async (req, res, next) => {
     try {
         const products = await Product.find({});
@@ -33,7 +32,7 @@ export const getAllProducts = async (req, res, next) => {
     }
 }
 
-
+//Retreives a single product from the database.
 export const getProductById = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -48,10 +47,9 @@ export const getProductById = async (req, res, next) => {
     }
 }
 
-
+//Updates product according to the request send from the front-end.
 export const updateProduct = async (req, res, next) => {
     try {
-        console.log("update pak ekooo");
         const product = await Product.findById(req.params.id);
         if(product){
             const newData = await Product.findByIdAndUpdate(
@@ -74,6 +72,7 @@ export const updateProduct = async (req, res, next) => {
     }
 }
 
+//Deletes the product according to the product ID sent from the front-end.
 export const deleteProduct = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);

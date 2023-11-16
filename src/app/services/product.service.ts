@@ -16,51 +16,42 @@ export class ProductService {
   constructor(private http:HttpClient) {
   }
 
-  // getProducts(): Observable<any> {
-  //   // let api = `${this.endpoint}`;
-  //   // return this.http.get(api)
-  //   console.log("product service kepanggil");
-  //   let products = this.http.get<any>(this.endpoint);
-  //   console.log("produk kepanggil: ",products);
-  //   return this.http.get<any>(this.endpoint) // Ensure the correct endpoint is used
-  //       .pipe(
-  //           catchError(this.errorMgmt)
-  //       );
-  // }
+  //Sends a GET request to the back-end API to retreive all products.
   getProducts(): Observable<any> {
     return this.http.get<any>(this.endpoint)
-        .pipe(
-            map(response => response.data), // Ensure this mapping is correct based on your backend response
-            catchError(this.errorMgmt)
-        );
+      .pipe(
+        map(response => response.data),
+        catchError(this.errorMgmt)
+    );
 }
-
+  //Sends a GET request to the back-end API to retreive a single product.
   getProduct(id:any): Observable<any> {
     let api = `${this.endpoint}/get/${id}`;
-    console.log("product service kepanggil");
     return this.http.get(api).pipe(catchError(this.errorMgmt));
-    // return this.http.get(api);
   }
 
-  //TODO: check kalau header perlu apa nggak
+  //Sends a POST request to the back-end API to create a new product.
   createProduct(data:any): Observable<any> {
     let api = `${this.endpoint}/create`;
     // return this.http.post(api, data);
     return this.http.post(api, data).pipe(catchError(this.errorMgmt));
   }
 
+  //Sends a PATCH request to the back-end API to update a product.
   updateProduct(id:any, data:any): Observable<any> {
     let api = `${this.endpoint}/update/${id}`;
     return this.http.patch(api, data, { headers: this.headers }).pipe(catchError(this.errorMgmt));
     // return this.http.patch(api, data, { headers: this.headers });
   }
 
+  //Sends a DELETE request to the back-end API to delete a product.
   deleteProduct(id:any): Observable<any> {
     let api = `${this.endpoint}/delete/${id}`;
     return this.http.delete(api).pipe(catchError(this.errorMgmt));
     // return this.http.delete(api);
   }
 
+  //General error handling for for the product service.
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
