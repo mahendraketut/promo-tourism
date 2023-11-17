@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./detail-product.component.css'],
 })
 export class DetailProductComponent {
-  image: any = 'assets/img/imagecover.jpg';
+  image: any = 'assets/img/imagecover2.jpg';
   title: string = 'Tour to Kuala Lumpur City Center (KLCC)';
   rating: number = 5;
   purchases: number = 999;

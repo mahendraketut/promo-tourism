@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { ImageModule } from 'primeng/image';
 import { AppRoutingModule } from './app-routing.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './landing-page/header/header.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -19,6 +20,8 @@ import { HomeComponent } from './landing-page/home/home.component';
 import { DetailProductComponent } from './product/detail-product/detail-product.component';
 import { OrderComponent } from './landing-page/order/order.component';
 import { MerchantComponent } from './merchant/merchant.component';
+import { JoinUsPageComponent } from './merchant/join-us-page/join-us-page.component';
+import { RegisterMerchantComponent } from './merchant/register-merchant/register-merchant.component';
 
 @NgModule({
   declarations: [
@@ -38,8 +41,16 @@ import { MerchantComponent } from './merchant/merchant.component';
     DetailProductComponent,
     OrderComponent,
     MerchantComponent,
+    JoinUsPageComponent,
+    RegisterMerchantComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    ImageModule,
+    ScrollingModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
