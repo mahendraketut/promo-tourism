@@ -9,5 +9,5 @@ export class MerchantComponent {
   image: any = 'assets/img/imagecover.jpg';
   tourismMalaysiaLogo: any = 'assets/img/tourismMalaysia.png';
   promoTourismLogo: any = 'assets/img/logo-landscape.png';
-  userRole: any = 'na';
+  userRole: any = 'merchant';
 }

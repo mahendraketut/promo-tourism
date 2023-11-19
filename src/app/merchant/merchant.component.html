@@ -1,8 +1,23 @@
-<div *ngIf="userRole != 'merchant'" class="bg-slate-50">
+<div *ngIf="userRole != 'merchant'" class=" ">
   <!-- <app-header></app-header> -->
   <div class="container mx-auto px-5">
     <app-join-us-page></app-join-us-page>
   </div>
   <app-footer></app-footer>
 </div>
-<div *ngIf="userRole == 'merchant'">Tain cicing</div>
+<div *ngIf="userRole == 'merchant'">
+  <app-navbar-merchant></app-navbar-merchant>
+  <div class="md:relative">
+    <div class="fixed">
+      <app-sidenav-merchant></app-sidenav-merchant>
+    </div>
+    <div class="md:ml-56">
+      <div class="main-content">
+        <div class="container mx-auto">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <app-footer-merchant></app-footer-merchant>
+    </div>
+  </div>
+</div>
