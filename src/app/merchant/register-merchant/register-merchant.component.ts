@@ -60,7 +60,7 @@ export class RegisterMerchantComponent {
         Swal.fire({
           icon: 'success',
           title: 'Success!',
-          text: 'Yeay, your account already registered!',
+          text: 'Yeay, your merchant account already registered!',
           confirmButtonText: 'OK',
 
           iconColor: '#4F46E5',
@@ -68,7 +68,7 @@ export class RegisterMerchantComponent {
           confirmButtonColor: '#4F46E5',
         }).then((result) => {
           if (result.isConfirmed) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/auth/login']);
           }
         });
       }
