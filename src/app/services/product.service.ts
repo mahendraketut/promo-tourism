@@ -23,7 +23,7 @@ export class ProductService {
         map(response => response.data),
         catchError(this.errorMgmt)
     );
-}
+  }
   //Sends a GET request to the back-end API to retreive a single product.
   getProduct(id:any): Observable<any> {
     let api = `${this.endpoint}/get/${id}`;
