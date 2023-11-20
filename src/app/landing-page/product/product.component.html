@@ -31,3 +31,52 @@
 
 
 <p>AAAAAAAAAAAA</p>
+<!-- name: req.body.name,
+            price: req.body.price,
+            quantity: req.body.quantity,
+            description: req.body.description,
+            discount: req.body.discount,
+            category: req.body.category,
+            coverImage: req.body.coverImage,
+            images: imagePaths, -->
+
+<div class="container mt-2">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="max-w-md mx-auto mt-8">
+        <div class="mb-4">
+            <label for="name" class="block mb-2 text-sm font-bold">Product Name:</label>
+            <input formControlName="name" id="name" type="text" class="w-full border rounded-md py-2 px-3">
+        </div>
+        <div class="mb-4">
+            <label for="name" class="block mb-2 text-sm font-bold">Price:</label>
+            <input formControlName="price" id="price" type="number" class="w-full border rounded-md py-2 px-3">
+        </div>
+        <div class="mb-4">
+            <label for="name" class="block mb-2 text-sm font-bold">quantity:</label>
+            <input formControlName="quantity" id="quantity" type="number" class="w-full border rounded-md py-2 px-3">
+        </div>
+        <div class="mb-4">
+            <label for="description" class="block mb-2 text-sm font-bold">Description:</label>
+            <textarea formControlName="description" id="description" class="w-full border rounded-md py-2 px-3"></textarea>
+        </div>
+        <div class="mb-4">
+            <label for="discount" class="block mb-2 text-sm font-bold">Discount:</label>
+            <input formControlName="discount" id="discount" type="number" class="w-full border rounded-md py-2 px-3">
+        </div>
+        <div class="mb-4">
+            <label for="category" class="block mb-2 text-sm font-bold">Category:</label>
+            <select formControlName="category" id="category" class="w-full border rounded-md py-2 px-3">
+                <option value="Lodging">Lodging</option>
+                <option value="Service">Service</option>
+                <option value="Tour Package">Tour Package</option>
+                <option value="Other">Other</option>
+            </select>
+        </div> 
+      
+        <div class="mb-4">
+          <label for="images" class="block mb-2 text-sm font-bold">Images:</label>
+          <input type="file" formControlName="images" id="images" multiple class="w-full border rounded-md py-2 px-3">
+        </div>
+      
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Product</button>
+      </form>
+</div>

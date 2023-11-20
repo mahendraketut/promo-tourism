@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
+import path from "path";
+
 const app = express();
 dotenv.config();
 
@@ -21,9 +23,6 @@ app.use('/api/auth', authRoutes);
 import productRoutes from "./routes/product.js";
 app.use('/api/product', productRoutes);
 
-//Gallery routes
-import galleryRoutes from "./routes/gallery.js";
-app.use('/api/gallery', galleryRoutes);
 
 
 //Response Handling.
@@ -50,8 +49,21 @@ const connectMongoDB = async() => {
     }
 };
 
+
 //Routes setup back-end.
 app.listen(3000, () => {
     console.log("Server running on port 3000");
     connectMongoDB()
 });
+
+// //Multer disk setup for hadnling uploads
+// const storage = multer.diskStorage({
+//     destinatisrcon: function (req, file, cb) {
+//         cb(null, ('../images/'))
+//     },
+//     filename: function (req, file, cb) {
+//             cb(null, file.fieldname + '-' + Date.now() + file.originalname.match(/\..*$/)[0])
+//     }
+// });
+
+

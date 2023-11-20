@@ -33,14 +33,42 @@ export class ProductService {
   //Sends a POST request to the back-end API to create a new product.
   createProduct(data:any): Observable<any> {
     let api = `${this.endpoint}/create`;
-    // return this.http.post(api, data);
-    return this.http.post(api, data).pipe(catchError(this.errorMgmt));
+    //this is the image handling
+    const formData = new FormData();
+    //If there are image(s) in the data object, append them to the formData object.
+    //Otherwise, append the data object to the formData object.
+    Object.keys(data).forEach(key => {
+      if (key === 'images' && Array.isArray(data[key])) {
+        // Handle multiple images
+        data[key].forEach((image: File) => {
+          formData.append('images', image, image.name);
+        });
+      } else {
+        formData.append(key, data[key]);
+      }
+    });
+
+    //Post the formData object to the back-end API.
+    return this.http.post(api, formData).pipe(catchError(this.errorMgmt));
   }
 
   //Sends a PATCH request to the back-end API to update a product.
   updateProduct(id:any, data:any): Observable<any> {
     let api = `${this.endpoint}/update/${id}`;
-    return this.http.patch(api, data, { headers: this.headers }).pipe(catchError(this.errorMgmt));
+    const formData = new FormData();
+    //If there are image(s) in the data object, append them to the formData object.
+    //Otherwise, append the data object to the formData object.
+    Object.keys(data).forEach(key => {
+      if (key === 'images' && Array.isArray(data[key])) {
+        // Handle multiple images
+        data[key].forEach((image: File) => {
+          formData.append('images', image, image.name);
+        });
+      } else {
+        formData.append(key, data[key]);
+      }
+    });
+    return this.http.patch(api, formData, { headers: this.headers }).pipe(catchError(this.errorMgmt));
     // return this.http.patch(api, data, { headers: this.headers });
   }
 

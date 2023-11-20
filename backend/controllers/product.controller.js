@@ -5,7 +5,14 @@ import multer from "multer";
 
 //Creates a new product then adds it to the database.
 export const createProduct = async (req, res, next) => {
+    console.log("masuk create1");
     try {
+        alert("hello");
+        alert(JSON.stringify(req.body, null, 2));
+        let imagePaths = [];
+        if (req.files && req.files.length > 0) {
+            const imagePaths = req.files.map(file => ({ url: file.path }));
+        }
         const product = new Product({
             name: req.body.name,
             price: req.body.price,
@@ -14,7 +21,7 @@ export const createProduct = async (req, res, next) => {
             discount: req.body.discount,
             category: req.body.category,
             coverImage: req.body.coverImage,
-            images: [req.body.images],
+            images: imagePaths,
         });
         await product.save();
         return next(CreateSuccess(200, "Product created successfully"));

@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+
+const ImageSchema = mongoose.Schema({
+    url: {
+        type: String,
+        required: true,
+    },
+    isCover: {
+        type: Boolean,
+        default: false,
+    },
+});
+
 const ProductSchema = mongoose.Schema({
     name:{
         type: String,
@@ -24,15 +36,7 @@ const ProductSchema = mongoose.Schema({
     category:{
         type: String,
     },
-    coverImage:
-    {
-        type: String,
-        // required: true,
-    },
-    images:[{
-        type: String,
-        // required: true,
-    }],
+    images: [ImageSchema],
 
 
 
