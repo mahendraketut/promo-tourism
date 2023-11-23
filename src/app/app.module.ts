@@ -39,6 +39,9 @@ import { FooterOfficerComponent } from './officer/admin-officer/layout/footer-of
 import { DashboardOfficerComponent } from './officer/admin-officer/dashboard-officer/dashboard-officer.component';
 import { MerchantReviewComponent } from './officer/admin-officer/merchant-review/merchant-review.component';
 import { ReportOfficerComponent } from './officer/admin-officer/report-officer/report-officer.component';
+import { ProductAddComponent } from './merchant/admin-merchant/product-add/product-add.component';
+import { NgChartsModule } from 'ng2-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -76,6 +79,7 @@ import { ReportOfficerComponent } from './officer/admin-officer/report-officer/r
     DashboardOfficerComponent,
     MerchantReviewComponent,
     ReportOfficerComponent,
+    ProductAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +88,8 @@ import { ReportOfficerComponent } from './officer/admin-officer/report-officer/r
     ImageModule,
     ScrollingModule,
     DataTablesModule,
+    NgChartsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -10,9 +10,19 @@ import Swal from 'sweetalert2';
 })
 export class RegisterMerchantComponent {
   logo: any;
+  isPersonalData: boolean;
+  isAttachment: boolean;
 
   constructor(private router: Router) {
     this.logo = '/assets/img/logo-landscape.png';
+    this.isPersonalData = true;
+    this.isAttachment = false;
+  }
+
+  //function to change the form
+  changeForm() {
+    this.isPersonalData = !this.isPersonalData;
+    this.isAttachment = !this.isAttachment;
   }
 
   passwordMatchValidator(formGroup: FormGroup) {
@@ -60,7 +70,7 @@ export class RegisterMerchantComponent {
         Swal.fire({
           icon: 'success',
           title: 'Success!',
-          text: 'Yeay, your merchant account already registered!',
+          text: 'Yeay, your merchant account already registered! Wait until the government accept your request',
           confirmButtonText: 'OK',
 
           iconColor: '#4F46E5',

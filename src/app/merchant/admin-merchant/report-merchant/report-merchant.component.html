@@ -6,7 +6,26 @@
       class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
     >
       <i class="fa-solid fa-plus"></i> Add Product</a
+    >-->
+  </div>
+  <div class="flex justify-between items-center gap-8">
+    <canvas
+      baseChart
+      [type]="'bar'"
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      [legend]="lineChartLegend"
+      class="w-1/2"
     >
-  </div> -->
+    </canvas>
+    <canvas
+      baseChart
+      [type]="'line'"
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      [legend]="lineChartLegend"
+      class="w-1/2"
+    >
+    </canvas>
   </div>
 </div>

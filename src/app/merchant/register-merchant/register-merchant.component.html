@@ -1,22 +1,22 @@
-<div class="mt-10 my-10 justify-start items-center">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2
-      class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
-    >
-      Promo Tourism Merchant Registration
-    </h2>
-  </div>
-
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form
-      [formGroup]="userDataForm"
-      class="space-y-6"
-      action="#"
-      method="POST"
-      (ngSubmit)="onSubmit()"
-    >
-      <!-- email input: start -->
-      <div>
+<div class="mt-10 my-10 justify-center items-center">
+  <h1 class="text-center text-4xl font-bold text-gray-900">
+    Promo Tourism Merchant Registration
+  </h1>
+</div>
+<form
+  [formGroup]="userDataForm"
+  class="flex items-center space-y-6 justify-center"
+  action="#"
+  method="POST"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="w-3/4 border rounded-2xl shadow-sm p-4" *ngIf="isPersonalData">
+    <div class="w-full py-5">
+      <h2 class="font-bold text-center text-xl">Personal Information</h2>
+      <hr />
+    </div>
+    <div class="flex items-start justify-between gap-4">
+      <div class="w-1/2">
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900"
           >Email address</label
         >
@@ -54,24 +54,20 @@
           </div>
         </div>
       </div>
-      <!-- email input: end -->
-
-      <!-- Phone number input: start -->
-      <div>
+      <div class="w-1/2">
         <label
           for="phone-number"
           class="block mb-2 text-sm font-medium text-gray-900"
-          >Merchant Contact Number</label
+          >Phone Number</label
         >
         <div class="mt-2">
-          <!-- Phone number input here -->
           <input
             id="phone-number"
             name="phone-number"
             type="tel"
             autocomplete="phone-number"
             required
-            placeholder="Merchant Phone Number"
+            placeholder="Phone Number"
             (input)="userDataForm.get('userPhone').updateValueAndValidity()"
             class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             formControlName="userPhone"
@@ -93,269 +89,166 @@
             "
           >
             <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              Merchant contact number required
+              Phone number required
             </p>
           </div>
         </div>
       </div>
-      <!-- Phone number input: end -->
-
-      <!-- Full name input: start -->
-      <div>
-        <label
-          for="full-name"
-          class="block mb-2 text-sm font-medium text-gray-900"
-          >Merchant Name</label
-        >
-        <div class="mt-2">
-          <!-- Full name input here -->
-          <input
-            id="full-name"
-            name="full-name"
-            type="text"
-            autocomplete="full-name"
-            required
-            placeholder="Merchant Name"
-            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            formControlName="userName"
-          />
-          <div
-            *ngIf="
-              userDataForm.get('userName').touched &&
-              userDataForm.get('userName').hasError('required')
-            "
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              Merchant name required
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- Full name input: end -->
-
-      <!-- Merchant Description text area: start -->
-      <div>
-        <label
-          for="merchant-description"
-          class="block mb-2 text-sm font-medium text-gray-900"
-          >Merchant Description</label
-        >
-        <div class="mt-2">
-          <!-- Merchant Description text area here -->
-          <textarea
-            id="merchant-description"
-            name="merchant-description"
-            type="text"
-            autocomplete="merchant-description"
-            required
-            placeholder="Merchant Description"
-            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            formControlName="userAddress"
-          ></textarea>
-          <div
-            *ngIf="
-              userDataForm.get('userAddress').touched &&
-              userDataForm.get('userAddress').hasError('required')
-            "
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              Merchant description required
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- Merchant Description text area: end -->
-
-      <!-- password input: start -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <div class="flex items-center justify-between">
-            <label
-              for="password"
-              class="block text-sm font-medium leading-6 text-gray-900"
-              >Password</label
-            >
-          </div>
-          <div class="mt-2">
-            <!-- Password Input Here -->
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Enter Password"
-              autocomplete="current-password"
-              required
-              (input)="userDataForm.get('userPass').updateValueAndValidity()"
-              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              formControlName="userPass"
-            />
-            <div
-              *ngIf="
-                userDataForm.get('userPass').touched &&
-                userDataForm.get('userPass').hasError('required')
-              "
-            >
-              <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                Required
-              </p>
-            </div>
-            <div
-              *ngIf="
-                userDataForm.get('userPass').touched &&
-                userDataForm.get('userPass').hasError('minlength')
-              "
-            >
-              <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                <span class="font-medium"> Oops!</span> Minimum 8 Characters!
-              </p>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center justify-between">
-            <label
-              for="repeat-password"
-              class="block text-sm font-medium leading-6 text-gray-900"
-              >Repeat Password</label
-            >
-          </div>
-          <div class="mt-2">
-            <!-- Repeat Pass Here -->
-            <input
-              id="repeat-password"
-              name="re-password"
-              type="password"
-              placeholder="Repeat Password"
-              autocomplete="current-password"
-              required
-              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              formControlName="userPassConfirm"
-              (input)="
-                userDataForm.get('userPassConfirm').updateValueAndValidity()
-              "
-            />
-            <div
-              *ngIf="
-                userDataForm.get('userPassConfirm').touched &&
-                userDataForm.get('userPassConfirm').hasError('required')
-              "
-            >
-              <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                Required
-              </p>
-            </div>
-          </div>
-        </div>
+    </div>
+    <div class="mt-4">
+      <label
+        for="full-name"
+        class="block mb-2 text-sm font-medium text-gray-900"
+        >Full Name</label
+      >
+      <div class="mt-2">
+        <input
+          id="full-name"
+          name="full-name"
+          type="text"
+          autocomplete="full-name"
+          required
+          placeholder="Full Name"
+          class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          formControlName="userName"
+        />
         <div
           *ngIf="
-            userDataForm.get('userPassConfirm').touched &&
-            userDataForm.hasError('passwordMismatch', 'userPassConfirm')
+            userDataForm.get('userName').touched &&
+            userDataForm.get('userName').hasError('required')
           "
         >
-          <p class="text-sm text-red-600 dark:text-red-500">
-            Password Mismatch!
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            Full name required
           </p>
         </div>
       </div>
-      <!-- password input: end -->
-
-      <!-- TODO: Sudah ya hen, i agree with terms and privacy nya -->
-      <!-- checkbox input with i agree: start -->
-      <div class="grid grid-rows-1 gap-1 mb-0">
-        <div class="flex items-center">
-          <input
-            id="agree_tos"
-            name="agree_tos"
-            type="checkbox"
-            class="form-control h-4 w-4 text-blue-700 focus:ring-blue-500 border-gray-300 rounded"
-            formControlName="agreeTOS"
-            (input)="userDataForm.get('agreeTOS').updateValueAndValidity()"
-          />
-          <label for="agree-tos" class="ml-2 block text-sm text-gray-900">
-            I agree to the
-            <a href="#" class="font-semibold text-blue-700 hover:text-blue-500"
-              >terms and conditions as a merchant</a
-            >
-          </label>
-        </div>
+    </div>
+    <div class="mt-4">
+      <label
+        for="merchant-description"
+        class="block mb-2 text-sm font-medium text-gray-900"
+        >Merchant Description</label
+      >
+      <div class="mt-2">
+        <textarea
+          id="merchant-description"
+          name="merchant-description"
+          type="text"
+          autocomplete="merchant-description"
+          required
+          placeholder="Merchant Description"
+          class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          formControlName="userAddress"
+        ></textarea>
         <div
           *ngIf="
-            !userDataForm.get('agreeTOS').value &&
-            userDataForm.get('userEmail').valid &&
-            userDataForm.get('userPhone').valid &&
-            userDataForm.get('userName').valid &&
-            userDataForm.get('userAddress').valid &&
-            userDataForm.get('userPass').valid &&
-            userDataForm.get('userPassConfirm').valid &&
-            submittedClicked
-          "
-          class="mt-0"
-        >
-          <p class="text-sm text-red-600 dark:text-red-500">Required</p>
-        </div>
-      </div>
-      <!-- checkbox input with i agree: end -->
-
-      <!-- alert: start -->
-      <div
-        *ngIf="userDataForm.invalid && submittedClicked"
-        class="flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50"
-        role="alert"
-      >
-        <svg
-          class="flex-shrink-0 inline w-4 h-4 mr-3"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-          />
-        </svg>
-        <span class="sr-only">Info</span>
-        <div
-          *ngIf="
-            !userDataForm.get('agreeTOS').value &&
-              userDataForm.get('userEmail').valid &&
-              userDataForm.get('userPhone').valid &&
-              userDataForm.get('userName').valid &&
-              userDataForm.get('userAddress').valid &&
-              userDataForm.get('userPass').valid &&
-              userDataForm.get('userPassConfirm').valid;
-            else otherError
+            userDataForm.get('userAddress').touched &&
+            userDataForm.get('userAddress').hasError('required')
           "
         >
-          <span class="font-medium">Warning alert!</span> Please Agree to Our
-          Terms and Conditions.
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            Merchant description required
+          </p>
         </div>
-        <ng-template #otherError>
-          <div>
-            <span class="font-medium">Warning alert!</span> Please Fill All the
-            Fields Correctly.
-          </div>
-        </ng-template>
       </div>
-      <!-- alert: end -->
+    </div>
 
-      <div>
-        <button
-          type="submit"
-          class="flex w-full justify-center rounded-full bg-blue-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Register Merchant Account
-        </button>
-      </div>
-    </form>
-
-    <p class="mt-10 text-center text-sm text-gray-500">
-      Already registered as a merchant?
-      <a
-        href="#"
-        routerLink="/auth/login"
-        class="font-semibold leading-6 text-blue-700 hover:text-blue-500"
-        >Sign in now!</a
+    <div class="flex justify-end mt-4">
+      <button
+        type="button"
+        class="flex justify-center items-center rounded-full px-5 w-fit bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        (click)="changeForm()"
       >
-    </p>
+        <i class="fa-solid fa-circle-chevron-right me-2"></i> Next
+      </button>
+    </div>
   </div>
-</div>
+
+  <div class="w-3/4 border rounded-2xl shadow-sm p-4" *ngIf="isAttachment">
+    <div class="w-full py-5">
+      <h2 class="font-bold text-center text-xl">Merchant Legality Data</h2>
+      <hr />
+    </div>
+    <div class="flex gap-4">
+      <div class="w-1/2 py-2">
+        <label
+          for="cover-photo"
+          class="block text-sm font-medium leading-6 text-gray-900"
+          >License</label
+        >
+        <div
+          class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10"
+        >
+          <div class="text-center">
+            <div class="mt-4 flex text-sm leading-6 text-gray-600">
+              <label
+                for="file-upload"
+                class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
+              >
+                <span>Upload a file</span>
+                <input
+                  id="file-upload"
+                  name="file-upload"
+                  accept=".pdf"
+                  type="file"
+                  class="sr-only"
+                />
+              </label>
+              <p class="pl-1">or drag and drop</p>
+            </div>
+            <p class="text-xs leading-5 text-gray-600">PDF up to 1 MB</p>
+          </div>
+        </div>
+      </div>
+      <div class="w-1/2 py-2">
+        <label
+          for="cover-photo"
+          class="block text-sm font-medium leading-6 text-gray-900"
+          >Review</label
+        >
+        <div
+          class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10"
+        >
+          <div class="text-center">
+            <div class="mt-4 flex text-sm leading-6 text-gray-600">
+              <label
+                for="file-upload"
+                class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
+              >
+                <span>Upload a file</span>
+                <input
+                  id="file-upload"
+                  name="file-upload"
+                  accept=".pdf"
+                  type="file"
+                  class="sr-only"
+                />
+              </label>
+              <p class="pl-1">or drag and drop</p>
+            </div>
+            <p class="text-xs leading-5 text-gray-600">PDF up to 1 MB</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-4 gap-2">
+      <!-- back button -->
+      <button
+        type="button"
+        (click)="changeForm()"
+        class="flex justify-center items-center rounded-full px-5 w-fit bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        <i class="fa-solid fa-circle-chevron-left me-2"></i>Back
+      </button>
+      <button
+        type="button"
+        (click)="onSubmit()"
+        class="flex justify-center items-center rounded-full px-5 w-fit bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        <i class="fa-solid fa-floppy-disk me-2"></i>Submit
+      </button>
+    </div>
+  </div>
+</form>
