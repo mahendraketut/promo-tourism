@@ -1,0 +1,284 @@
+<div class="w-full p-5 md:px-20 md:py-10">
+  <div class="flex items-center justify-between my-1">
+    <h1 class="font-bold text-2xl">Add New Product</h1>
+    <a
+      routerLink="/merchant/product"
+      class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
+    >
+      <i class="fa-solid fa-bars"></i> All Product</a
+    >
+  </div>
+  <div class="mt-10 mx-2">
+    <form class="w-full">
+      <div class="flex flex-wrap -mx-3 mb-6">
+        <!-- Product name: start -->
+        <div class="w-full md:w-2/3 py-2 md:pe-2">
+          <label
+            for="product"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Name</label
+          >
+          <div class="mt-2">
+            <input
+              id="product"
+              name="product"
+              type="product"
+              autocomplete="product"
+              required
+              formControlName="productname"
+              placeholder="product Name"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+        </div>
+        <!-- Product name: end -->
+        <!-- Product Category: start -->
+        <div class="w-full md:w-1/3 py-2 md:ps-2">
+          <label
+            for="product-category"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Category</label
+          >
+          <div class="mt-2">
+            <select
+              id="product-category"
+              name="product-category"
+              type="product-category"
+              autocomplete="product-category"
+              required
+              formControlName="productcategory"
+              placeholder="Product Category"
+              class="form-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option value="1">Category 1</option>
+              <option value="2">Category 2</option>
+              <option value="3">Category 3</option>
+            </select>
+          </div>
+        </div>
+        <!-- Product Category: end -->
+        <!-- Product Description: start -->
+        <div class="w-full py-2">
+          <label
+            for="product-description"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Description</label
+          >
+          <div class="mt-2">
+            <textarea
+              id="product-description"
+              name="product-description"
+              type="product-description"
+              autocomplete="product-description"
+              required
+              formControlName="productdescription"
+              placeholder="Product Description"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            ></textarea>
+          </div>
+        </div>
+        <!-- Product Description: end -->
+        <!-- Product Price: start -->
+        <div class="w-full md:w-1/3 py-2 md:pe-2">
+          <label
+            for="product-price"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Price <span class="font-bold">MYR.</span></label
+          >
+          <div class="mt-2">
+            <input
+              id="product-price"
+              name="product-price"
+              type="product-price"
+              autocomplete="product-price"
+              required
+              formControlName="productprice"
+              placeholder="Product Price"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+        </div>
+        <!-- Product Price: end -->
+        <!-- Product discount in %: start -->
+        <div class="w-full md:w-1/3 py-2 md:px-2">
+          <label
+            for="product-discount"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Discount <span class="font-bold">%</span></label
+          >
+          <div class="mt-2">
+            <input
+              id="product-discount"
+              name="product-discount"
+              type="product-discount"
+              autocomplete="product-discount"
+              required
+              formControlName="productdiscount"
+              placeholder="Product Discount"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+        </div>
+        <!-- Product discount in %: end -->
+        <!-- Product stock: start -->
+        <div class="w-full md:w-1/3 py-2 md:ps-2">
+          <label
+            for="product-stock"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Stock <span class="font-bold">Pcs/Unit</span></label
+          >
+          <div class="mt-2">
+            <input
+              id="product-stock"
+              name="product-stock"
+              type="product-stock"
+              autocomplete="product-stock"
+              required
+              formControlName="productstock"
+              placeholder="Product Stock"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+        </div>
+        <!-- Product stock: end -->
+        <!-- Upload or Drag and Drop Cover image: start -->
+        <div class="w-full py-2">
+          <label
+            for="cover-photo"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Cover Product</label
+          >
+          <div
+            class="mt-2 flex justify-center rounded-lg border border-gray-900/25 px-6 py-10"
+          >
+            <div class="text-center">
+              <svg
+                class="mx-auto h-12 w-12 text-gray-300"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                <label
+                  for="file-upload"
+                  class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
+                >
+                  <span>Upload a file</span>
+                  <input
+                    id="file-upload"
+                    name="file-upload"
+                    type="file"
+                    class="sr-only"
+                    (change)="onCoverChange($event)"
+                  />
+                </label>
+                <p class="pl-1">or drag and drop</p>
+              </div>
+              <p class="text-xs leading-5 text-gray-600">
+                PNG, JPG, GIF up to 10MB
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Upload or Drag and Drop Cover image: end -->
+
+        <div *ngIf="coverPreviews.length > 0" class="grid grid-cols-1 gap-2">
+          <div *ngFor="let cover of coverPreviews">
+            <div class="w-full rounded-2xl border border-gray-50">
+              <div class="w-full flex justify-between">
+                <div class="flex items-center my-1">
+                  <img
+                    [src]="cover.url"
+                    alt="Image Preview"
+                    class="w-20 h-20 mx-1 object-cover object-center border-gray-200 rounded-2xl"
+                  />
+                  <div>
+                    <p class="text-sm font-semibold">
+                      {{ cover.fileName }}
+                    </p>
+                    <p class="text-xs text-gray-600">
+                      {{ getFileSizeFromURL(cover.url) }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full py-2">
+          <div class="mb-4">
+            <label
+              for="productImage"
+              class="block text-sm font-medium text-gray-600"
+              >Product Images</label
+            >
+            <input
+              type="file"
+              id="productImage"
+              name="productImage"
+              accept="image/*"
+              class="mt-1 p-2 w-full border rounded-md"
+              multiple
+              (change)="onFileChange($event)"
+            />
+          </div>
+
+          <!-- Image preview container -->
+          <div
+            *ngIf="imagePreviews.length > 0"
+            class="grid grid-cols-1 md:grid-cols-3 gap-2"
+          >
+            <div *ngFor="let preview of imagePreviews">
+              <div class="w-full rounded-2xl border border-gray-50">
+                <div class="w-full flex justify-between">
+                  <div class="flex items-center my-1">
+                    <img
+                      [src]="preview.url"
+                      alt="Image Preview"
+                      class="w-20 h-20 mx-1 object-cover object-center border-gray-200 rounded-2xl"
+                    />
+                    <div>
+                      <p class="text-sm font-semibold">
+                        {{ preview.fileName }}
+                      </p>
+                      <p class="text-xs text-gray-600">
+                        {{ getFileSizeFromURL(preview.url) }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product submit or Clear: start -->
+          <div class="w-full py-2">
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="flex justify-center items-center rounded-full bg-blue-700 px-3 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <i class="fa-solid fa-save me-1"></i> Save Product
+              </button>
+              <button
+                type="reset"
+                (click)="resetImagePreviews()"
+                class="flex justify-center items-center rounded-full bg-red-700 px-3 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ms-2"
+              >
+                <i class="fa-solid fa-trash me-1"></i> Clear
+              </button>
+            </div>
+          </div>
+          <!-- Product submit or Clear: end -->
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
