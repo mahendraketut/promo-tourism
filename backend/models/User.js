@@ -13,11 +13,6 @@ const UserSchema = mongoose.Schema({
         required: true,
         min: 6
     },
-    isAdmin: {
-        required: true,
-        type: Boolean,
-        default: false
-    },
     address: {
         type: String,
         max: 80
@@ -28,11 +23,20 @@ const UserSchema = mongoose.Schema({
         max: 40
     },
     roles:{
-        type: [Schema.Types.ObjectId],
-        ref: "Role",
         required: true,
-        default: ['user']
-    }
+        type: String,
+        max: 40,
+        default: 'user'
+    },
+    phoneNo:{
+        type: String,
+        max: 20,
+        required: true,
+    },
+    description:{
+        type: String,
+        max: 300,
+    },
 
 }, {timestamps: true});
 

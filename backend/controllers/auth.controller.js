@@ -17,20 +17,48 @@ export const register = async (req, res, next) => {
         return next(CreateError(400, "Email already exists"));
         }
         else{
-            const role = await Role.find({role: 'User'});
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(req.body.password, salt);
-            const newUser = new User({
-                name: req.body.name,
-                email: req.body.email,
-                password: hashedPassword,
-                roles: role.map(role => role._id),
-                address: req.body.address,
-                isAdmin: false,
-                
-            });
-            await newUser.save();
-            return next(CreateSuccess(200, "User registered successfully!"));
+            const roleType = req.body.roles;
+            if(roleType == 'admin'){
+                const newUser = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: hashedPassword,
+                    roles: "admin",
+                    phoneNo: req.body.phoneNo,
+                });
+                await newUser.save();
+                return next(CreateSuccess(200, "User registered successfully!"));
+            }
+            else if(roleType == 'user'){
+                const newUser = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: hashedPassword,
+                    roles: "user",
+                    phoneNo: req.body.phoneNo,
+                    address: req.body.address,
+                });
+                await newUser.save();
+                return next(CreateSuccess(200, "User registered successfully!"));
+            }
+            else if(roleType == 'merchant'){
+                const newUser = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: hashedPassword,
+                    roles: "merchant",
+                    phoneNo: req.body.phoneNo,
+                    description: req.body.description,
+                    //add file handling afterwards
+                });
+                await newUser.save();
+                return next(CreateSuccess(200, "User registered successfully!"));
+            }
+            else{
+                return next(CreateError(400, "Invalid Role!"));
+            }
         }
     } catch (error) {
         // return res.status(500).send(error);
@@ -58,15 +86,15 @@ export const login = async (req, res, next) => {
             return next(CreateError(400, "Invalid password"));
         }
         
-        const token = jwt.sign({id: user._id, roles:roles, isAdmin: user.isAdmin}, 
+        const token = jwt.sign({id: user._id, roles:roles}, 
             process.env.TOKEN_SECRET);
         console.log("token created");
         res.cookie("access_token", token, {
             httpOnly: true} ).status(200).json({
                 message: "Logged in successfully!",
                 token: token,
-                isAdmin: user.isAdmin,
                 roles: roles,
+                //Nanti ini data di delete, kalau perlu user sebiji, cari aja sendiri.
                 data:user,
             });
         
