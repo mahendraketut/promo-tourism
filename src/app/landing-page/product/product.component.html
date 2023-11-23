@@ -30,15 +30,6 @@
 </div>
 
 
-<p>AAAAAAAAAAAA</p>
-<!-- name: req.body.name,
-            price: req.body.price,
-            quantity: req.body.quantity,
-            description: req.body.description,
-            discount: req.body.discount,
-            category: req.body.category,
-            coverImage: req.body.coverImage,
-            images: imagePaths, -->
 
 <div class="container mt-2">
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="max-w-md mx-auto mt-8">
@@ -74,7 +65,9 @@
       
         <div class="mb-4">
           <label for="images" class="block mb-2 text-sm font-bold">Images:</label>
-          <input type="file" formControlName="images" id="images" multiple class="w-full border rounded-md py-2 px-3">
+          <input type="file" formControlName="images" id="images" multiple 
+          class="w-full border rounded-md py-2 px-3 file-upload" 
+          onchange="console.log('Ins Img:',event.target.files)">
         </div>
       
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Product</button>
