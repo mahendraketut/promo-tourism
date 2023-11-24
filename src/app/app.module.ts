@@ -42,6 +42,7 @@ import { ReportOfficerComponent } from './officer/admin-officer/report-officer/r
 import { ProductAddComponent } from './merchant/admin-merchant/product-add/product-add.component';
 import { NgChartsModule } from 'ng2-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DataTablesModule,
     NgChartsModule,
     BrowserAnimationsModule,
+    NgxPayPalModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
