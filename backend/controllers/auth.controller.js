@@ -117,7 +117,8 @@ export const login = async (req, res, next) => {
     }
 };
 
-//TODO: gabisa di test pake postman, kalo mau test pake front end
+//TODO: paling bener nge send user ID berdasarkan token di front-end
+//perlu userId, currentPassword, newPassword dari front-end
 export const changePassword = async (req, res, next) => {
     try {
         // const userId = req.user.id;
@@ -148,24 +149,29 @@ export const changePassword = async (req, res, next) => {
     }
 };
 
+//TODO: ubah komennya
+//perlu email aja dari front end
 export const forgetPassword = async (req, res, next) => {
+    console.log("method forget pass");
     try {
+        console.log("masuk trycatch");
         const email = req.body.email;
-
+        console.log("email: ", email);
         // Check if the user exists with the given email
         const user = await User.findOne({ email });
         if (!user) {
             return next(CreateError(404, 'User not found'));
         }
-
+        console.log("user found: ", user);
         // Generate a random verification code (You need to implement this function)
         const verificationCode = Randomstring.generate(9); 
 
         // Save the verification code to the user's data in the database
-        user.resetPasswordCode = verificationCode; // Assuming you have a field in your User model to store the verification code
+        user.resetPasswordCode = verificationCode; 
+        await user.save();
         console.log("vercode: ", verificationCode);
 
-        // Send the verification email to the user (You need to implement this function)
+        // Send the verification email to the user 
         try {
             await sendVerificationEmail(user, verificationCode);
         } catch (error) {
@@ -178,6 +184,68 @@ export const forgetPassword = async (req, res, next) => {
 
     } catch (error) {
         return next(CreateError(500, 'Forget Password Error', error));
+    }
+};
+
+//perlu verification code sama email dari front-end
+// export const validateVerificationCode = async (req, res, next) => {
+//     try {
+//         const email = req.body.email;
+//         const verificationCode = req.body.verificationCode;
+//         console.log("email: ", email);
+//         console.log("vercode: ", verificationCode);
+
+//         // Check if the user exists with the given email
+//         const user = await User.findOne({ email });
+//         if (!user) {
+//             return next(CreateError(404, 'User not found'));
+//         }
+//         console.log("user found: ", user);
+//         console.log("front end vercode: ", verificationCode);
+//         console.log("back end vercode: ", user.resetPasswordCode);
+//         // Check if the verification code is correct
+//         if (user.resetPasswordCode !== verificationCode) {
+//             return next(CreateError(400, 'Invalid verification code'));
+//         }
+
+//         return next(CreateSuccess(200, 'Verification Code Validated Successfully'));
+
+//     } catch (error) {
+//         return next(CreateError(500, 'Validate Verification Code Error', error));
+//     }
+// };
+
+//perlu verification code, newPassword, sama email dari front-end.
+//dia nyari user berdasarkan email, terus dia ngecek vercode sama vercode di db.
+//abis itu, psw baru di hash, di save ke db dan reset vercode jadi null.
+export const validateVerificationCode = async (req, res, next) => {
+    try {
+        const email = req.body.email;
+        const verificationCode = req.body.verificationCode;
+        const newPassword = req.body.newPassword;
+
+        // Check if the user exists with the given email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return next(CreateError(404, 'User not found'));
+        }
+
+        // Check if the verification code is correct
+        if (user.resetPasswordCode !== verificationCode) {
+            return next(CreateError(400, 'Invalid verification code'));
+        }
+
+        // Change the user's password
+        const salt = await bcrypt.genSalt(10);
+        const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+        user.password = hashedNewPassword;
+        user.resetPasswordCode = null;
+        await user.save();
+
+        return next(CreateSuccess(200, 'New Password Saved Successfully'));
+
+    } catch (error) {
+        return next(CreateError(500, 'New Password Error', error));
     }
 };
 

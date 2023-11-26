@@ -37,6 +37,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         max: 300,
     },
+    resetPasswordCode:{
+        type: String,
+        max: 10,
+    },
 
 }, {timestamps: true});
 
