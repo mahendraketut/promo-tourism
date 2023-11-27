@@ -48,6 +48,7 @@ export class ProductComponent implements OnInit {
   }
 
 
+  onSubmit(){};
   // onSubmit() {
   //   const formData = new FormData();
   //   const imagesInput = this.productForm.get('images');
@@ -82,34 +83,34 @@ export class ProductComponent implements OnInit {
   //   });
   // }
 
-
-  onSubmit() {
-    const formData = new FormData();
-    const file:File[] = event.target.files;
-    const imagesInput = this.productForm.get('images');
+//v3
+  // onSubmit() {
+  //   const formData = new FormData();
+  //   const file:File[] = event.target.files;
+  //   const imagesInput = this.productForm.get('images');
   
-    if (imagesInput && imagesInput.value) {
-      const files: File[] = Array.from(imagesInput.value);
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          formData.append('images', files[i]);
-        }
-      }
-    }
+  //   if (imagesInput && imagesInput.value) {
+  //     const files: File[] = Array.from(imagesInput.value);
+  //     if (files) {
+  //       for (let i = 0; i < files.length; i++) {
+  //         formData.append('images', files[i]);
+  //       }
+  //     }
+  //   }
   
     
-    this.productService.createProduct(formData, imagesInput).subscribe({
-      next: (response) => {
-        console.log('Product created successfully!', response);
-        // Handle success, reset the form, etc.
-        this.productForm.reset();
-      },
-      error: (error) => {
-        console.error('Error creating product:', error);
-        // Handle error
-      }
-    });
-  }
+  //   this.productService.createProduct(formData, imagesInput).subscribe({
+  //     next: (response) => {
+  //       console.log('Product created successfully!', response);
+  //       // Handle success, reset the form, etc.
+  //       this.productForm.reset();
+  //     },
+  //     error: (error) => {
+  //       console.error('Error creating product:', error);
+  //       // Handle error
+  //     }
+  //   });
+  // }
 
 
   // onSubmit() {
