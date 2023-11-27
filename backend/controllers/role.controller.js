@@ -1,25 +1,25 @@
 import Role from "../models/Role.js";
-//TODO: bersihin response handling yang lama nanti
+import { CreateError } from "../utils/error.js";
+import { CreateSuccess } from "../utils/success.js";
+
+//Adds role to database
 export const createRole = async (req, res, next) => {
     try {
         if(req.body.role && req.body.role !== ""){
             const newRole = new Role(req.body);
             await newRole.save();
-            // return res.send("Role Created");
             return next(CreateSuccess(200, "Role Created"));
         }
         else{
-            // return res.status(400).send("Enter a valid role!");
             return next(CreateError(400, "Invalid Role"));
         }
     } catch (error) {
-        // return res.status(500).send("Internal Server error!");
         return next(CreateError(500, error));
 
     }
 };
 
-
+//Updates role according to the request send from the front-end
 export const updateRole = async (req, res, next) => {
     try {
         const role = await Role.findById( {_id: req.params.id});
@@ -32,51 +32,44 @@ export const updateRole = async (req, res, next) => {
             );
             
             if(newData){
-                // return res.status(200).send("Role Updated!");
                 return next(CreateSuccess(200, "Role Updated"));
             }
             else{
-                // return res.status(404).send("Not Found");
                 return next(CreateError(404, "Not Found"));
             }
         }
         else{
-            // return res.status(404).send("Not Found!");
             return next(CreateError(404, "Not Found"));
         }
     } catch (error) {
-        // return res.status(500).send("Internal Server error!");
         return next(CreateError(500, error));
     }
 };
 
+//Retreives all the roles from the database
 export const getAllRoles = async (req, res, next) => {
     try {
         // {} means all without filters
         const roles = await Role.find({});
-        // return res.status(200).send(roles);
-        return next(CreateSuccess(200, roles));
+        return next(CreateSuccess(200,"showing all roles" ,roles));
     } catch (error) {
-        // return res.status(500).send("Internal Error!");
         return next(CreateError(500, error));
     
     }
 };
 
+//Delets a role according to the role ID sent from the front-end
 export const deleteRole = async (req, res, next) => {
     try {
         const role = await Role.findById( {_id: req.params.id});
         if(role){
             await Role.findByIdAndDelete(req.params.id);
-            // return res.status(200).send("Role Deleted!");
             return next(CreateSuccess(200, "Role Deleted"));
         }
         else{
-            // return res.status(404).send("Not Found");
             return next(CreateError(404, "Not Found"));
         }
     } catch (error) {
-        // return res.status(500).send("Internal Server error!");
         return next(CreateError(500, error));
     }
 };

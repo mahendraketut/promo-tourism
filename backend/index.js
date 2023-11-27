@@ -1,33 +1,31 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
+
+import path from "path";
 
 const app = express();
 dotenv.config();
 
 app.use(express.json());
+app.use(cors());
 
-//import role routes
+//Import role routes.
 import roleRoutes from "./routes/role.js";
 app.use('/api/role', roleRoutes);
 
-//import auth routes
+//Import auth routes.
 import authRoutes from "./routes/auth.js";
 app.use('/api/auth', authRoutes);
 
-// //Error Handling
-// app.use((err, req, res, next) => {
-//     const statusCode = err.status || 500;
-//     const errorMessage = err.message || "Something went wrong";
-//     return res.status(statusCode).json({
-//         success: false,
-//         status: statusCode,
-//         message:errorMessage,
-//         stack: err.stack
-//     });
-// });
+//Import product routes.
+import productRoutes from "./routes/product.js";
+app.use('/api/product', productRoutes);
 
-//Response Handling
+
+
+//Response Handling.
 app.use((obj, req, res, next) => {
     const statusCode = obj.status || 500;
     const message = obj.message || "Something went wrong";
@@ -39,9 +37,7 @@ app.use((obj, req, res, next) => {
     });
 });
 
-
-
-//database connection to mongo
+//Database connection to MongoDB.
 const connectMongoDB = async() => {
     try {
         await mongoose.connect(process.env.MONGO_URL, {
@@ -54,25 +50,20 @@ const connectMongoDB = async() => {
 };
 
 
-//Routes setup back-end
+//Routes setup back-end.
 app.listen(3000, () => {
     console.log("Server running on port 3000");
     connectMongoDB()
 });
 
-app.use('/', (req, res) => {
-    return res.send("Hello World from slash");
-});
-
-app.use('/api/login', (req, res) => {
-    return res.send("Hello World from login");
-});
-
-app.use('/api/register', (req, res) => {
-    return res.send("Hello World from register");
-});
-
-
-
+// //Multer disk setup for hadnling uploads
+// const storage = multer.diskStorage({
+//     destinatisrcon: function (req, file, cb) {
+//         cb(null, ('../images/'))
+//     },
+//     filename: function (req, file, cb) {
+//             cb(null, file.fieldname + '-' + Date.now() + file.originalname.match(/\..*$/)[0])
+//     }
+// });
 
 

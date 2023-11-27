@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { ImageModule } from 'primeng/image';
 import { AppRoutingModule } from './app-routing.module';
@@ -43,6 +44,8 @@ import { ProductAddComponent } from './merchant/admin-merchant/product-add/produ
 import { NgChartsModule } from 'ng2-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPayPalModule } from 'ngx-paypal';
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -92,6 +95,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     NgChartsModule,
     BrowserAnimationsModule,
     NgxPayPalModule,
+    HttpClientModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
