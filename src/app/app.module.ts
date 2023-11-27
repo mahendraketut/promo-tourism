@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-
+import { DataTablesModule } from 'angular-datatables';
+import { ImageModule } from 'primeng/image';
 import { AppRoutingModule } from './app-routing.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './landing-page/header/header.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -20,6 +22,28 @@ import { HomeComponent } from './landing-page/home/home.component';
 import { DetailProductComponent } from './product/detail-product/detail-product.component';
 import { OrderComponent } from './landing-page/order/order.component';
 import { MerchantComponent } from './merchant/merchant.component';
+import { JoinUsPageComponent } from './merchant/join-us-page/join-us-page.component';
+import { RegisterMerchantComponent } from './merchant/register-merchant/register-merchant.component';
+import { NavbarMerchantComponent } from './merchant/admin-merchant/layout/navbar-merchant/navbar-merchant.component';
+import { SidenavMerchantComponent } from './merchant/admin-merchant/layout/sidenav-merchant/sidenav-merchant.component';
+import { FooterMerchantComponent } from './merchant/admin-merchant/layout/footer-merchant/footer-merchant.component';
+import { DashboardComponent } from './merchant/admin-merchant/dashboard/dashboard.component';
+import { AlertComponent } from './widget/alert/alert.component';
+import { ProductListComponent } from './merchant/admin-merchant/product-list/product-list.component';
+import { OrderListComponent } from './merchant/admin-merchant/order-list/order-list.component';
+import { TransactionListComponent } from './merchant/admin-merchant/transaction-list/transaction-list.component';
+import { ReportMerchantComponent } from './merchant/admin-merchant/report-merchant/report-merchant.component';
+import { OfficerComponent } from './officer/officer.component';
+import { SidenavOfficerComponent } from './officer/admin-officer/layout/sidenav-officer/sidenav-officer.component';
+import { NavbarOfficerComponent } from './officer/admin-officer/layout/navbar-officer/navbar-officer.component';
+import { FooterOfficerComponent } from './officer/admin-officer/layout/footer-officer/footer-officer.component';
+import { DashboardOfficerComponent } from './officer/admin-officer/dashboard-officer/dashboard-officer.component';
+import { MerchantReviewComponent } from './officer/admin-officer/merchant-review/merchant-review.component';
+import { ReportOfficerComponent } from './officer/admin-officer/report-officer/report-officer.component';
+import { ProductAddComponent } from './merchant/admin-merchant/product-add/product-add.component';
+import { NgChartsModule } from 'ng2-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -41,10 +65,36 @@ import { HttpClientModule } from '@angular/common/http';
     DetailProductComponent,
     OrderComponent,
     MerchantComponent,
+    JoinUsPageComponent,
+    RegisterMerchantComponent,
+    NavbarMerchantComponent,
+    SidenavMerchantComponent,
+    FooterMerchantComponent,
+    DashboardComponent,
+    AlertComponent,
+    ProductListComponent,
+    OrderListComponent,
+    TransactionListComponent,
+    ReportMerchantComponent,
+    OfficerComponent,
+    SidenavOfficerComponent,
+    NavbarOfficerComponent,
+    FooterOfficerComponent,
+    DashboardOfficerComponent,
+    MerchantReviewComponent,
+    ReportOfficerComponent,
+    ProductAddComponent,
   ],
-  imports: [BrowserModule,
-    AppRoutingModule, 
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
     ReactiveFormsModule,
+    ImageModule,
+    ScrollingModule,
+    DataTablesModule,
+    NgChartsModule,
+    BrowserAnimationsModule,
+    NgxPayPalModule,
     HttpClientModule,
     CommonModule,
   ],

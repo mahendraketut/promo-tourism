@@ -1,0 +1,42 @@
+<div class="h-screen">
+  <div class="flex items-center h-screen mx-auto">
+    <div class="md:h-fit md:w-3/6">
+      <div class="flex items-center h-40">
+        <img
+          [src]="tourismMalaysiaLogo"
+          alt="Logo Tourism Malaysia"
+          class="h-32"
+        />
+        <img [src]="promoTourismLogo" alt="Logo Promo Tourism" class="h-20" />
+      </div>
+      <div class="flex flex-col">
+        <h1
+          class="text-6xl md:text-8xl font-semibold mb-2 text-blue-700 font-poppins"
+        >
+          Hi Seller👋
+        </h1>
+        <p class="text-xl font-poppins">
+          Unlock New Opportunities for Your Tourism Business
+        </p>
+        <p class="text-xl font-poppins">Join Our Merchant Community!</p>
+      </div>
+
+      <div class="flex justify-start mt-5">
+        <a
+          (click)="smoothScroll('registerMerchant')"
+          class="text-black px-8 p-2 border-black border-2 rounded-full font-poppins hover:bg-blue-700 hover:text-white hover:border-blue-500 hover:border-2"
+        >
+          Join as Merchant
+        </a>
+      </div>
+    </div>
+    <div class="hidden md:w-3/6 md:block">
+      <img [src]="seller" alt="" class="mt-20" />
+    </div>
+  </div>
+</div>
+<div id="registerMerchant" class="flex items-center h-screen">
+  <div class="w-full">
+    <app-register-merchant></app-register-merchant>
+  </div>
+</div>
