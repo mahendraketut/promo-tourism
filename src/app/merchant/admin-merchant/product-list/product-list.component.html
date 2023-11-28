@@ -17,7 +17,6 @@
           <th class="px-4 py-2">Category</th>
           <th class="px-4 py-2">Price</th>
           <th class="px-4 py-2">Stock</th>
-          <th class="px-4 py-2">Availability</th>
           <th class="px-4 py-2">Action</th>
         </tr>
       </thead>
@@ -28,13 +27,12 @@
           <td>{{ product.category }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.quantity }}</td>
-          <td>{{ product.availability }}</td>
           <td>
             <!-- action button using dropdown -->
 
             <a
               routerLink="/merchant/edit-product/{{ product.id }}"
-              class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
+              class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full me-2"
             >
               <i class="fa-solid fa-edit"></i> Edit</a
             >

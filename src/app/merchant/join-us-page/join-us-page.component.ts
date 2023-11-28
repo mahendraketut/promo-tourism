@@ -15,10 +15,12 @@ export class JoinUsPageComponent {
   constructor(private viewportScroller: ViewportScroller) {}
 
   smoothScroll(elementId: string): void {
-    const element = document.getElementById(elementId);
+    let scroll = document.getElementById('registerMerchant');
+    scroll?.scrollIntoView({ behavior: 'smooth' });
+    // this.viewportScroller.scrollToAnchor(elementId);
 
-    if (element) {
-      this.viewportScroller.scrollToAnchor(elementId);
-    }
+    // if (element) {
+    //   this.viewportScroller.scrollToAnchor(elementId);
+    // }
   }
 }

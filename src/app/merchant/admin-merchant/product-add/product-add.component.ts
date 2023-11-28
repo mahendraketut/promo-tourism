@@ -52,21 +52,6 @@ export class ProductAddComponent {
     }
   }
 
-  showFileDetails(file: File): void {
-    // Display file details as needed, e.g., file name, size, type
-    console.log(
-      `Selected File: ${file.name}, Size: ${file.size} bytes, Type: ${file.type}`
-    );
-  }
-
-  getFileNameFromURL(url: string): string {
-    // Extract file name from URL
-    const startIndex = url.lastIndexOf('/') + 1;
-    const endIndex =
-      url.lastIndexOf('?') !== -1 ? url.lastIndexOf('?') : url.length;
-    return url.substring(startIndex, endIndex);
-  }
-
   getFileSizeFromURL(url: string): string {
     // Extract file size from URL
     const sizeInBytes = url.length * 0.75; // Approximate size calculation

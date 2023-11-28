@@ -8,14 +8,14 @@
       <i class="fa-solid fa-plus"></i> Add Product</a
     >-->
   </div>
-  <div class="flex justify-between items-center gap-8">
+  <div class="md:flex md:justify-between items-center gap-8">
     <canvas
       baseChart
       [type]="'bar'"
       [data]="lineChartData"
       [options]="lineChartOptions"
       [legend]="lineChartLegend"
-      class="w-1/2"
+      class="w-full md:w-1/2"
     >
     </canvas>
     <canvas
@@ -24,7 +24,7 @@
       [data]="lineChartData"
       [options]="lineChartOptions"
       [legend]="lineChartLegend"
-      class="w-1/2"
+      class="w-full md:w-1/2"
     >
     </canvas>
   </div>

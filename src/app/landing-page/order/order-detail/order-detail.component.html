@@ -1,0 +1,301 @@
+<div class="h-full">
+  <!-- breadcrumb: start -->
+  <nav class="text-black font-bold text-xs my-8" aria-label="Breadcrumb">
+    <ol class="list-none p-0 inline-flex">
+      <li class="flex items-center">
+        <a href="#">Home</a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mx-2"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </li>
+      <li class="flex items-center">
+        <a href="/order">Order</a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mx-2"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </li>
+      <li class="flex items-center text-gray-500">
+        <p>Order Detail</p>
+      </li>
+    </ol>
+  </nav>
+  <!-- breadcrumb: end -->
+  <!-- content: start -->
+  <div class="md:flex gap-4">
+    <div class="w-full md:w-3/4">
+      <div class="border-2 border-gray-200 rounded-3xl p-5">
+        <h1 class="text-lg font-bold">Transaction Detail</h1>
+        <hr class="" />
+        <div class="gap-4">
+          <div class="flex justify-between my-2">
+            <p class="text-sm">Purchasing Date</p>
+            <p class="text-sm font-bold">
+              {{ dateOrder | date : "dd MMMM yyyy" }}
+            </p>
+          </div>
+          <div class="flex justify-between my-2">
+            <p class="text-sm">Invoice</p>
+            <p class="text-sm font-bold">INV202311202</p>
+          </div>
+          <div class="flex justify-between my-2">
+            <p class="text-sm">Status</p>
+            <p class="text-sm font-bold">Completed</p>
+          </div>
+
+          <!-- identity: start -->
+          <div class="md:grid md:grid-cols-2 gap-20 mt-5">
+            <!-- customer identity: start -->
+            <div class="">
+              <h1 class="text-base font-bold">Customer:</h1>
+              <hr class="" />
+              <div class="flex justify-between my-2">
+                <p class="text-sm">Customer Name</p>
+                <p class="text-sm font-bold text-right">John Doe</p>
+              </div>
+              <div class="flex justify-between my-2">
+                <p class="text-sm">Customer Email</p>
+                <p class="text-sm font-bold text-right">john@gmail.com</p>
+              </div>
+              <div class="flex justify-between my-2">
+                <p class="text-sm">Customer Phone</p>
+                <p class="text-sm font-bold text-right">+608123456789</p>
+              </div>
+              <div class="flex justify-between my-2">
+                <p class="text-sm">Customer Address</p>
+                <p class="text-sm font-bold text-right">
+                  Petaling Steet No. 21 Kuala Lumpur, Malaysia
+                </p>
+              </div>
+            </div>
+            <!-- customer identity: end -->
+            <!-- merchant identity: start -->
+            <div class="">
+              <h1 class="text-base font-bold">Merchant:</h1>
+              <hr class="" />
+              <div class="flex justify-between my-2">
+                <p class="text-sm">Merchant Name</p>
+                <p class="text-sm font-bold text-right">HELP Sdn. Bhd.</p>
+              </div>
+              <div class="flex justify-between my-2">
+                <p class="text-sm">Merchant Email</p>
+                <p class="text-sm font-bold text-right">
+                  help@tourism-promo.my
+                </p>
+              </div>
+              <div class="flex justify-between my-2">
+                <p class="text-sm">Merchant Phone</p>
+                <p class="text-sm font-bold text-right">+60123456789</p>
+              </div>
+              <div class="flex justify-between my-2">
+                <p class="text-sm w-1/3">Merchant Address</p>
+                <p class="text-sm font-bold text-right">
+                  Malaysia Tourism Centre (Matic, 109, Jalan Ampang, Kuala
+                  Lumpur, 50450, Malaysia)
+                </p>
+              </div>
+            </div>
+            <!-- merchant identity: end -->
+          </div>
+          <!-- identity: end -->
+          <!-- order detail mobile: start -->
+          <div class="block mt-5 md:hidden">
+            <h1 class="text-base font-bold">Order Detail</h1>
+            <hr class="" />
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Product Name</p>
+              <p class="text-sm font-bold">Cara Bok</p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Product Price</p>
+              <p class="text-sm font-bold">MYR1,000</p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Product Quantity</p>
+              <p class="text-sm font-bold">1</p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Product Description</p>
+              <p class="text-sm font-bold">none</p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Total</p>
+              <p class="text-sm font-bold">MYR1,000</p>
+            </div>
+          </div>
+          <!-- order detail mobile: end -->
+          <!-- order detail desktop: start -->
+          <div class="hidden md:block">
+            <h1 class="text-base font-bold mt-5">Order Detail</h1>
+            <hr class="" />
+            <div class="grid grid-cols-6 my-2">
+              <div class="col-span-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-fixed">
+                    <img
+                      class="w-20 h-20 object-cover object-center border-gray-200 rounded-2xl"
+                      src="/assets/img/imagecover.jpg"
+                    />
+                  </div>
+                  <div class="w-fixed">
+                    <h1 class="font-bold text-xl">Cara Bok</h1>
+                    <p class="text-sm">1 Item x MYR1,000</p>
+                    <p class="text-sm">Description: none</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-2">
+                <div class="flex items-center justify-end h-full">
+                  <div>
+                    <p class="text-xl text-right font-semibold">
+                      Total: MYR1,000
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- order detail desktop: end -->
+          <!-- payment detail: start -->
+          <div class="mt-5">
+            <h1 class="text-base font-bold">Payment Detail</h1>
+            <hr class="" />
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Payment Method</p>
+              <p class="text-sm font-bold">Credit Card - PayPal</p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Payment Date</p>
+              <p class="text-sm font-bold">
+                {{ dateOrder | date : "dd MMMM yyyy" }}
+              </p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Payment Status</p>
+              <p class="text-sm font-bold">Completed</p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Payment Reference</p>
+              <p class="text-sm font-bold">none</p>
+            </div>
+          </div>
+          <!-- payment detail: end -->
+          <!-- notes: start -->
+          <div class="mt-5">
+            <h1 class="text-base font-bold">Notes</h1>
+            <hr class="" />
+            <ul>
+              <li class="flex items-start my-1">
+                <p class="text-sm me-2">
+                  <i class="fa-solid fa-circle-chevron-right"></i>
+                </p>
+                <p class="text-sm">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Voluptatum, quibusdam.
+                </p>
+              </li>
+              <li class="flex items-start my-1">
+                <p class="text-sm me-2">
+                  <i class="fa-solid fa-circle-chevron-right"></i>
+                </p>
+                <p class="text-sm">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Voluptatum, quibusdam.
+                </p>
+              </li>
+            </ul>
+          </div>
+          <!-- notes: end -->
+          <!-- review: start -->
+          <div class="mt-5">
+            <h1 class="text-base font-bold">Review</h1>
+            <hr class="" />
+
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Review Date</p>
+              <p class="text-sm font-bold">
+                {{ dateOrder | date : "dd MMMM yyyy" }}
+              </p>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Review Rating</p>
+              <!-- five star rating with 4 yellow and one gray -->
+              <div class="flex gap-x-3 text-xs">
+                <span class="text-yellow-400"
+                  ><i class="fa-solid fa-star"></i
+                ></span>
+                <span class="text-yellow-400"
+                  ><i class="fa-solid fa-star"></i
+                ></span>
+                <span class="text-yellow-400"
+                  ><i class="fa-solid fa-star"></i
+                ></span>
+                <span class="text-yellow-400"
+                  ><i class="fa-solid fa-star"></i
+                ></span>
+                <span class="text-gray-400"
+                  ><i class="fa-solid fa-star"></i
+                ></span>
+              </div>
+            </div>
+            <div class="flex justify-between my-2">
+              <p class="text-sm">Review Comment</p>
+              <p class="text-sm font-bold text-right">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Voluptatum, quibusdam.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-2 border-gray-200 rounded-3xl p-5 mt-5">
+        <h1 class="text-lg font-bold">Giving Review</h1>
+        <hr class="" />
+      </div>
+    </div>
+    <div class="w-full mt-5 md:mt-0 md:w-1/4">
+      <div class="border-2 border-gray-200 rounded-3xl p-5">
+        <!-- pay button: start -->
+        <button
+          class="w-full bg-blue-600 rounded-full text-center p-3 text-white font-bold hover:bg-blue-700"
+        >
+          Pay
+        </button>
+
+        <!-- pay button: end -->
+        <!-- review button: start -->
+        <button
+          class="w-full border border-gray-500 bg-white rounded-full text-center p-3 text-gray-700 font-bold mt-2"
+        >
+          Review Order
+        </button>
+        <!-- review button: end -->
+        <!-- print invoice: start -->
+        <button
+          class="w-full border border-gray-500 bg-white rounded-full text-center p-3 text-gray-700 font-bold mt-2"
+        >
+          Print Invoice
+        </button>
+        <!-- print invoice: end -->
+      </div>
+    </div>
+  </div>
+  <!-- content: end -->
+</div>

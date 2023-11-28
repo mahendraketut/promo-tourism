@@ -23,6 +23,8 @@ import { DashboardOfficerComponent } from './officer/admin-officer/dashboard-off
 import { MerchantReviewComponent } from './officer/admin-officer/merchant-review/merchant-review.component';
 import { ProductAddComponent } from './merchant/admin-merchant/product-add/product-add.component';
 import { RegisterMerchantComponent } from './merchant/register-merchant/register-merchant.component';
+import { OrderDetailComponent } from './landing-page/order/order-detail/order-detail.component';
+import { OrderCustomerListComponent } from './landing-page/order/order-customer-list/order-customer-list.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,16 @@ const routes: Routes = [
       {
         path: 'order',
         component: OrderComponent,
+        children: [
+          {
+            path: '',
+            component: OrderCustomerListComponent,
+          },
+          {
+            path: 'detail',
+            component: OrderDetailComponent,
+          },
+        ],
       },
       {
         path: 'help',
@@ -78,6 +90,12 @@ const routes: Routes = [
       {
         path: 'order',
         component: OrderListComponent,
+        children: [
+          {
+            path: 'detail',
+            component: DetailProductComponent,
+          },
+        ],
       },
       {
         path: 'transaction',

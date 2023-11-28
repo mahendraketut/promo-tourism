@@ -43,6 +43,9 @@ import { ProductAddComponent } from './merchant/admin-merchant/product-add/produ
 import { NgChartsModule } from 'ng2-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { OrderDetailComponent } from './landing-page/order/order-detail/order-detail.component';
+import { OrderCustomerListComponent } from './landing-page/order/order-customer-list/order-customer-list.component';
+import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 
 @NgModule({
   declarations: [
@@ -81,6 +84,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     MerchantReviewComponent,
     ReportOfficerComponent,
     ProductAddComponent,
+    OrderDetailComponent,
+    OrderCustomerListComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,7 +98,15 @@ import { NgxPayPalModule } from 'ngx-paypal';
     BrowserAnimationsModule,
     NgxPayPalModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: GALLERY_CONFIG,
+      useValue: {
+        autoHeight: true,
+        imageSize: 'cover',
+      } as GalleryConfig,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
