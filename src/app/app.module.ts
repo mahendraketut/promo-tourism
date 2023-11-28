@@ -49,6 +49,7 @@ import { OrderCustomerListComponent } from './landing-page/order/order-customer-
 import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 
 import { HttpClientModule } from '@angular/common/http';
+import { PdfService } from './services/pdf.service';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
   ],
   providers: [
+    PdfService,
     {
       provide: GALLERY_CONFIG,
       useValue: {
