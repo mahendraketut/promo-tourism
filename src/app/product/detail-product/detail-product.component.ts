@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
 
 @Component({
   selector: 'app-detail-product',
   templateUrl: './detail-product.component.html',
   styleUrls: ['./detail-product.component.css'],
+  // template: '<gallery [items]="images"></gallery>',
+  // standalone: true,
+  // imports: [GalleryModule],
 })
 export class DetailProductComponent implements OnInit {
-  image: any = 'assets/img/imagecover2.jpg';
+  image: any = 'assets/img/imagecover.jpg';
+  images: GalleryItem[];
   title: string = 'Tour to Kuala Lumpur City Center (KLCC)';
   rating: number = 5;
   purchases: number = 999;
@@ -44,6 +49,10 @@ export class DetailProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.initConfig();
+    //set item array
+    this.images = [
+      new ImageItem({ src: 'IMAGE_SRC_URL', thumb: 'IMAGE_THUMBNAIL_URL' }),
+    ];
   }
 
   private initConfig(): void {

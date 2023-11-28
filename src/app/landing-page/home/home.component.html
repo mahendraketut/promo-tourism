@@ -17,7 +17,7 @@
   </div>
   <div class="relative">
     <div
-      class="relative overflow-x-auto scrollbar-hide md:mx-8"
+      class="relative overflow-x-auto md:overflow-x-hidden md:mx-0"
       #scrollContainer
     >
       <!-- class utility below can be modified based on your needed. Follow Tailwind Docs for more detail information about styling -->
@@ -55,11 +55,35 @@
           [price]="5000"
           [discount]="200"
         ></app-product-card>
+        <app-product-card
+          class="w-48"
+          image="/assets/img/imagecover.jpg"
+          title="Lorem ipsum dolor sit amet"
+          [rating]="5"
+          [price]="5000"
+          [discount]="200"
+        ></app-product-card>
+        <app-product-card
+          class="w-48"
+          image="/assets/img/imagecover.jpg"
+          title="Lorem ipsum dolor sit amet"
+          [rating]="5"
+          [price]="5000"
+          [discount]="200"
+        ></app-product-card>
+        <app-product-card
+          class="w-48"
+          image="/assets/img/imagecover.jpg"
+          title="Lorem ipsum dolor sit amet"
+          [rating]="5"
+          [price]="5000"
+          [discount]="200"
+        ></app-product-card>
       </div>
     </div>
     <!-- below is the left button, you can modify it: start -->
     <button
-      class="hidden absolute top-1/2 left-0 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
+      class="hidden absolute top-1/2 -left-8 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
       (click)="scrollLeft()"
     >
       <i class="fas fa-chevron-left"></i>
@@ -67,7 +91,7 @@
     <!-- below is the left button, you can modify it: end -->
     <!-- below is the right button, you can modify it: start -->
     <button
-      class="hidden absolute top-1/2 right-0 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
+      class="hidden absolute top-1/2 -right-8 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
       (click)="scrollRight()"
     >
       <i class="fas fa-chevron-right"></i>

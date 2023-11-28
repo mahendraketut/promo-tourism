@@ -7,7 +7,7 @@
       <p class="text-base w-full">Today {{ today | date }}</p>
     </div>
   </div>
-  <!-- Chart -->
+
   <div class="mt-8 flex justify-between gap-4">
     <div class="w-1/2 bg-white border border-blue-100 rounded-lg p-5">
       <h1 class="font-bold text-xl">Total Merchant Registered</h1>
@@ -16,6 +16,33 @@
     <div class="w-1/2 bg-white border border-blue-100 rounded-lg p-5">
       <h1 class="font-bold text-xl">Total Product Registered</h1>
       <p class="text-base">Manage your store here</p>
+    </div>
+  </div>
+  <div
+    class="bg-white border border-blue-100 mt-4 rounded-lg overflow-hidden col-span-2"
+  >
+    <div class="px-5 pt-5">
+      <h1 class="font-bold text-xl">All Menu</h1>
+    </div>
+    <div class="grid grid-cols-2 gap-x-4 gap-y-4 p-5">
+      <button
+        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
+        routerLink="/officer/account-management"
+      >
+        <div class="flex justify-center">
+          <i class="fa-solid fa-ticket text-6xl text-center"></i>
+        </div>
+        <p class="text-base w-full text-center mt-3">Account Management</p>
+      </button>
+      <button
+        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
+        routerLink="/officer/report"
+      >
+        <div class="flex justify-center">
+          <i class="fa-solid fa-file-invoice text-6xl text-center"></i>
+        </div>
+        <p class="text-base w-full text-center mt-3">Analytics Report</p>
+      </button>
     </div>
   </div>
 </div>

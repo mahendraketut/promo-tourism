@@ -30,13 +30,59 @@
         <p class="text-base">Manage your store here</p>
       </div>
       <div class="bg-blue-50 rounded-lg p-5">
-        <h1 class="font-bold text-xl">Total Revenue</h1>
+        <h1 class="font-bold text-xl">Overall Review</h1>
         <p class="text-base">Manage your store here</p>
       </div>
       <div class="bg-blue-50 rounded-lg p-5">
-        <h1 class="font-bold text-xl">Total Revenue</h1>
+        <h1 class="font-bold text-xl">Total Transaction</h1>
         <p class="text-base">Manage your store here</p>
       </div>
+    </div>
+  </div>
+
+  <div
+    class="bg-white border border-blue-100 mt-4 rounded-lg overflow-hidden col-span-2"
+  >
+    <div class="px-5 pt-5">
+      <h1 class="font-bold text-xl">All Menu</h1>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-4 p-5">
+      <button
+        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
+        routerLink="/merchant/product"
+      >
+        <div class="flex justify-center">
+          <i class="fa-solid fa-ticket text-6xl text-center"></i>
+        </div>
+        <p class="text-base w-full text-center mt-3">List Product</p>
+      </button>
+      <button
+        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
+        routerLink="/merchant/order"
+      >
+        <div class="flex justify-center">
+          <i class="fa-solid fa-file-invoice text-6xl text-center"></i>
+        </div>
+        <p class="text-base w-full text-center mt-3">List Order</p>
+      </button>
+      <button
+        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
+        routerLink="/merchant/transaction"
+      >
+        <div class="flex justify-center">
+          <i class="fa-solid fa-wallet text-6xl text-center"></i>
+        </div>
+        <p class="text-base w-full text-center mt-3">List Transaction</p>
+      </button>
+      <button
+        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
+        routerLink="/merchant/report"
+      >
+        <div class="flex justify-center">
+          <i class="fa-solid fa-chart-bar text-6xl text-center"></i>
+        </div>
+        <p class="text-base w-full text-center mt-3">Analytics Report</p>
+      </button>
     </div>
   </div>
 </div>

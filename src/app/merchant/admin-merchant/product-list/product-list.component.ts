@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TempService } from 'src/app/temp.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -7,7 +8,8 @@ import { TempService } from 'src/app/temp.service';
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-  dtOptions: DataTables.Settings = {};
+
+  dtOptions: any = {};
   products: any = [
     // {
     //   id: 1,
@@ -65,7 +67,7 @@ export class ProductListComponent implements OnInit {
     //   status: 'Active',
     // },
   ];
-  constructor(private tempService: TempService) {
+  constructor(private tempService: TempService, private router: Router) {
     this.products = this.tempService.getProducts();
     console.log('all prod: ', this.products);
   }
@@ -76,7 +78,24 @@ export class ProductListComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 5,
       processing: true,
-      lengthMenu: [5, 10, 25],
+      lengthMenu: [5, 15, 5, 5, 5, 10, 5],
+      responsive: true,
+      dom: 'Bfrtip',
+      buttons: [
+        'copy',
+        'print',
+        'excel',
+        'pdf',
+        {
+          text: 'New Product',
+          key: '1',
+          className:
+            'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded',
+          action: (e, dt, node, config) => {
+            this.router.navigate(['/merchant/add-product']);
+          },
+        },
+      ],
     };
   }
 }
