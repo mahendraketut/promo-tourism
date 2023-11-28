@@ -14,7 +14,6 @@ export const register = async (req, res, next) => {
         //cari user udah ada apa belom
         const doesEmailExist = await User.findOne({ email: req.body.email});
         if (doesEmailExist) {
-        // return res.status(400).send("Email already exists");
         return next(CreateError(400, "Email already exists"));
         }
         else{
@@ -31,7 +30,6 @@ export const register = async (req, res, next) => {
                 
             });
             await newUser.save();
-            // return res.status(200).send("User registered successfully!");
             return next(CreateSuccess(200, "User registered successfully!"));
         }
     } catch (error) {
@@ -43,10 +41,11 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
     //process the login
     try {
-        console.log("masuk login");
         //this also fetches the roles
         const user = await User.findOne({email: req.body.email}).populate("roles", "role");
         const {roles} = user;
+        //TODO: delete console logging once done.
+        //Console log finding user
         console.log("nyari user sama roles");
         console.log(user);
         console.log(roles);
@@ -56,10 +55,8 @@ export const login = async (req, res, next) => {
         }
         const validPassword = await bcrypt.compare(req.body.password, user.password);
         if (!validPassword) {
-            // return res.status(400).send("Invalid password");
             return next(CreateError(400, "Invalid password"));
         }
-        console.log("psw valid");
         
         const token = jwt.sign({id: user._id, roles:roles, isAdmin: user.isAdmin}, 
             process.env.TOKEN_SECRET);
@@ -72,10 +69,10 @@ export const login = async (req, res, next) => {
                 roles: roles,
                 data:user,
             });
-        // return next(CreateSuccess(200, "Logged in successfully!"));
+        
 
     } catch (error) {
-        // return res.status(500).send(error);
+      
         return next(CreateError(500, error));
     }
 };
