@@ -1,4 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { PdfService } from 'src/app/services/pdf.service';
 
@@ -9,12 +16,9 @@ import { PdfService } from 'src/app/services/pdf.service';
 })
 export class OrderDetailComponent {
   @ViewChild('invoice', { static: false }) contentToConvert: ElementRef;
-  setRating(arg0: number) {
-    throw new Error('Method not implemented.');
-  }
-  onSubmit() {
-    throw new Error('Method not implemented.');
-  }
+  @Input() value: number;
+  @Output() valueChange = new EventEmitter<number>();
+
   dateOrder: any;
   isReviewed: boolean;
   reviewForm: FormGroup<any>;
@@ -30,5 +34,17 @@ export class OrderDetailComponent {
     const getElementById = 'invoice';
     const fileName = this.invoiceName;
     this.pdfService.exportToPdf(getElementById, fileName);
+  }
+
+  // scroll smoothly to object Id that targeted in button
+  smoothScroll(elementId: string): void {
+    let scroll = document.getElementById(elementId);
+    scroll?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  setRating(rating: number): void {
+    this.value = rating;
+    this.valueChange.emit(this.value);
+    console.log('current rating given: ' + this.value);
   }
 }
