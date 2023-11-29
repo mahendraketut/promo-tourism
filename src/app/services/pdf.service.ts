@@ -39,11 +39,11 @@ export class PdfService {
       }
 
       // Optionally, you can close the popup after a certain delay
-      setTimeout(() => {
-        if (popup) {
-          popup.close();
-        }
-      }, 5000); // Adjust the delay as needed
+      // setTimeout(() => {
+      //   if (popup) {
+      //     popup.close();
+      //   }
+      // }, 5000); // Adjust the delay as needed
 
       pdf.save(fileName + '.pdf');
     });

@@ -270,58 +270,96 @@
           </div>
         </div>
       </div>
-      <div class="border-2 border-gray-200 rounded-3xl p-5 mt-5">
+      <div
+        id="givingReview"
+        class="border-2 border-gray-200 rounded-3xl p-5 mt-5"
+      >
         <h1 class="text-lg font-bold">Giving Review</h1>
         <hr class="" />
-        <!-- form input review using radio button -->
-        <form [formGroup]="reviewForm" (submit)="onSubmit()">
-          <div class="flex justify-between my-2">
-            <p class="text-sm">Rating</p>
-            <div class="flex gap-x-3 text-xs">
-              <span
-                class="text-yellow-400 cursor-pointer"
-                (click)="setRating(1)"
-                ><i class="fa-solid fa-star"></i
-              ></span>
-              <span
-                class="text-yellow-400 cursor-pointer"
-                (click)="setRating(2)"
-                ><i class="fa-solid fa-star"></i
-              ></span>
-              <span
-                class="text-yellow-400 cursor-pointer"
-                (click)="setRating(3)"
-                ><i class="fa-solid fa-star"></i
-              ></span>
-              <span
-                class="text-yellow-400 cursor-pointer"
-                (click)="setRating(4)"
-                ><i class="fa-solid fa-star"></i
-              ></span>
-              <span
-                class="text-yellow-400 cursor-pointer"
-                (click)="setRating(5)"
-                ><i class="fa-solid fa-star"></i
-              ></span>
-            </div>
+        <!-- input rating: start -->
+        <div>
+          <h2 class="text-center text-lg font-bold mt-5">
+            How happy are you with our product?
+          </h2>
+          <div class="star-rating w-full text-center rotate-180">
+            <input
+              type="radio"
+              id="star5"
+              name="rating"
+              value="5"
+              [checked]="value === 5"
+              (click)="setRating(5)"
+            />
+            <label class="star" for="star5"
+              ><i class="fas fa-star rotate-180"></i
+            ></label>
+            <input
+              type="radio"
+              id="star4"
+              name="rating"
+              value="4"
+              [checked]="value === 4"
+              (click)="setRating(4)"
+            />
+            <label class="star" for="star4"
+              ><i class="fas fa-star rotate-180"></i
+            ></label>
+
+            <input
+              type="radio"
+              id="star3"
+              name="rating"
+              value="3"
+              [checked]="value === 3"
+              (click)="setRating(3)"
+            />
+
+            <label class="star" for="star3"
+              ><i class="fas fa-star rotate-180"></i
+            ></label>
+            <input
+              type="radio"
+              id="star2"
+              name="rating"
+              value="2"
+              [checked]="value === 2"
+              (click)="setRating(2)"
+            />
+            <label class="star" for="star2"
+              ><i class="fas fa-star rotate-180"></i
+            ></label>
+            <input
+              type="radio"
+              id="star1"
+              name="rating"
+              value="1"
+              [checked]="value === 1"
+              (click)="setRating(1)"
+            />
+            <label class="star" for="star1"
+              ><i class="fas fa-star rotate-180"></i
+            ></label>
           </div>
-          <div class="flex justify-between my-2">
-            <p class="text-sm">Comment</p>
-            <textarea
-              class="w-full border border-gray-200 rounded-2xl p-2"
-              rows="5"
-              formControlName="comment"
-            ></textarea>
-          </div>
-          <div class="flex justify-end my-2">
-            <button
-              class="w-full bg-blue-600 rounded-full text-center p-3 text-white font-bold hover:bg-blue-700"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+        </div>
+        <!-- input rating: end -->
+        <!-- input comment: start -->
+        <div class="mt-5">
+          <h2 class="text-center text-lg font-bold mt-6">
+            Can you tell us your experience with our product?
+          </h2>
+          <textarea
+            class="w-full border border-gray-200 rounded-2xl p-5"
+            rows="5"
+            placeholder="Write your comment here..."
+          ></textarea>
+        </div>
+        <!-- input comment: end -->
+        <!-- submit button: start -->
+        <button
+          class="w-full bg-blue-600 rounded-full text-center p-3 text-white font-bold hover:bg-blue-700 mt-5"
+        >
+          Submit
+        </button>
       </div>
     </div>
     <div class="w-full mt-5 md:mt-0 md:w-1/4">
@@ -336,6 +374,7 @@
         <!-- pay button: end -->
         <!-- review button: start -->
         <button
+          (click)="smoothScroll('givingReview')"
           class="w-full border border-gray-500 bg-white rounded-full text-center p-3 text-gray-700 font-bold mt-2"
         >
           Review Order

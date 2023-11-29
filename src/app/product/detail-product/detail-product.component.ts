@@ -59,7 +59,7 @@ export class DetailProductComponent implements OnInit {
     this.payPalConfig = {
       currency: 'USD',
       clientId:
-        'Ae3j-QjyyIZVJquU6RMOfR1TXUeykFVDL3GKIQzmCbJvQDivynirs59tH6h7YXNRwz_CDJifvbCdYEVk',
+        'AaY9Zcvuln7sB0MujUMEW--pg2f5FVKTWb-6iVHQr5Kk70GlVHWtEUhQTohWNERUUQzFEu8enqCVbsLX',
       createOrderOnClient: (data) =>
         <ICreateOrderRequest>{
           intent: 'CAPTURE',
@@ -128,4 +128,88 @@ export class DetailProductComponent implements OnInit {
       },
     };
   }
+  // private initConfig(): void {
+  //   //set the currency code
+  //   const currencyCode = 'MYR';
+  //   //set the paypal client id
+  //   const clientId =
+  //     'Ae3j-QjyyIZVJquU6RMOfR1TXUeykFVDL3GKIQzmCbJvQDivynirs59tH6h7YXNRwz_CDJifvbCdYEVk';
+  //   // create a script element
+  //   const scriptElement = document.createElement('script');
+  //   // Set the source of the script with the PayPal SDK URL including the currency code
+  //   scriptElement.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=${currencyCode}`;
+  //   // Append the script element to the body
+  //   document.body.appendChild(scriptElement);
+  //   // Initialize the PayPal JS SDK
+  //   this.payPalConfig = {
+  //     currency: currencyCode,
+  //     clientId: clientId,
+  //     createOrderOnClient: (data) =>
+  //       <ICreateOrderRequest>{
+  //         intent: 'CAPTURE',
+  //         purchase_units: [
+  //           {
+  //             amount: {
+  //               currency_code: 'MYR',
+  //               value: (this.price * this.quantity).toString(),
+  //               breakdown: {
+  //                 item_total: {
+  //                   currency_code: 'MYR',
+  //                   value: (this.price * this.quantity).toString(),
+  //                 },
+  //               },
+  //             },
+  //             items: [
+  //               {
+  //                 name: this.title,
+  //                 quantity: this.quantity.toString(),
+  //                 category: 'DIGITAL_GOODS',
+  //                 unit_amount: {
+  //                   currency_code: 'MYR',
+  //                   value: this.price.toString(),
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //     advanced: {
+  //       commit: 'true',
+  //     },
+  //     style: {
+  //       label: 'pay',
+  //       layout: 'vertical',
+  //       color: 'blue',
+  //       shape: 'pill',
+  //     },
+  //     onApprove: (data, actions) => {
+  //       console.log(
+  //         'onApprove - transaction was approved, but not authorized',
+  //         data,
+  //         actions
+  //       );
+  //       actions.order.get().then((details) => {
+  //         console.log(
+  //           'onApprove - you can get full order details inside onApprove: ',
+  //           details
+  //         );
+  //       });
+  //     },
+  //     onClientAuthorization: (data) => {
+  //       console.log(
+  //         'onClientAuthorization - you should probably inform your server about completed transaction at this point',
+  //         data
+  //       );
+  //     },
+  //     onCancel: (data, actions) => {
+  //       console.log('onCancel', data, actions);
+  //     },
+  //     onError: (err) => {
+  //       console.log('OnError', err);
+  //     },
+  //     onClick: (data, actions) => {
+  //       console.log('onClick', data, actions);
+  //     },
+  //   };
+  // }
 }

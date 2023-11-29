@@ -47,7 +47,7 @@ import { NgxPayPalModule } from 'ngx-paypal';
 import { OrderDetailComponent } from './landing-page/order/order-detail/order-detail.component';
 import { OrderCustomerListComponent } from './landing-page/order/order-customer-list/order-customer-list.component';
 import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
-
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PdfService } from './services/pdf.service';
 
@@ -103,6 +103,7 @@ import { PdfService } from './services/pdf.service';
     NgxPayPalModule,
     HttpClientModule,
     CommonModule,
+    FormsModule,
   ],
   providers: [
     PdfService,
