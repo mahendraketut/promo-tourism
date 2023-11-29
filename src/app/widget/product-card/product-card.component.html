@@ -26,12 +26,6 @@
           <p class="text-sm font-bold mt-2">
             {{ price | currency : "MYR" }}
           </p>
-          <p
-            *ngIf="discount != 0"
-            class="bg-red-200 w-fit p-1 rounded-2xl line-through font-normal text-xs"
-          >
-            {{ discount | currency : "MYR" }}
-          </p>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <app-hero></app-hero>
   <div>
     <div class="mt-10 flex justify-between">
-      <h2 class="text-xl font-bold">Best Promo</h2>
+      <h2 class="text-xl font-bold">Best Package</h2>
       <div>
         <button
           type="button"
@@ -30,7 +30,6 @@
             title="Lorem ipsum dolor sit amet"
             [rating]="5"
             [price]="5000"
-            [discount]="200"
           ></app-product-card>
           <app-product-card
             class="w-48"
@@ -38,7 +37,6 @@
             title="Lorem ipsum dolor sit amet"
             [rating]="5"
             [price]="5000"
-            [discount]="200"
           ></app-product-card>
           <app-product-card
             class="w-48"
@@ -46,7 +44,6 @@
             title="Lorem ipsum dolor sit amet"
             [rating]="5"
             [price]="5000"
-            [discount]="200"
           ></app-product-card>
           <app-product-card
             class="w-48"
@@ -54,7 +51,6 @@
             title="Lorem ipsum dolor sit amet"
             [rating]="5"
             [price]="5000"
-            [discount]="200"
           ></app-product-card>
           <app-product-card
             class="w-48"
@@ -62,7 +58,6 @@
             title="Lorem ipsum dolor sit amet"
             [rating]="5"
             [price]="5000"
-            [discount]="200"
           ></app-product-card>
           <app-product-card
             class="w-48"
@@ -70,7 +65,6 @@
             title="Lorem ipsum dolor sit amet"
             [rating]="5"
             [price]="5000"
-            [discount]="200"
           ></app-product-card>
           <app-product-card
             class="w-48"
@@ -78,7 +72,6 @@
             title="Lorem ipsum dolor sit amet"
             [rating]="5"
             [price]="5000"
-            [discount]="200"
           ></app-product-card>
         </div>
       </div>
@@ -90,7 +83,7 @@
         <i class="fas fa-chevron-left"></i>
       </button>
       <!-- below is the left button, you can modify it: end -->
-      <!-- below is the right button, you can modify it: start -->
+      <!-- below is the  right button, you can modify it: start -->
       <button
         class="hidden absolute top-1/2 -right-8 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
         (click)="scrollRight()"
@@ -100,11 +93,13 @@
       <!-- below is the right button, you can modify it: end-->
     </div>
   </div>
-  <div>
-    <div class="mt-10 flex justify-between">
-      <h2 class="text-xl font-bold">All Product</h2>
+  <div class="my-20">
+    <div class="flex justify-between">
+      <h2 class="text-4xl font-bold w-full text-center mb-10">
+        We offer the best services
+      </h2>
       <div>
-        <button
+        <!-- <button
           type="button"
           routerLink="auth/login"
           class="text-white rounded-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-2 text-center mr-3 md:mr-0"
@@ -113,20 +108,68 @@
         >
           <i class="fa-solid fa-layer-group me-1" style="text-align: center"></i
           >See all
-        </button>
+        </button> -->
       </div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full">
       <!-- you are allowed to modify the style of the card eg. resize width using class. example: <app-product-card class="w-48"> -->
-      <app-product-card
-        class="w-48"
-        route=""
-        image="/assets/img/imagecover.jpg"
-        title="Lorem ipsum dolor sit amet"
-        [rating]="5"
-        [price]="5000"
-        [discount]="200"
-      ></app-product-card>
+      <div
+        class="bg-white border border-gray-200 rounded-2xl shadow h-full w-full flex items-center p-5 lg:hover:-translate-y-2 duration-300"
+      >
+        <div class="w-full">
+          <div class="flex justify-center">
+            <i class="uil uil-map-pin-alt text-8xl"></i>
+          </div>
+          <div class="flex justify-center">
+            <h1 class="text-lg font-medium">Best Destination</h1>
+          </div>
+          <div class="flex justify-center">
+            <p class="text-center mt-2">
+              The beauty of the various destinations that we have is managed
+              with good management by our merchants. Every place has its various
+              types of destinations.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="bg-white border border-gray-200 rounded-2xl shadow h-full w-full flex items-center p-5 lg:hover:-translate-y-2 duration-300"
+      >
+        <div class="w-full">
+          <div class="flex justify-center">
+            <i class="uil uil-shop text-8xl"></i>
+          </div>
+          <div class="flex justify-center">
+            <h1 class="text-lg font-medium">Best Merchant</h1>
+          </div>
+          <div class="flex justify-center">
+            <p class="text-center mt-2">
+              With strict selection by a team from the Ministry of Tourism, it
+              can be ensured that our merchants are merchant whose credibility
+              can be trusted
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="bg-white border border-gray-200 rounded-2xl shadow h-full w-full flex items-center p-5 lg:hover:-translate-y-2 duration-300"
+      >
+        <div class="w-full">
+          <div class="flex justify-center">
+            <i class="uil uil-tag-alt text-8xl"></i>
+          </div>
+          <div class="flex justify-center">
+            <h1 class="text-lg font-medium">Best Offer</h1>
+          </div>
+          <div class="flex justify-center">
+            <p class="text-center mt-2">
+              We ensure that every product sold by our merchants has a price
+              that is by the fair price at which the product is sold to ensure
+              market stability and continuity
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
