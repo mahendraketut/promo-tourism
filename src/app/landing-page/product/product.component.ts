@@ -1,22 +1,25 @@
-
 import { ProductService } from 'src/app/services/product.service';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+// TODO changes by hendra can be deleted in assignment 2
+import { TempProductService } from 'src/app/services/temp-product.service';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+  styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit {
-  
-  products:any = [];
+  products: any = [];
   //A form to contain products
   fileName = '';
   productForm: FormGroup;
   constructor(
+    // TODO changes by hendra can be deleted in assignment 2
+    private dataProduct: TempProductService,
     private formBuilder: FormBuilder,
-    private productService: ProductService) { 
+    private productService: ProductService
+  ) {
     this.readProduct();
     //form builder
     this.productForm = this.formBuilder.group({
@@ -26,33 +29,31 @@ export class ProductComponent implements OnInit {
       description: ['', Validators.required],
       discount: [''],
       category: [''],
-      images: [null] // To handle multiple images (FileList)
+      images: [null], // To handle multiple images (FileList)
     });
   }
   ngOnInit() {}
   //Gets all products from the product service.
-  readProduct(){
+  readProduct() {
     this.productService.getProducts().subscribe((data) => {
-        this.products = data;
-        console.log("data: ",data);
+      this.products = data;
+      console.log('data: ', data);
     });
-}
+  }
   //Deletes a product using the product service.
   deleteProduct(product, index) {
-    if(window.confirm('Are you sure?')) {
-        this.productService.deleteProduct(product._id).subscribe((data) => {
-          this.products.splice(index, 1);
-        }
-      )    
+    if (window.confirm('Are you sure?')) {
+      this.productService.deleteProduct(product._id).subscribe((data) => {
+        this.products.splice(index, 1);
+      });
     }
   }
 
-
-  onSubmit(){};
+  onSubmit() {}
   // onSubmit() {
   //   const formData = new FormData();
   //   const imagesInput = this.productForm.get('images');
-  
+
   //   if (imagesInput && imagesInput.value) {
   //     const files: File[] = Array.from(imagesInput.value);
   //     if (files) {
@@ -61,7 +62,7 @@ export class ProductComponent implements OnInit {
   //       }
   //     }
   //   }
-  
+
   //   // Append other form values to FormData
   //   Object.keys(this.productForm.value).forEach(key => {
   //     if (key !== 'images') {
@@ -83,12 +84,12 @@ export class ProductComponent implements OnInit {
   //   });
   // }
 
-//v3
+  //v3
   // onSubmit() {
   //   const formData = new FormData();
   //   const file:File[] = event.target.files;
   //   const imagesInput = this.productForm.get('images');
-  
+
   //   if (imagesInput && imagesInput.value) {
   //     const files: File[] = Array.from(imagesInput.value);
   //     if (files) {
@@ -97,8 +98,7 @@ export class ProductComponent implements OnInit {
   //       }
   //     }
   //   }
-  
-    
+
   //   this.productService.createProduct(formData, imagesInput).subscribe({
   //     next: (response) => {
   //       console.log('Product created successfully!', response);
@@ -112,11 +112,10 @@ export class ProductComponent implements OnInit {
   //   });
   // }
 
-
   // onSubmit() {
   //   const formData = new FormData();
   //   const imagesInput = this.productForm.get('images');
-  
+
   //   if (imagesInput && imagesInput.value) {
   //     const files: File[] = imagesInput.value;
   //     if (files) {
@@ -125,14 +124,14 @@ export class ProductComponent implements OnInit {
   //       }
   //     }
   //   }
-  
+
   //   // Append other form values to FormData
   //   Object.keys(this.productForm.value).forEach(key => {
   //     if (key !== 'images') {
   //       formData.append(key, this.productForm.get(key).value);
   //     }
   //   });
-  
+
   //   this.productService.createProduct(formData).subscribe({
   //     next: (response) => {
   //       console.log('Product created successfully!', response);
@@ -146,6 +145,6 @@ export class ProductComponent implements OnInit {
   //   });
   // }
 
-
+  // TODO changes by hendra can be deleted in assignment 2
+  product = this.dataProduct.product;
 }
-
