@@ -21,7 +21,6 @@
         class="relative overflow-x-auto md:overflow-x-hidden md:mx-0"
         #scrollContainer
       >
-        <!-- class utility below can be modified based on your needed. Follow Tailwind Docs for more detail information about styling -->
         <div class="pt-2 grid grid-rows-1 grid-flow-col gap-4 mx">
           <app-product-card
             class="w-48"
@@ -75,22 +74,18 @@
           ></app-product-card>
         </div>
       </div>
-      <!-- below is the left button, you can modify it: start -->
       <button
         class="hidden absolute top-1/2 -left-8 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
         (click)="scrollLeft()"
       >
         <i class="fas fa-chevron-left"></i>
       </button>
-      <!-- below is the left button, you can modify it: end -->
-      <!-- below is the  right button, you can modify it: start -->
       <button
         class="hidden absolute top-1/2 -right-8 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
         (click)="scrollRight()"
       >
         <i class="fas fa-chevron-right"></i>
       </button>
-      <!-- below is the right button, you can modify it: end-->
     </div>
   </div>
   <div class="my-20">
@@ -99,20 +94,9 @@
         We offer the best services
       </h2>
       <div>
-        <!-- <button
-          type="button"
-          routerLink="auth/login"
-          class="text-white rounded-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-2 text-center mr-3 md:mr-0"
-          tabindex="0"
-          router-link="auth/login"
-        >
-          <i class="fa-solid fa-layer-group me-1" style="text-align: center"></i
-          >See all
-        </button> -->
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full">
-      <!-- you are allowed to modify the style of the card eg. resize width using class. example: <app-product-card class="w-48"> -->
       <div
         class="bg-white border border-gray-200 rounded-2xl shadow h-full w-full flex items-center p-5 lg:hover:-translate-y-2 duration-300"
       >

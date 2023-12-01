@@ -27,7 +27,6 @@ export class LoginComponent {
   loginValidator(formGroup: FormGroup) {
     const email = formGroup.get('userEmail').value;
     const password = formGroup.get('userPass').value;
-    //validate login here
   }
 
 
