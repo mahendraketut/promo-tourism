@@ -10,16 +10,36 @@ import Randomstring from 'randomstring';
 //TODO: register error handling perlu diperbaikin, biar bisa di acc front end.
 export const register = async (req, res, next) => {
     try {
+        console.log("masuk register");
         //cari user udah ada apa belom
         const doesEmailExist = await User.findOne({ email: req.body.email});
+        console.log("does email exist: ", doesEmailExist);
         if (doesEmailExist) {
         return next(CreateError(400, "Email already exists"));
         }
         else{
+            console.log("req info: ", req.body);
+            console.log("masuk else");
+            if(req.body.password != null){
+                const hashedPassword = await new Promise((resolve, reject) => {
+                    bcrypt.hash(req.body.password, salt, function(err, hash) {
+                      if (err) reject(err)
+                      resolve(hash)
+                    });
+                  })
+    
+                console.log("hashedpw: ", hashedPassword);
+                console.log("req info: ", req.body);
+            };
             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(req.body.password, salt);
+            console.log("salt: ", salt);
+            // const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+           
             const roleType = req.body.roles;
+            console.log("role type: ", roleType); 
             if(roleType == 'admin'){
+                console.log("seorang admin");
                 const newUser = new User({
                     name: req.body.name,
                     email: req.body.email,
@@ -31,6 +51,7 @@ export const register = async (req, res, next) => {
                 return next(CreateSuccess(200, "Admin registered successfully!"));
             }
             else if(roleType == 'user'){
+                console.log("seorang user");
                 const newUser = new User({
                     name: req.body.name,
                     email: req.body.email,
@@ -43,9 +64,17 @@ export const register = async (req, res, next) => {
                 return next(CreateSuccess(200, "User registered successfully!"));
             }
             else if(roleType == 'merchant'){
+                console.log("masuk merchant");
                 const merchSalt = await bcrypt.genSalt(10);
                 const merchPassword = Randomstring.generate(8);
-                const merchHashedPassword = await bcrypt.hash(merchPassword, merchSalt);
+                // const merchHashedPassword = await bcrypt.hash(merchPassword, merchSalt);
+                const merchHashedPassword = await new Promise((resolve, reject) => {
+                    bcrypt.hash(merchPassword, merchSalt, function(err, hash) {
+                      if (err) reject(err)
+                      resolve(hash)
+                    });
+                  })
+                console.log("merch pw: ", merchPassword);
                 const newUser = new User({
                     name: req.body.name,
                     email: req.body.email,
@@ -58,6 +87,7 @@ export const register = async (req, res, next) => {
                 await newUser.save();
                 console.log("############### CReate Email ###############");
                 try {
+                    req.body.password = merchPassword;
                     await createEmail(req.body);
                 } catch (error) {
                     console.log("error di create email");
