@@ -1,3 +1,11 @@
+// import module or plugin
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { NgChartsModule } from 'ng2-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
@@ -5,6 +13,8 @@ import { DataTablesModule } from 'angular-datatables';
 import { ImageModule } from 'primeng/image';
 import { AppRoutingModule } from './app-routing.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+
+// import component
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './landing-page/header/header.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -16,7 +26,6 @@ import { RegisterComponent } from './auth-page/register/register.component';
 import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ProductCardComponent } from './widget/product-card/product-card.component';
 import { HomeComponent } from './landing-page/home/home.component';
 import { DetailProductComponent } from './product/detail-product/detail-product.component';
@@ -41,14 +50,11 @@ import { DashboardOfficerComponent } from './officer/admin-officer/dashboard-off
 import { MerchantReviewComponent } from './officer/admin-officer/merchant-review/merchant-review.component';
 import { ReportOfficerComponent } from './officer/admin-officer/report-officer/report-officer.component';
 import { ProductAddComponent } from './merchant/admin-merchant/product-add/product-add.component';
-import { NgChartsModule } from 'ng2-charts';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxPayPalModule } from 'ngx-paypal';
 import { OrderDetailComponent } from './landing-page/order/order-detail/order-detail.component';
 import { OrderCustomerListComponent } from './landing-page/order/order-customer-list/order-customer-list.component';
-import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { ChangePasswordComponent } from './auth-page/change-password/change-password.component';
+
+// import service
 import { PdfService } from './services/pdf.service';
 
 @NgModule({
@@ -90,6 +96,7 @@ import { PdfService } from './services/pdf.service';
     ProductAddComponent,
     OrderDetailComponent,
     OrderCustomerListComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
