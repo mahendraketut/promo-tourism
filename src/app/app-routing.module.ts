@@ -26,6 +26,7 @@ import { RegisterMerchantComponent } from './merchant/register-merchant/register
 import { OrderDetailComponent } from './landing-page/order/order-detail/order-detail.component';
 import { OrderCustomerListComponent } from './landing-page/order/order-customer-list/order-customer-list.component';
 import { ChangePasswordComponent } from './auth-page/change-password/change-password.component';
+import { ForgotComponent } from './auth-page/forgot/forgot.component';
 
 const routes: Routes = [
   {
@@ -141,6 +142,10 @@ const routes: Routes = [
       {
         path: 'change_password',
         component: ChangePasswordComponent,
+      },
+      {
+        path: 'forgot',
+        component: ForgotComponent,
       },
     ],
   },

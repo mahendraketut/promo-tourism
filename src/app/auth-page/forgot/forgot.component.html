@@ -1,0 +1,207 @@
+<div class="flex flex-col justify-center w-full">
+  <div class="w-96 px-10">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img class="mx-auto h-20 w-auto" [src]="logo" alt="Your Company" />
+      <h2
+        class="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+      >
+        Forgot Password
+      </h2>
+    </div>
+
+    <div
+      class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm"
+      *ngIf="!isRequestForgot"
+    >
+      <form
+        [formGroup]="requestResetForm"
+        class="space-y-6"
+        method="post"
+        (ngSubmit)="onSubmitRequest()"
+      >
+        <!-- email input: start -->
+        <div>
+          <label
+            for="email"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Email address</label
+          >
+          <div class="mt-2">
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              formControlName="email"
+              placeholder="Email Address"
+              class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+            <div
+              *ngIf="
+                requestResetForm.get('email').touched &&
+                requestResetForm.get('email').hasError('required')
+              "
+            >
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                Email address required
+              </p>
+            </div>
+            <div
+              *ngIf="
+                requestResetForm.get('email').touched &&
+                requestResetForm.get('email').hasError('email')
+              "
+            >
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                Invalid email address
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- email input: end -->
+
+        <div>
+          <button
+            type="submit"
+            class="flex w-full justify-center rounded-full bg-blue-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            [disabled]="!requestResetForm.valid"
+          >
+            Send Password Reset Link
+          </button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm"
+      *ngIf="isChangePassword"
+    >
+      <form
+        [formGroup]="resetPasswordForm"
+        class="space-y-6"
+        method="post"
+        (ngSubmit)="onSubmitResetPassword()"
+      >
+        <!-- input validation code: start -->
+        <div class="mt-2">
+          <label
+            for="verificationCode"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Validation Code</label
+          >
+          <input
+            type="password"
+            id="verificationCode"
+            formControlName="verificationCode"
+            required
+            placeholder="Verification Code"
+            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            (input)="
+              resetPasswordForm.get('verificationCode').updateValueAndValidity()
+            "
+          />
+          <div
+            *ngIf="
+              resetPasswordForm.get('verificationCode').touched &&
+              resetPasswordForm.get('verificationCode').hasError('required')
+            "
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              Verification Code is required.
+            </p>
+          </div>
+          <div
+            *ngIf="
+              resetPasswordForm.get('verificationCode').touched &&
+              resetPasswordForm.hasError('invalidCode', 'verificationCode')
+            "
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              Invalid Verification Code.
+            </p>
+          </div>
+        </div>
+        <!-- input validation code: end -->
+        <!-- new password field: start -->
+        <div class="mt-2">
+          <label
+            for="newPassword"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >New Password</label
+          >
+          <input
+            type="password"
+            id="newPassword"
+            formControlName="newPassword"
+            required
+            placeholder="New Password"
+            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            (input)="
+              resetPasswordForm.get('newPassword').updateValueAndValidity()
+            "
+          />
+          <div
+            *ngIf="
+              resetPasswordForm.get('newPassword').touched &&
+              resetPasswordForm.get('newPassword').hasError('required')
+            "
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              New Password is required.
+            </p>
+          </div>
+        </div>
+        <!-- new password field: end -->
+        <!-- confirm password field: start -->
+        <div class="mt-2">
+          <label
+            for="confirmPassword"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            required
+            placeholder="Confirm Password"
+            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            (input)="
+              resetPasswordForm.get('confirmPassword').updateValueAndValidity()
+            "
+          />
+          <div
+            *ngIf="
+              resetPasswordForm.get('confirmPassword').touched &&
+              resetPasswordForm.get('confirmPassword').hasError('required')
+            "
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              Confirm Password is required.
+            </p>
+          </div>
+          <div
+            *ngIf="
+              resetPasswordForm.get('confirmPassword').touched &&
+              resetPasswordForm.hasError('passwordMismatch', 'confirmPassword')
+            "
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              Password does not match.
+            </p>
+          </div>
+        </div>
+        <!-- confirm password field: end -->
+        <div>
+          <button
+            type="submit"
+            class="flex w-full justify-center rounded-full bg-blue-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            [disabled]="!resetPasswordForm.valid"
+          >
+            Reset Password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

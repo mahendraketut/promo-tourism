@@ -1,5 +1,7 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { PasswordService } from 'src/app/services/password.service';
 import Swal from 'sweetalert2';
 
@@ -11,27 +13,57 @@ import Swal from 'sweetalert2';
 export class ChangePasswordComponent {
   logo: any;
 
-  constructor(private passwordService: PasswordService) {
+  constructor(
+    private passwordService: PasswordService,
+    private router: Router,
+    private location: Location //inject the location using angular commons
+  ) {
     this.logo = '/assets/img/logo-landscape.png';
   }
 
-  changePasswordForm = new FormGroup({
-    oldPassword: new FormControl('', [Validators.required]),
-    newPassword: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [Validators.required]),
-  });
-
-  changePasswordValidator(formGroup: FormGroup) {
-    const oldPassword = formGroup.get('oldPassword').value;
+  passwordMatchValidator(formGroup: FormGroup) {
     const newPassword = formGroup.get('newPassword').value;
     const confirmPassword = formGroup.get('confirmPassword').value;
 
-    if (newPassword !== confirmPassword) {
-      formGroup.get('confirmPassword').setErrors({ mismatch: true });
+    //check if both old Password and New Password are match.
+    if (newPassword === confirmPassword) {
+      return null;
     } else {
-      formGroup.get('confirmPassword').setErrors(null);
+      formGroup.get('confirmPassword').setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true }; // Passwords do not match
     }
   }
+
+  changePasswordForm = new FormGroup(
+    {
+      oldPassword: new FormControl('', [Validators.required]),
+      newPassword: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      confirmPassword: new FormControl('', [Validators.required]),
+    },
+    {
+      validators: this.passwordMatchValidator,
+    }
+  );
+
+  // changePasswordValidator(formGroup: FormGroup) {
+  //   const oldPassword = formGroup.get('oldPassword').value;
+  //   const newPassword = formGroup.get('newPassword').value;
+  //   const confirmPassword = formGroup.get('confirmPassword').value;
+
+  //   if (newPassword !== confirmPassword) {
+  //     formGroup.get('confirmPassword').setErrors({ mismatch: true });
+  //   } else {
+  //     formGroup.get('confirmPassword').setErrors(null);
+  //   }
+  //   // if (newPassword !== confirmPassword) {
+  //   //   const matchNewPassword = true;
+  //   // } else {
+  //   //   const matchNewPassword = false;
+  //   // }
+  // }
 
   onSubmit() {
     if (this.changePasswordForm.valid) {
@@ -48,7 +80,9 @@ export class ChangePasswordComponent {
             title: 'Success',
             text: 'Password changed successfully',
             timer: 3000,
-            showConfirmButton: false,
+            showConfirmButton: true,
+          }).then(() => {
+            this.location.back(); // Redirect to the previous page
           });
         },
         (error) => {

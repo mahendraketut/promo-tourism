@@ -11,14 +11,13 @@ export class AuthPageComponent {
   video: any;
 
   constructor() {
-    this.cover = '/assets/img/imagecover3.jpg';
+    this.cover = '/assets/img/cover_2.jpg';
     this.video = '/assets/video/covervideo4.mp4';
   }
 
   ngOnInit(): void {
     // Get a reference to the video element
     // const video: HTMLVideoElement = this.videoElement.nativeElement;
-
     // Add an event listener to reset the video when the page is loaded
     // video.addEventListener('loadedmetadata', () => {
     //   video.currentTime = 0;
