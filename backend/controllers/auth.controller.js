@@ -20,48 +20,60 @@ export const register = async (req, res, next) => {
         else{
             console.log("req info: ", req.body);
             console.log("masuk else");
+            const salt = await bcrypt.genSalt(10);
+            console.log("salt: ", salt);
+            let hashedPassword = "";
             if(req.body.password != null){
-                const hashedPassword = await new Promise((resolve, reject) => {
+                hashedPassword = await new Promise((resolve, reject) => {
                     bcrypt.hash(req.body.password, salt, function(err, hash) {
                       if (err) reject(err)
                       resolve(hash)
                     });
                   })
+                // hashedPassword = await bcrypt.hash(req.body.password, salt);
     
                 console.log("hashedpw: ", hashedPassword);
                 console.log("req info: ", req.body);
             };
-            const salt = await bcrypt.genSalt(10);
-            console.log("salt: ", salt);
             // const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
+            console.log("JS KONTOL: ", hashedPassword);
            
             const roleType = req.body.roles;
             console.log("role type: ", roleType); 
             if(roleType == 'admin'){
                 console.log("seorang admin");
-                const newUser = new User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: hashedPassword,
-                    roles: "admin",
-                    phoneNo: req.body.phoneNo,
-                });
-                await newUser.save();
-                return next(CreateSuccess(200, "Admin registered successfully!"));
+                try {
+                    console.log("masuk trycatch");
+                    const newUser = new User({
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: hashedPassword,
+                        roles: req.body.roles,
+                        phoneNo: req.body.phoneNo,
+                    });
+                    await newUser.save();
+                    return next(CreateSuccess(200, "Admin registered successfully!"));
+                } catch (error) {
+                    console.log("error di create email", error);
+                }
+                console.log("new user: ", newUser);
             }
             else if(roleType == 'user'){
-                console.log("seorang user");
-                const newUser = new User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: hashedPassword,
-                    roles: "user",
-                    phoneNo: req.body.phoneNo,
-                    address: req.body.address,
-                });
-                await newUser.save();
-                return next(CreateSuccess(200, "User registered successfully!"));
+                try {
+                    console.log("seorang user");
+                    const newUser = new User({
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: hashedPassword,
+                        roles: "user",
+                        phoneNo: req.body.phoneNo,
+                        address: req.body.address,
+                    });
+                    await newUser.save();
+                    return next(CreateSuccess(200, "User registered successfully!"));
+                } catch (error) {
+                    console.log("error di create email", error);
+                }
             }
             else if(roleType == 'merchant'){
                 console.log("masuk merchant");

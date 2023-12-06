@@ -12,7 +12,7 @@ import {
 })
 export class AuthService {
 
-  endpoint: string = "127.0.0.1:3000/api/auth/register";
+  endpoint: string = "http://127.0.0.1:3000/api/auth";
   constructor(private http:HttpClient) {
 
 
@@ -20,8 +20,14 @@ export class AuthService {
 
 
    //post hal yang berbeda kalau misalnya dia merhant atau user biasa.
-    registerUser(data:any, userType:string): Observable<any> {
+    registerUser(data:any): Observable<any> {
       let api = `${this.endpoint}/register`;
+      return this.http.post(api, data).pipe(catchError(this.errorMgmt));
+    }
+
+
+    loginUser(data:any): Observable<any> {
+      let api = `${this.endpoint}/login`;
       return this.http.post(api, data).pipe(catchError(this.errorMgmt));
     }
 
