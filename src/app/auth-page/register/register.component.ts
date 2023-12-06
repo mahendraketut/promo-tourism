@@ -52,33 +52,49 @@ export class RegisterComponent {
     }
   );
 
-  //tracks if user submitted the form.
-  submittedClicked = false;
-  //function to submit the form.
-  // onSubmit() {
-  //   this.submittedClicked = true;
-  //   if (this.userDataForm.get('agreeTOS').value) {
-  //     if (this.userDataForm.valid) {
-  //       //register user here
-  //       Swal.fire({
-  //         icon: 'success',
-  //         title: 'Success!',
-  //         text: 'Yeay, your account already registered!',
-  //         confirmButtonText: 'OK',
-
-  //         iconColor: '#4F46E5',
-  //         color: '#4F46E5',
-  //         confirmButtonColor: '#4F46E5',
-  //       }).then((result) => {
-  //         if (result.isConfirmed) {
-  //           this.router.navigate(['/']);
-  //         }
-  //       });
+  
+  // checkAvailability() {
+  //   this.authService.checkEmailAvailability(this.userDataForm.get('userEmail').value).subscribe({
+  //     next: (response) => {
+  //       if(response.status == 400){
+  //         console.log('email is taken!');
+  //       }
+  //       else if(response.status == 200){
+  //         console.log('email is available!');
+  //       }
+  //       else{
+  //         console.log('Something went wrong!');
+  //       }
+  //     },
+  //     error: () => {
+  //       console.log('Email is not available!');
   //     }
-  //   }
+  //   });
   // }
+  emailAvailable = false;
+  checkAvailability() {
+    this.authService.checkEmailAvailability(this.userDataForm.get('userEmail').value).subscribe(
+      (response: any) => {
+        if (response.status === 400) {
+          this.emailAvailable = false;
+          // You can add visual feedback or disable the registration button here
+          // For instance, set a flag to disable registration if email is taken
+        } else if (response.status === 200) {
+          this.emailAvailable = true;
+          // Email is available, user can proceed with registration
+        } else {
+          console.log('Something went wrong!');
+          // Handle unexpected status code, if needed
+        }
+      },
+      (error) => {
+        console.log('Error checking email availability:', error);
+        // Handle error appropriately, e.g., show an error message to the user
+      }
+    );
+  }
 
-
+  submittedClicked = false;
   onSubmit() {
     this.submittedClicked = true;
     if (this.userDataForm.get('agreeTOS').value) {

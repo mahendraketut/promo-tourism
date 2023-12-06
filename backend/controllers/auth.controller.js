@@ -8,6 +8,25 @@ import { sendVerificationEmail } from '../middlewares/forgetPassword.js';
 import Randomstring from 'randomstring';
 
 //TODO: register error handling perlu diperbaikin, biar bisa di acc front end.
+
+export const checkEmail = async (req, res, next) => {
+    try {
+        const email = req.body.email;
+        console.log("email: ", email);
+        const doesEmailExist = await User.findOne({ email: req.body.email});
+        if(doesEmailExist){
+            return next(CreateError(400, "Email already exists"));
+        }
+        else{
+            return next(CreateSuccess(200, "Email is available!"));
+        }
+    } catch (error) {
+        return next(CreateError(500, "Internal Server Error" ,error));
+    }
+};
+
+
+
 export const register = async (req, res, next) => {
     try {
         console.log("masuk register");

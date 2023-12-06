@@ -1,8 +1,9 @@
 import express from "express";
-import { register, login, logout, changePassword, forgetPassword, validateVerificationCode} from "../controllers/auth.controller.js";
+import {checkEmail, register, login, logout, changePassword, forgetPassword, validateVerificationCode} from "../controllers/auth.controller.js";
 const router = express.Router();
 
 //reg
+router.post('/check', checkEmail);
 router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', logout);

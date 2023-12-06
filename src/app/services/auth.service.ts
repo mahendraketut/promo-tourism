@@ -14,10 +14,12 @@ export class AuthService {
 
   endpoint: string = "http://127.0.0.1:3000/api/auth";
   constructor(private http:HttpClient) {
-
-
    }
 
+   checkEmailAvailability(data:any){
+      let api = `${this.endpoint}/check-email`;
+      return this.http.post(api, data).pipe(catchError(this.errorMgmt));
+   }
 
    //post hal yang berbeda kalau misalnya dia merhant atau user biasa.
     registerUser(data:any): Observable<any> {
