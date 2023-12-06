@@ -40,6 +40,11 @@ const UserSchema = mongoose.Schema({
         type: String,
         max: 10,
     },
+    accountStatus:{
+        type: String,
+        max: 10,
+        default: "approved",
+    },
 
 }, {timestamps: true});
 

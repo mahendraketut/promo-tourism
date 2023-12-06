@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from '../../models/user.model';
 import Swal from 'sweetalert2';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,14 @@ export class RegisterComponent {
   //User data form along with its validation.
   userDataForm = new FormGroup(
     {
-      userEmail: new FormControl('', [Validators.required, Validators.email]),
+      // userEmail: new FormControl('', [Validators.required, Validators.email]),
+      userEmail: new FormControl('', [
+        Validators.required,
+        Validators.email,
+      ], [
+        // Custom asynchronous validator to handle emailTaken error
+        this.checkEmailTaken.bind(this)
+      ]),
       userPhone: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
@@ -49,49 +57,26 @@ export class RegisterComponent {
     },
     {
       validators: this.passwordMatchValidator,
+      
     }
   );
 
-  
-  // checkAvailability() {
-  //   this.authService.checkEmailAvailability(this.userDataForm.get('userEmail').value).subscribe({
-  //     next: (response) => {
-  //       if(response.status == 400){
-  //         console.log('email is taken!');
-  //       }
-  //       else if(response.status == 200){
-  //         console.log('email is available!');
-  //       }
-  //       else{
-  //         console.log('Something went wrong!');
-  //       }
-  //     },
-  //     error: () => {
-  //       console.log('Email is not available!');
-  //     }
-  //   });
-  // }
-  emailAvailable = false;
-  checkAvailability() {
-    this.authService.checkEmailAvailability(this.userDataForm.get('userEmail').value).subscribe(
-      (response: any) => {
-        if (response.status === 400) {
-          this.emailAvailable = false;
-          // You can add visual feedback or disable the registration button here
-          // For instance, set a flag to disable registration if email is taken
-        } else if (response.status === 200) {
-          this.emailAvailable = true;
-          // Email is available, user can proceed with registration
-        } else {
-          console.log('Something went wrong!');
-          // Handle unexpected status code, if needed
+  checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
+    return new Promise((resolve, reject) => {
+      this.authService.checkEmailAvailability(control.value).subscribe({
+        next: (response: any) => {
+          if (response.status === 200) {
+            resolve({ emailTaken: true });
+          } else {
+            resolve(null);
+          }
+        },
+        error: (error) => {
+          // console.log('Error checking email availability:', error);
+          reject({ emailTaken: true }); // Reject the promise to indicate an error
         }
-      },
-      (error) => {
-        console.log('Error checking email availability:', error);
-        // Handle error appropriately, e.g., show an error message to the user
-      }
-    );
+      });
+    });
   }
 
   submittedClicked = false;

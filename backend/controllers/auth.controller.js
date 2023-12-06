@@ -15,10 +15,10 @@ export const checkEmail = async (req, res, next) => {
         console.log("email: ", email);
         const doesEmailExist = await User.findOne({ email: req.body.email});
         if(doesEmailExist){
-            return next(CreateError(400, "Email already exists"));
+            return next(CreateError(200, "Email Taken"));
         }
         else{
-            return next(CreateSuccess(200, "Email is available!"));
+            return next(CreateError(500, "Internal Server Error"));
         }
     } catch (error) {
         return next(CreateError(500, "Internal Server Error" ,error));
@@ -96,35 +96,20 @@ export const register = async (req, res, next) => {
             }
             else if(roleType == 'merchant'){
                 console.log("masuk merchant");
-                const merchSalt = await bcrypt.genSalt(10);
-                const merchPassword = Randomstring.generate(8);
-                // const merchHashedPassword = await bcrypt.hash(merchPassword, merchSalt);
-                const merchHashedPassword = await new Promise((resolve, reject) => {
-                    bcrypt.hash(merchPassword, merchSalt, function(err, hash) {
-                      if (err) reject(err)
-                      resolve(hash)
-                    });
-                  })
-                console.log("merch pw: ", merchPassword);
+                
+                const temporaryPassword = Randomstring.generate(8);
+                console.log("merch pw: ", temporaryPassword);
                 const newUser = new User({
                     name: req.body.name,
                     email: req.body.email,
-                    password: merchHashedPassword,
+                    password: temporaryPassword,
                     roles: "merchant",
                     phoneNo: req.body.phoneNo,
                     description: req.body.description,
+                    accountStatus: "pending",
                     //TODO:add file handling afterwards
                 });
                 await newUser.save();
-                console.log("############### CReate Email ###############");
-                try {
-                    req.body.password = merchPassword;
-                    await createEmail(req.body);
-                } catch (error) {
-                    console.log("error di create email");
-                    console.log(error);
-                    return next(CreateError(500, error));
-                }
                 return next(CreateSuccess(200, "Merchant registered successfully!"));
             }
             else{
@@ -319,3 +304,76 @@ export const logout = async (req, res, next) => {
         return next(CreateError(500, error));
     }
 };
+
+
+export const getMerchants = async (req, res, next) => {
+    try {
+        const merchants = await User.find(
+            { roles: 'merchant' },
+            '-password' // Excluding the password field
+        ).select('name email phoneNo description accountStatus');
+        console.log("merchants: ", merchants);
+
+        res.status(200).json({ merchants });
+    } catch (error) {
+        return next(CreateError(500, 'Internal Server Error', error));
+    }
+};
+
+
+export const acceptMerchant = async (req, res, next) => {
+    console.log("masuk acc merchant");
+    try {
+        console.log("masuk trycatch");
+        const merchantId = req.query.id;
+        console.log("merchant id: ", merchantId);
+
+        const merchant = await User.findById(merchantId);
+        console.log("masuk randomstring");
+        const merchantNewTempPassword = Randomstring.generate(8);
+        console.log("new temp pw: ", merchantNewTempPassword);
+        //hash the password using bcrypt salt 10
+        const salt = await bcrypt.genSalt(10);
+        const merchantHashedPw = await bcrypt.hash(merchantNewTempPassword, salt);
+        console.log("hashed pw: ", merchantHashedPw);
+        
+
+        if (!merchant) {
+            return next(CreateError(404, 'Merchant not found'));
+        }
+        merchant.password = merchantHashedPw;
+        merchant.accountStatus = 'approved';
+        await merchant.save();
+            try {
+                await createEmail(merchant, merchantNewTempPassword);
+            } catch (error) {
+                return next(CreateError(500, "Error Sending Email", error));
+            }
+
+
+        return next(CreateSuccess(200, 'Merchant Accepted Successfully'));
+
+    } catch (error) {
+        return next(CreateError(500, 'Internal Server Error', error));
+    }
+};
+
+export const rejectMerchant = async (req, res, next) => {
+    try {
+        const merchantId = req.query.id;
+
+        const merchant = await User.findById(merchantId);
+
+        if (!merchant) {
+            return next(CreateError(404, 'Merchant not found'));
+        }
+
+        merchant.accountStatus = 'rejected';
+        await merchant.save();
+
+        return next(CreateSuccess(200, 'Merchant rejected Successfully'));
+
+    } catch (error) {
+        return next(CreateError(500, 'Internal Server Error', error));
+    }
+}
