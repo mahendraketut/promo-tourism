@@ -2,8 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-
+import fs from "fs";
+import nodemailer from "nodemailer";
 import path from "path";
+import bodyparser from "body-parser";
 
 const app = express();
 dotenv.config();
@@ -51,10 +53,15 @@ const connectMongoDB = async() => {
 
 
 //Routes setup back-end.
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+app.listen(process.env.PORT, () => {
+    console.log("Server running on port ", process.env.PORT);
     connectMongoDB()
 });
+
+
+
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
 
 // //Multer disk setup for hadnling uploads
 // const storage = multer.diskStorage({

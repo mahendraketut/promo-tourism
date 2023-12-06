@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from '../../models/user.model';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +13,7 @@ import Swal from 'sweetalert2';
 export class RegisterComponent {
   logo: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.logo = '/assets/img/logo-landscape.png';
   }
 
@@ -54,25 +55,77 @@ export class RegisterComponent {
   //tracks if user submitted the form.
   submittedClicked = false;
   //function to submit the form.
+  // onSubmit() {
+  //   this.submittedClicked = true;
+  //   if (this.userDataForm.get('agreeTOS').value) {
+  //     if (this.userDataForm.valid) {
+  //       //register user here
+  //       Swal.fire({
+  //         icon: 'success',
+  //         title: 'Success!',
+  //         text: 'Yeay, your account already registered!',
+  //         confirmButtonText: 'OK',
+
+  //         iconColor: '#4F46E5',
+  //         color: '#4F46E5',
+  //         confirmButtonColor: '#4F46E5',
+  //       }).then((result) => {
+  //         if (result.isConfirmed) {
+  //           this.router.navigate(['/']);
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
+
+
   onSubmit() {
     this.submittedClicked = true;
     if (this.userDataForm.get('agreeTOS').value) {
       if (this.userDataForm.valid) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: 'Yeay, your account already registered!',
-          confirmButtonText: 'OK',
-
-          iconColor: '#4F46E5',
-          color: '#4F46E5',
-          confirmButtonColor: '#4F46E5',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['/']);
+        const userData = new User(
+          this.userDataForm.value.userName,
+          this.userDataForm.value.userEmail,
+          this.userDataForm.value.userPass,
+          'user',
+          this.userDataForm.value.userPhone,
+          this.userDataForm.value.userAddress
+        );
+        userData.roles = 'user';
+        console.log('User data:', userData);
+        this.authService.registerUser(userData).subscribe({
+          next: (response) => {
+            console.log('User registered successfully!', response);
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Yeay, your account is registered!',
+              confirmButtonText: 'OK',
+              iconColor: '#4F46E5',
+              color: '#4F46E5',
+              confirmButtonColor: '#4F46E5',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(['/']);
+              }
+            });
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              confirmButtonText: 'OK',
+              iconColor: '#4F46E5',
+              color: '#4F46E5',
+              confirmButtonColor: '#4F46E5',
+            });
           }
         });
       }
     }
   }
+  
+
 }
+
