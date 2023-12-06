@@ -56,6 +56,7 @@ import { ChangePasswordComponent } from './auth-page/change-password/change-pass
 
 // import service
 import { PdfService } from './services/pdf.service';
+import { ForgotComponent } from './auth-page/forgot/forgot.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { PdfService } from './services/pdf.service';
     OrderDetailComponent,
     OrderCustomerListComponent,
     ChangePasswordComponent,
+    ForgotComponent,
   ],
   imports: [
     BrowserModule,
