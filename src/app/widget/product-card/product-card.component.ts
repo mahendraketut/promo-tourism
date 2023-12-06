@@ -10,7 +10,7 @@ export class ProductCardComponent {
   @Input() title: string = '';
   @Input() rating: number = 0;
   @Input() price: number = 0;
-  @Input() discount: number = 0;
+
   @Input() route: string = '';
 
   constructor() {}

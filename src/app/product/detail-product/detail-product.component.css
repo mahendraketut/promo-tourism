@@ -1,0 +1,4 @@
+.disabled-paypal {
+  pointer-events: none; /* Disable mouse events */
+  opacity: 0.5; /* Apply some visual indication of being disabled */
+}

@@ -1,0 +1,16 @@
+<div *ngIf="userRole == 'officer'">
+  <app-navbar-officer></app-navbar-officer>
+  <div class="md:relative">
+    <div class="fixed">
+      <app-sidenav-officer></app-sidenav-officer>
+    </div>
+    <div class="md:ml-56">
+      <div class="main-content">
+        <div class="container mx-auto">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <app-footer-officer></app-footer-officer>
+    </div>
+  </div>
+</div>

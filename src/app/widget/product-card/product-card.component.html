@@ -1,7 +1,7 @@
 <div
   class="bg-white border border-gray-200 rounded-2xl h-full min-w-48 max-w-full lg:hover:-translate-y-2 duration-300"
 >
-  <a routerLink="detailproduct" class="">
+  <a routerLink="/detailproduct" class="">
     <div class="relative w-full h-44 rounded-2xl">
       <img
         class="w-full h-full object-cover object-center border-gray-200 rounded-2xl p-2"
@@ -25,12 +25,6 @@
           </div>
           <p class="text-sm font-bold mt-2">
             {{ price | currency : "MYR" }}
-          </p>
-          <p
-            *ngIf="discount != 0"
-            class="bg-red-200 w-fit p-1 rounded-2xl line-through font-normal text-xs"
-          >
-            {{ discount | currency : "MYR" }}
           </p>
         </div>
       </div>

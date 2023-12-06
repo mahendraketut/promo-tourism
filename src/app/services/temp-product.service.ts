@@ -1,0 +1,202 @@
+import { Injectable } from '@angular/core';
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  description: string;
+  category: string;
+  rating: any;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class TempProductService {
+  constructor() {}
+
+  product: Product[] = [
+    {
+      id: '1',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/kinabalu.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 4,
+    },
+    {
+      id: '2',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/langkawiisland.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 5,
+    },
+    {
+      id: '3',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/legoland.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 3,
+    },
+    {
+      id: '4',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/aquaria.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 4,
+    },
+    {
+      id: '5',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/batucaves.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 5,
+    },
+    {
+      id: '6',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/cameron.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 3,
+    },
+    {
+      id: '7',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/kinabalu.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 4,
+    },
+    {
+      id: '8',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/klcc.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 5,
+    },
+    {
+      id: '9',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/langkawiisland.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 3,
+    },
+    {
+      id: '10',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/mosqueputrajaya.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 4,
+    },
+    {
+      id: '11',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/legoland.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 5,
+    },
+    {
+      id: '12',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/aquaria.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 3,
+    },
+    {
+      id: '13',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/batucaves.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 4,
+    },
+    {
+      id: '14',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/cameron.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 5,
+    },
+    {
+      id: '15',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/kinabalu.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 3,
+    },
+    {
+      id: '16',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/klcc.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 4,
+    },
+    {
+      id: '17',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/langkawiisland.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 5,
+    },
+    {
+      id: '18',
+      name: 'Kuala Lumpur City Center',
+      price: 70,
+      quantity: 20,
+      image: 'assets/product/mosqueputrajaya.jpg',
+      description: 'Kuala Lumpur City Center',
+      category: 'venue',
+      rating: 3,
+    },
+  ];
+}

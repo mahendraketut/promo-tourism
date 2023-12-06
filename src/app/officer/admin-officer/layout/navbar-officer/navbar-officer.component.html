@@ -1,0 +1,47 @@
+<nav
+  class="sticky top-0 z-50 bg-gradient-to-tr from-slate-50 to-blue-200 border-gray-100 w-full border-y"
+>
+  <div
+    class="flex flex-wrap items-center justify-between w-screen px-5 p-1 sm:w-full"
+  >
+    <a class="flex items-center" href="/officer"
+      ><img
+        alt="PromoTourism Logo"
+        class="h-14 mr-1"
+        src="assets/img/logo-landscape.png" /><span
+        class="self-start py-3 text-xl font-normal font-poppins text-blue-500 whitespace-nowrap"
+      >
+      </span
+    ></a>
+    <div class="flex md:order-2">
+      <button
+        class="flex items-center md:w-48 md:p-1 md:px-4 md:rounded-xl"
+        (click)="toggleDropdown()"
+      >
+        <div class="w-10 h-10 rounded-full bg-white mr-2">
+          <img class="h-full w-full rounded-full" src="assets/img/avatar.png" />
+        </div>
+        <div class="text-left hidden md:block">
+          <p class="font-semibold">John Doe</p>
+          <p class="text-sm font-light text-gray-500">Officer</p>
+        </div>
+      </button>
+      <div
+        class="absolute right-0 me-5 w-48 py-2 mt-14 bg-white rounded-xl shadow-xl z-10"
+        *ngIf="dropdownOpen == true"
+      >
+        <a
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          href="#"
+          >Profile</a
+        >
+
+        <a
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          href="#"
+          >Logout</a
+        >
+      </div>
+    </div>
+  </div>
+</nav>

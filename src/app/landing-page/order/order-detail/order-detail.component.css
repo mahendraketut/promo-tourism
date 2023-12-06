@@ -1,0 +1,24 @@
+.star-rating {
+  display: inline-block;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 2em;
+  padding: 0.1em;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.star-rating label:before {
+  font-size: inherit;
+}
+
+.star-rating input:checked ~ label:before,
+.star-rating input:checked ~ label,
+.star-rating input:checked ~ label:not(:last-child) {
+  color: #facc15;
+}

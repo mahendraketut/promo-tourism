@@ -1,0 +1,125 @@
+<div
+  class="hidden bg-white drop-shadow-md h-screen py-4 px-4 overflow-y-auto sm:sticky md:block"
+>
+  <!-- icon expand or minimize sidenav -->
+  <div class="block items-center justify-end w-full md:hidden my-4">
+    <button
+      class="focus:outline-none flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+      (click)="toggleSidenav()"
+      [ngClass]="{ hidden: sidenavOpen == false }"
+    >
+      <i class="fa-solid fa-chevron-left"></i
+      ><span class="text-sm ms-5">Hide</span>
+    </button>
+    <button
+      class="focus:outline-none flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+      (click)="toggleSidenav()"
+      [ngClass]="{ hidden: sidenavOpen == true }"
+    >
+      <i class="fa-solid fa-chevron-right"></i>
+      <span class="text-sm ms-5">Expand</span>
+    </button>
+  </div>
+  <a routerLink="/merchant" class="my-4">
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+      routerLinkActive="text-blue-500 font-bold"
+    >
+      <i class="fa-solid fa-house"></i
+      ><span class="text-sm ms-5">Dashboard</span>
+    </div>
+  </a>
+  <!-- Product menu: start -->
+  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Product</p>
+  <a
+    routerLink="/merchant/product"
+    routerLinkActive="text-blue-500 font-bold"
+    class="my-4"
+  >
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+    >
+      <i class="fa-solid fa-ticket"></i
+      ><span class="text-sm ms-5">List Product</span>
+    </div>
+  </a>
+  <a
+    routerLink="/merchant/add-product"
+    routerLinkActive="text-blue-500 font-bold"
+    class="my-4"
+  >
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+    >
+      <i class="fa-solid fa-plus"></i
+      ><span class="text-sm ms-5">Add Product</span>
+    </div>
+  </a>
+  <!-- Product menu: end -->
+  <!-- Order menu: start -->
+  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Order</p>
+  <a
+    routerLink="/merchant/order"
+    routerLinkActive="text-blue-500 font-bold"
+    class="my-4"
+  >
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+    >
+      <i class="fa-solid fa-file-invoice"></i
+      ><span class="text-sm ms-5">List Order</span>
+    </div>
+  </a>
+  <!-- Order menu: end -->
+  <!-- Transaction menu: start -->
+  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Transaction</p>
+  <a
+    routerLink="/merchant/transaction"
+    routerLinkActive="text-blue-500 font-bold"
+    class="my-4"
+  >
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+    >
+      <i class="fa-solid fa-wallet"></i
+      ><span class="text-sm ms-5">List Transaction</span>
+    </div>
+  </a>
+  <!-- Transaction menu: end -->
+  <!-- Report menu: start -->
+  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Report</p>
+  <a
+    routerLink="/merchant/report"
+    routerLinkActive="text-blue-500 font-bold"
+    class="my-4"
+  >
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+    >
+      <i class="fa-solid fa-chart-bar"></i
+      ><span class="text-sm ms-5">Merchant Report</span>
+    </div>
+  </a>
+  <!-- Report menu: end -->
+  <!-- Setting menu: start -->
+  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Setting</p>
+  <!-- <a
+    routerLink="/merchant"
+    routerLinkActive="text-blue-500 font-bold"
+    class="my-4"
+  >
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+    >
+      <i class="fa-solid fa-user"></i><span class="text-sm ms-5">Profile</span>
+    </div>
+  </a> -->
+  <a routerLink="/" routerLinkActive="text-blue-500 font-bold" class="my-4">
+    <div
+      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
+    >
+      <i class="fa-solid fa-sign-out"></i
+      ><span class="text-sm ms-5">Logout</span>
+    </div>
+  </a>
+</div>

@@ -23,7 +23,7 @@ export class FooterComponent {
   constructor() {
     this.logoFooter = 'assets/img/logo-landscape.png';
     this.year = new Date().getFullYear();
-    this.companyName = 'PT InJourney Indonesia Persada';
+    this.companyName = 'Promo Tourism Sdn. Bhd';
 
     // Social Media Contoller:
     // Facebook

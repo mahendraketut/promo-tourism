@@ -1,82 +1,160 @@
-<div class="container">
-    <p class="alert alert-danger" *ngIf="products == 0">No products</p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Prc</th>
-                <th>Qty</th>
-                <th>Description</th>
-                <th>Dscnt</th>
-                <th>Cat</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let product of products; let i = index">
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.discount }}</td>
-                <td>{{ product.category }}</td>
-                <td>
-                    <button class="btn btn-danger" (click)="deleteProduct(product, i)">Delete</button>
-                </td>
-            </tr>
-        </tbody>
-
-    </table>
-</div>
-
-
-<p>AAAAAAAAAAAA</p>
-<!-- name: req.body.name,
-            price: req.body.price,
-            quantity: req.body.quantity,
-            description: req.body.description,
-            discount: req.body.discount,
-            category: req.body.category,
-            coverImage: req.body.coverImage,
-            images: imagePaths, -->
-
-<div class="container mt-2">
-    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="max-w-md mx-auto mt-8">
-        <div class="mb-4">
-            <label for="name" class="block mb-2 text-sm font-bold">Product Name:</label>
-            <input formControlName="name" id="name" type="text" class="w-full border rounded-md py-2 px-3">
+<div class="h-full">
+  <div class="md:flex md:justify-between">
+    <!-- searchbar: start -->
+    <div class="w-full mb-4 md:mb-0 md:w-3/4">
+      <form class="w-full">
+        <label
+          for="default-search"
+          class="mb-2 text-sm font-medium text-gray-900 sr-only"
+          >Search</label
+        >
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
+            <svg
+              class="w-4 h-4 text-gray-500"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            id="default-search"
+            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Search travel package, hotels, or travels..."
+            required
+          />
+          <button
+            type="submit"
+            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2"
+          >
+            Search
+          </button>
         </div>
-        <div class="mb-4">
-            <label for="name" class="block mb-2 text-sm font-bold">Price:</label>
-            <input formControlName="price" id="price" type="number" class="w-full border rounded-md py-2 px-3">
-        </div>
-        <div class="mb-4">
-            <label for="name" class="block mb-2 text-sm font-bold">quantity:</label>
-            <input formControlName="quantity" id="quantity" type="number" class="w-full border rounded-md py-2 px-3">
-        </div>
-        <div class="mb-4">
-            <label for="description" class="block mb-2 text-sm font-bold">Description:</label>
-            <textarea formControlName="description" id="description" class="w-full border rounded-md py-2 px-3"></textarea>
-        </div>
-        <div class="mb-4">
-            <label for="discount" class="block mb-2 text-sm font-bold">Discount:</label>
-            <input formControlName="discount" id="discount" type="number" class="w-full border rounded-md py-2 px-3">
-        </div>
-        <div class="mb-4">
-            <label for="category" class="block mb-2 text-sm font-bold">Category:</label>
-            <select formControlName="category" id="category" class="w-full border rounded-md py-2 px-3">
-                <option value="Lodging">Lodging</option>
-                <option value="Service">Service</option>
-                <option value="Tour Package">Tour Package</option>
-                <option value="Other">Other</option>
-            </select>
-        </div> 
-      
-        <div class="mb-4">
-          <label for="images" class="block mb-2 text-sm font-bold">Images:</label>
-          <input type="file" formControlName="images" id="images" multiple class="w-full border rounded-md py-2 px-3">
-        </div>
-      
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Product</button>
       </form>
+    </div>
+    <!-- searchbar: end -->
+    <!-- filter and sort: start -->
+    <div class="w-full md:w-1/4 md:ms-2">
+      <div class="grid grid-cols-2 h-full">
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
+            <i class="uil uil-sort text-gray-500"></i>
+          </div>
+          <select
+            id="sort"
+            name="sort"
+            class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-s-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="default">Sort by</option>
+            <option value="price">Price</option>
+            <option value="rating">Rating</option>
+            <option value="duration">Duration</option>
+            <option value="name A-Z">Name: A-Z</option>
+            <option value="name Z-A">Name: Z-A</option>
+          </select>
+        </div>
+
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
+            <!-- You can replace this with your desired filter icon -->
+            <i class="uil uil-filter text-gray-500"></i>
+          </div>
+          <select
+            id="filter"
+            name="filter"
+            class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-e-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="default">Filter by</option>
+            <option value="all">All</option>
+            <option value="travel">Travel</option>
+            <option value="hotel">Hotel</option>
+            <option value="travel-package">Travel Package</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- filter and sort: end -->
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full mt-8">
+    <app-product-card
+      *ngFor="let i of product"
+      route="/detailproduct"
+      [image]="i.image"
+      [title]="i.name"
+      [rating]="i.rating"
+      [price]="i.price"
+    ></app-product-card>
+  </div>
+  <div class="flex justify-center mt-5">
+    <nav aria-label="Page navigation example">
+      <ul class="inline-flex -space-x-px text-base h-10">
+        <li>
+          <a
+            href="/product"
+            class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-full hover:bg-gray-100"
+            >Previous</a
+          >
+        </li>
+        <li>
+          <a
+            href="/product"
+            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
+            >1</a
+          >
+        </li>
+        <li>
+          <a
+            href="/product"
+            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
+            >2</a
+          >
+        </li>
+        <li>
+          <a
+            href="/product"
+            aria-current="page"
+            class="flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+            >3</a
+          >
+        </li>
+        <li>
+          <a
+            href="/product"
+            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
+            >4</a
+          >
+        </li>
+        <li>
+          <a
+            href="/product"
+            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
+            >5</a
+          >
+        </li>
+        <li>
+          <a
+            href="/product"
+            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-full hover:bg-gray-100"
+            >Next</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>

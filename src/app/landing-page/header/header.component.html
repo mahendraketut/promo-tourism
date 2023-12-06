@@ -22,33 +22,40 @@
         routerLinkActive="text-blue-700 font-bold"
         >Home</a
       >--><a
-        routerLink="about"
+        routerLink="/about"
         class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
         routerLinkActive="text-blue-700 font-bold"
         >About</a
       ><a
-        routerLink="product"
+        routerLink="/product"
         class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
         routerLinkActive="text-blue-700 font-bold"
         >Product</a
       ><a
-        routerLink="order"
+        routerLink="/order"
         class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
         routerLinkActive="text-blue-700 font-bold"
         >Order</a
       >
-
       <a
-        routerLink="merchant"
+        routerLink="/merchant"
+        target="blank"
         class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
         routerLinkActive="text-blue-700 font-bold"
-        >ProSeller</a
+        >Merchant</a
+      >
+      <a
+        routerLink="/officer"
+        target="blank"
+        class="mx-4 text-sm justify-center text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 hidden md:block"
+        routerLinkActive="text-blue-700 font-bold"
+        >Officer</a
       >
     </div>
     <div class="flex md:order-2">
       <button
         type="button"
-        routerLink="auth/register"
+        routerLink="/auth/register"
         class="text-gray-900 bg-transparent font-medium rounded-lg text-sm px-4 py-2 text-center hidden md:inline-block md:visible md:hover:text-blue-700 md:mr-0"
         tabindex="0"
         router-link="auth/register"
@@ -56,7 +63,7 @@
         Register</button
       ><button
         type="button"
-        routerLink="auth/login"
+        routerLink="/auth/login"
         class="text-white rounded-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-2 text-center mr-3 md:mr-0"
         tabindex="0"
         router-link="auth/login"
@@ -115,7 +122,7 @@
         ><span class="text-sm">Welcome Back!</span>
       </div>
       <div class="flex flex-col justify-center w-14 h-14">
-        <a routerLink="auth/login" router-link="auth/login" href="/auth/login"
+        <a routerLink="/auth/login" router-link="auth/login" href="/auth/login"
           ><i
             class="fa-solid fa-arrow-right-from-bracket"
             style="text-align: center"
@@ -125,7 +132,7 @@
     </div>
     <div class="w-full mt-5 px-5 rounded-3xl">
       <ul class="my-5">
-        <li class="py-5 text-md w-full">
+        <!-- <li class="py-5 text-md w-full">
           <a
             routerLink=""
             routerLinkActive="text-blue-700 font-bold"
@@ -133,9 +140,9 @@
             ><i class="fa-solid fa-house"></i
             ><span class="ms-5 focus:font-bold">Home</span></a
           >
-        </li>
+        </li> -->
         <li class="py-5 text-md w-full">
-          <a routerLink="about" routerLinkActive="text-blue-700 font-bold"
+          <a routerLink="/about" routerLinkActive="text-blue-700 font-bold"
             ><i class="fa-solid fa-hands"></i
             ><span class="ms-5 focus:font-bold">About</span></a
           >
@@ -146,16 +153,35 @@
             ><span class="ms-5 focus:font-bold">Product</span></a
           >
         </li>
-        <li class="py-5 text-md w-full">
+        <!-- <li class="py-5 text-md w-full">
           <a routerLink="help" routerLinkActive="text-blue-700 font-bold"
             ><i class="fa-solid fa-circle-exclamation"></i
             ><span class="ms-5 focus:font-bold">Help</span></a
           >
+        </li> -->
+        <li class="py-5 text-md w-full">
+          <a routerLink="/order" routerLinkActive="text-blue-700 font-bold">
+            <i class="fa-solid fa-gift"></i>
+            <span class="ms-5 focus:font-bold">Order</span></a
+          >
         </li>
         <li class="py-5 text-md w-full">
-          <a href="" routerLinkActive="text-blue-700 font-bold"
+          <a
+            routerLink="/merchant"
+            routerLinkActive="text-blue-700 font-bold"
+            target="blank"
             ><i class="fa-solid fa-cash-register"></i
-            ><span class="ms-5 focus:font-bold">ProSeller</span></a
+            ><span class="ms-5 focus:font-bold">Merchant</span></a
+          >
+        </li>
+
+        <li class="py-5 text-md w-full">
+          <a
+            routerLink="/officer"
+            routerLinkActive="text-blue-700 font-bold"
+            target="blank"
+            ><i class="fa-solid fa-school"></i
+            ><span class="ms-5 focus:font-bold">Officer</span></a
           >
         </li>
       </ul>
