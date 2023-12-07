@@ -150,6 +150,16 @@
               New Password is required.
             </p>
           </div>
+          <div
+            *ngIf="
+              resetPasswordForm.get('newPassword').touched &&
+              resetPasswordForm.get('newPassword').hasError('minlength')
+            "
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              Password must be at least 8 characters
+            </p>
+          </div>
         </div>
         <!-- new password field: end -->
         <!-- confirm password field: start -->

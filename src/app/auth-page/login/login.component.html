@@ -42,7 +42,7 @@
               "
             >
               <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                Required
+                Email address required
               </p>
             </div>
           </div>
@@ -77,6 +77,16 @@
               class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               formControlName="userPass"
             />
+            <div
+              *ngIf="
+                userLoginForm.get('userPass').touched &&
+                userLoginForm.get('userPass').hasError('required')
+              "
+            >
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                Password required
+              </p>
+            </div>
           </div>
         </div>
         <!-- password input: end -->
