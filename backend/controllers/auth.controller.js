@@ -129,12 +129,16 @@ export const login = async (req, res, next) => {
         if (!user) {
             return next(CreateError(400, "Email is not found"));
         }
-
+        if(user.accountStatus == 'pending' || user.accountStatus == 'rejected'){
+            return next(CreateError(401, "Account is not approved yet"));
+        }
         const validPassword = await bcrypt.compare(req.body.password, user.password);
 
         if (!validPassword) {
-            return next(CreateError(400, "Invalid password"));
+            return next(CreateError(402, "Invalid password"));
         }
+
+        
 
         let tokenExpiration = "5h";
         if(req.body.rememberMe){
@@ -142,7 +146,7 @@ export const login = async (req, res, next) => {
             console.log("remember me checked");
         };
 
-        const token = jwt.sign({ id: user._id, roles: user.roles }, process.env.TOKEN_SECRET, {
+        const token = jwt.sign({ id: user._id, roles: user.roles, name: user.name, email: user.email }, process.env.TOKEN_SECRET, {
             expiresIn: tokenExpiration,
         });
 
@@ -150,12 +154,13 @@ export const login = async (req, res, next) => {
         res.cookie("access_token", token, { httpOnly: true }).status(200).json({
             message: "Logged in successfully!",
             token: token,
-            roles: user.roles,
-            data: {
-                _id: user._id,
-                email: user.email,
-                name: user.name,
-            },
+            status:200,
+            // data: {
+            //     _id: user._id,
+            //     email: user.email,
+            //     name: user.name,
+            //     roles: user.roles,
+            // },
         });
 
     } catch (error) {

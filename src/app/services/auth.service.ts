@@ -39,12 +39,31 @@ export class AuthService {
   }
 
 
-  loginUser(data:any): Observable<any> {
+  // loginUser(data:any): Observable<any> {
+  //   let api = `${this.endpoint}/login`;
+  //   return this.http.post(api, data).pipe(catchError(this.errorMgmt));
+  // }
+  loginUser(email: string, password: string): Observable<any> {
     let api = `${this.endpoint}/login`;
-    return this.http.post(api, data).pipe(catchError(this.errorMgmt));
+    return this.http.post(api, { email, password }).pipe(catchError(this.errorMgmt));
   }
 
-  //General error management.
+  // //General error management.
+  // errorMgmt(error: HttpErrorResponse) {
+  //   let errorMessage = '';
+  //   if (error.error instanceof ErrorEvent) {
+  //     // Get client-side error
+  //     errorMessage = error.error.message;
+  //   } else {
+  //     // Get server-side error
+  //     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  //   }
+  //   console.log(errorMessage);
+  //   return throwError(() => {
+  //     return errorMessage;
+  //   });
+  // }
+
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -54,11 +73,10 @@ export class AuthService {
       // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log(errorMessage);
-    return throwError(() => {
-      return errorMessage;
-    });
+    console.error(errorMessage); // Use console.error for errors
+    return throwError(() => error); // Return the actual error object
   }
+  
 
 
   //Get merchants, but it also filters the merchants based on accountStatus
