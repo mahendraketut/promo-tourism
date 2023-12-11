@@ -61,10 +61,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         max: 256,
     },
-    profilePicPath: {
-        type: String,
-        max: 256,
-    },
+    // profilePicPath: {
+    //     type: String,
+    //     max: 256,
+    // },
 
 
 }, {timestamps: true});

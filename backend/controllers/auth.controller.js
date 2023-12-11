@@ -185,7 +185,8 @@ export const register = async (req, res, next) => {
 
                     const { name, email, phoneNo, description } = fields;
 
-                    const { license, reviews, profilePic } = files;
+                    // const { license, reviews, profilePic } = files;
+                    const { license, reviews } = files;
 
                     // Define upload directory
                     const uploadDir = path.join(__dirname, 'uploads');
@@ -205,11 +206,11 @@ export const register = async (req, res, next) => {
 
                     const licensePath = path.join(uploadDir, 'merchant_license.pdf');
                     const reviewsPath = path.join(uploadDir, 'reviews.pdf');
-                    const profilePicPath = path.join(uploadDir, 'profile_picture.jpg');
+                    // const profilePicPath = path.join(uploadDir, 'profile_picture.jpg');
 
                     fs.renameSync(license.path, licensePath);
                     fs.renameSync(reviews.path, reviewsPath);
-                    fs.renameSync(profilePic.path, profilePicPath);
+                    // fs.renameSync(profilePic.path, profilePicPath);
 
                     try {
                         const newUser = new User({
@@ -221,7 +222,7 @@ export const register = async (req, res, next) => {
                             description,
                             licensePath,
                             reviewsPath,
-                            profilePicPath,
+                            // profilePicPath,
                             accountStatus: 'pending',
                         });
                         await newUser.save();

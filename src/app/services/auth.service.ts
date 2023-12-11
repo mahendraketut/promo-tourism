@@ -200,4 +200,21 @@ export class AuthService {
     );
   }
 
+  logoutUser(): void {
+    localStorage.removeItem('token'); // Remove the token from local storage
+    this.logoutBackend();
+
+    // You might want to add any additional cleanup steps here
+  }
+
+  // Call the API endpoint for logging out on the backend
+  logoutBackend(): Observable<any> {
+    // Adjust the endpoint to your backend logout API
+    const logoutApi = `${this.endpoint}/logout`;
+    return this.http.get(logoutApi); // Assuming a GET request is used for logout in your backend
+  }
 }
+
+
+
+
