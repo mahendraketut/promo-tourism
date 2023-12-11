@@ -54,7 +54,7 @@ export const checkEmail = async (req, res, next) => {
 
 
 
-export const register = async (req, res, next) => {
+export const register2 = async (req, res, next) => {
     try {
         console.log("masuk register");
         //cari user udah ada apa belom
@@ -147,6 +147,130 @@ export const register = async (req, res, next) => {
         return next(CreateError(500, "Internal Server Error" ,error));
     }
 };
+
+export const register = async (req, res, next) => {
+    try {
+        console.log("masuk register");
+        // Check if the email exists
+        const doesEmailExist = await User.findOne({ email: req.body.email });
+        console.log("does email exist: ", doesEmailExist);
+        if (doesEmailExist) {
+            return next(CreateError(400, "Email already exists"));
+        } else {
+            console.log("req info: ", req.body);
+            console.log("masuk else");
+
+            const salt = await bcrypt.genSalt(10);
+            let hashedPassword = "";
+
+            if (req.body.password != null) {
+                hashedPassword = await new Promise((resolve, reject) => {
+                    bcrypt.hash(req.body.password, salt, function (err, hash) {
+                        if (err) reject(err);
+                        resolve(hash);
+                    });
+                });
+            }
+
+            const roleType = req.body.roles;
+            console.log("role type: ", roleType);
+
+            if (roleType === 'merchant') {
+                const form = new formidable.IncomingForm();
+
+                form.parse(req, async (err, fields, files) => {
+                    if (err) {
+                        return next(CreateError(500, 'File upload failed', err));
+                    }
+
+                    const { name, email, phoneNo, description } = fields;
+
+                    const { license, reviews, profilePic } = files;
+
+                    // Define upload directory
+                    const uploadDir = path.join(__dirname, 'uploads');
+                    if (!fs.existsSync(uploadDir)) {
+                        fs.mkdirSync(uploadDir);
+                    }
+
+                    const validatePDF = (file) => {
+                        const fileExtension = path.extname(file.name).toLowerCase();
+                        return fileExtension === '.pdf';
+                    };
+
+                    // Validate file types
+                    if (!validatePDF(license) || !validatePDF(reviews)) {
+                        return next(CreateError(400, 'License and Reviews must be PDF files'));
+                    }
+
+                    const licensePath = path.join(uploadDir, 'merchant_license.pdf');
+                    const reviewsPath = path.join(uploadDir, 'reviews.pdf');
+                    const profilePicPath = path.join(uploadDir, 'profile_picture.jpg');
+
+                    fs.renameSync(license.path, licensePath);
+                    fs.renameSync(reviews.path, reviewsPath);
+                    fs.renameSync(profilePic.path, profilePicPath);
+
+                    try {
+                        const newUser = new User({
+                            name,
+                            email,
+                            password: hashedPassword,
+                            roles: 'merchant',
+                            phoneNo,
+                            description,
+                            licensePath,
+                            reviewsPath,
+                            profilePicPath,
+                            accountStatus: 'pending',
+                        });
+                        await newUser.save();
+                        return next(CreateSuccess(200, 'Merchant registered successfully!'));
+                    } catch (error) {
+                        console.log('Error creating merchant:', error);
+                        return next(CreateError(500, 'Error creating merchant', error));
+                    }
+                });
+            } else if (roleType === 'admin') {
+                try {
+                    console.log("masuk trycatch");
+                    const newUser = new User({
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: hashedPassword,
+                        roles: req.body.roles,
+                        phoneNo: req.body.phoneNo,
+                    });
+                    await newUser.save();
+                    return next(CreateSuccess(200, "Admin registered successfully!"));
+                } catch (error) {
+                    console.log("error di create email", error);
+                }
+            } else if (roleType === 'user') {
+                try {
+                    console.log("seorang user");
+                    const newUser = new User({
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: hashedPassword,
+                        roles: "user",
+                        phoneNo: req.body.phoneNo,
+                        address: req.body.address,
+                    });
+                    await newUser.save();
+                    return next(CreateSuccess(200, "User registered successfully!"));
+                } catch (error) {
+                    console.log("error di create email", error);
+                }
+            } else {
+                return next(CreateError(400, 'Invalid Role!'));
+            }
+        }
+    } catch (error) {
+        return next(CreateError(500, 'Internal Server Error', error));
+    }
+};
+
 
 
 
