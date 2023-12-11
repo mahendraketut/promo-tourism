@@ -6,24 +6,51 @@ import jwt from 'jsonwebtoken';
 import { createEmail } from '../middlewares/merchantEmail.js';
 import { sendVerificationEmail } from '../middlewares/forgetPassword.js';
 import Randomstring from 'randomstring';
+import formidable from 'formidable';
+import fs from 'fs';
+import path from 'path';
+
 
 //TODO: register error handling perlu diperbaikin, biar bisa di acc front end.
 
+// export const checkEmail = async (req, res, next) => {
+//     console.log("checkEmail Kepanggil");
+//     try {
+//         const email = req.body.email;
+//         console.log("email: ", email);
+//         const doesEmailExist = await User.findOne({ email: req.body.email});
+//         console.log("does email exist: ", doesEmailExist);
+//         if(doesEmailExist != null){
+//             console.log("email taken:", emailTaken);
+        
+//             return next(CreateSuccess(200, "Email Taken", emailTaken = true));
+//         }
+//         else{
+//             return next(CreateError(500, "Internal Server Error"));
+//         }
+//     } catch (error) {
+//         return next(CreateError(500, "Internal Server Error" ,error));
+//     }
+// };
+
+
 export const checkEmail = async (req, res, next) => {
+    console.log('checkEmail Kepanggil');
     try {
-        const email = req.body.email;
-        console.log("email: ", email);
-        const doesEmailExist = await User.findOne({ email: req.body.email});
-        if(doesEmailExist){
-            return next(CreateError(200, "Email Taken"));
-        }
-        else{
-            return next(CreateError(500, "Internal Server Error"));
-        }
+      const email = req.body.email;
+      console.log('email: ', email);
+      const doesEmailExist = await User.findOne({ email: req.body.email });
+      console.log('does email exist: ', doesEmailExist);
+      
+      if (doesEmailExist) {
+        return next(CreateSuccess(200, 'Email Taken'));
+      } else {
+        return next(CreateSuccess(200, 'Email Available'));
+      }
     } catch (error) {
-        return next(CreateError(500, "Internal Server Error" ,error));
+      return next(CreateError(500, 'Internal Server Error', error));
     }
-};
+  };
 
 
 
@@ -120,6 +147,8 @@ export const register = async (req, res, next) => {
         return next(CreateError(500, "Internal Server Error" ,error));
     }
 };
+
+
 
 
 export const login = async (req, res, next) => {

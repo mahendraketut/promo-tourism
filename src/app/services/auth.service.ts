@@ -19,6 +19,17 @@ export class AuthService {
 
 
   //Used to check if email is available or not when registering a user.
+  // checkEmailAvailability(email: string) {
+  //   return this.http.post(`${this.endpoint}/check`, { email }).pipe(
+  //     map((response: any) => {
+  //       // Handle the response accordingly
+  //       return response;
+  //     }),
+  //     catchError((error) => {
+  //       return error;
+  //     })
+  //   );
+  // }
   checkEmailAvailability(email: string) {
     return this.http.post(`${this.endpoint}/check`, { email }).pipe(
       map((response: any) => {
@@ -37,6 +48,7 @@ export class AuthService {
     let api = `${this.endpoint}/register`;
     return this.http.post(api, data).pipe(catchError(this.errorMgmt));
   }
+
 
 
   // loginUser(data:any): Observable<any> {
