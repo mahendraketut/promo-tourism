@@ -1,7 +1,7 @@
 import Product from "../models/Product.js";
 import { CreateError } from "../utils/error.js";
 import { CreateSuccess } from "../utils/success.js";
-import multer from "multer";
+// import multer from "multer";
 
 //Creates a new product then adds it to the database.
 export const createProduct = async (req, res, next) => {
