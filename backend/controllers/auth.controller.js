@@ -6,9 +6,12 @@ import jwt from 'jsonwebtoken';
 import { createEmail } from '../middlewares/merchantEmail.js';
 import { sendVerificationEmail } from '../middlewares/forgetPassword.js';
 import Randomstring from 'randomstring';
-import formidable from 'formidable';
+import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 //TODO: register error handling perlu diperbaikin, biar bisa di acc front end.
@@ -54,6 +57,7 @@ export const checkEmail = async (req, res, next) => {
 
 
 
+  //versi ini aman, tapi ga make formdata, ini yang pake json biasa
 export const register2 = async (req, res, next) => {
     try {
         console.log("masuk register");
@@ -148,7 +152,7 @@ export const register2 = async (req, res, next) => {
     }
 };
 
-export const register = async (req, res, next) => {
+export const register3 = async (req, res, next) => {
     try {
         console.log("masuk register");
         // Check if the email exists
@@ -189,7 +193,7 @@ export const register = async (req, res, next) => {
                     const { license, reviews } = files;
 
                     // Define upload directory
-                    const uploadDir = path.join(__dirname, 'uploads');
+                    const uploadDir = path.join(__dirname, 'merchant_uploads');
                     if (!fs.existsSync(uploadDir)) {
                         fs.mkdirSync(uploadDir);
                     }
@@ -272,6 +276,196 @@ export const register = async (req, res, next) => {
     }
 };
 
+export const register = async (req, res, next) => {
+    const form = new IncomingForm();
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const uploadDir = path.join(__dirname, 'merchant_uploads');
+
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(CreateError(500, 'File upload failed', err));
+        }
+
+        try {
+            const doesEmailExist = await User.findOne({ email: fields.email });
+            if (doesEmailExist) {
+                return next(CreateError(400, "Email already exists"));
+            }
+            const getFieldValue = (fieldValue) => Array.isArray(fieldValue) ? fieldValue[0] : fieldValue;
+
+            let hashedPassword = null;
+            const salt = await bcrypt.genSalt(10);
+            if(getFieldValue(fields.password) != null){
+                hashedPassword = await bcrypt.hash(getFieldValue(fields.password), salt);
+                console.log("user ada passw");
+            }
+            else{
+                hashedPassword = await bcrypt.hash(Randomstring.generate(9), salt);
+                console.log("user ga ada passw: ", hashedPassword);
+            }
+            console.log("HASHED PW: ", hashedPassword);
+            console.log("FIELDS: ", fields);
+
+            const roleType = getFieldValue(fields.roles);
+            let newUser;
+
+            if (roleType == 'merchant') {
+                console.log("masuk merhcant bro");
+                console.log('Files:', files);
+                // Define upload directory for merchants
+                if (!fs.existsSync(uploadDir)) {
+                    fs.mkdirSync(uploadDir, { recursive: true });
+                }
+
+                const { name, email, phoneNo, description } = fields;
+
+                // const { license, reviews, profilePic } = files;
+                const { license, reviews } = files;
+
+
+                // const validatePDF = (file) => {
+                //     console.log("MASSSSSSSSSSSSSSSSSSSSSSUUUK VALIDATE PDF");
+                //     // Make sure the file object exists and has a name property
+                //     console.log("files: ", file);
+                //     if (!file || !file.name) {
+                //       return false;
+                //     }
+                //     const fileExtension = path.extname(file.name).toLowerCase();
+                //     console.log("file ext: ", fileExtension);
+                //     return fileExtension === '.pdf';
+                //   };
+
+                // // Validate file types
+                // if (!validatePDF(license) || !validatePDF(reviews)) {
+                //     return next(CreateError(400, 'License and Reviews must be PDF files'));
+                // }
+
+                // const licensePath = path.join(uploadDir, 'merchant_license.pdf');
+                // const reviewsPath = path.join(uploadDir, 'reviews.pdf');
+                // // const profilePicPath = path.join(uploadDir, 'profile_picture.jpg');
+
+                // fs.renameSync(license.path, licensePath);
+                // fs.renameSync(reviews.path, reviewsPath);
+                // // fs.renameSync(profilePic.path, profilePicPath);
+                const validatePDF = (filesArray) => {
+                    if (!filesArray || !filesArray.length || !filesArray[0].originalFilename) {
+                      return false;
+                    }
+                    const fileExtension = path.extname(filesArray[0].originalFilename).toLowerCase();
+                    return fileExtension === '.pdf';
+                  };
+                  
+                  // In the part of the code where you validate and process the uploaded files
+                  if (!validatePDF(files.license) || !validatePDF(files.reviews)) {
+                    return next(CreateError(400, 'License and Reviews must be PDF files'));
+                  }
+                  
+                  // When you set the paths for the license and reviews, make sure to use the 0th element
+                  const licensePath = path.join(uploadDir, files.license[0].newFilename);
+                  const reviewsPath = path.join(uploadDir, files.reviews[0].newFilename);
+                  
+
+
+                  //MOVE DUE TO OS LIMITATION
+                //   // When you move/rename the files, again use the 0th element
+                //   fs.renameSync(files.license[0].filepath, licensePath);
+                //   fs.renameSync(files.reviews[0].filepath, reviewsPath);
+
+
+
+
+
+                //v2
+                // const moveFile = (source, target) => {
+                //     fs.copyFileSync(source, target); // Copy the file to the new location
+                //     fs.unlinkSync(source); // Delete the original file
+                //   };
+                  
+                //   // When you set the paths for the license and reviews, use the moveFile function
+                //   try {
+                //     const licensePath = path.join(uploadDir, files.license[0].newFilename);
+                //     const reviewsPath = path.join(uploadDir, files.reviews[0].newFilename);
+                  
+                //     moveFile(files.license[0].filepath, licensePath);
+                //     moveFile(files.reviews[0].filepath, reviewsPath);
+                //   } catch (error) {
+                //     console.log('Error moving files:', error);
+                //     return next(CreateError(500, 'Error moving files', error));
+                //   }
+
+                
+              
+
+                //v3
+                const moveAndRenameFile = (source, originalName, targetDir) => {
+                    // Extract the file extension from the original file name
+                    const fileExtension = path.extname(originalName);
+                    // Generate a new file name using the original name with a unique prefix
+                    const uniquePrefix = uuidv4(); // Or any other method to generate a unique string
+                    const newFileName = uniquePrefix + fileExtension; // Keep the .pdf extension
+                    // Create the full path for the new file
+                    const targetPath = path.join(targetDir, newFileName);
+                
+                    fs.copyFileSync(source, targetPath); // Copy the file to the new location
+                    fs.unlinkSync(source); // Delete the original file
+                
+                    return newFileName; // Return the new file name for storing in the database
+                };
+                try {
+                    const licenseNewFileName = moveAndRenameFile(
+                        files.license[0].filepath,
+                        files.license[0].originalFilename, // This should have the .pdf extension
+                        uploadDir
+                    );
+                    const reviewsNewFileName = moveAndRenameFile(
+                        files.reviews[0].filepath,
+                        files.reviews[0].originalFilename, // This should have the .pdf extension
+                        uploadDir
+                    );
+                
+                    // Now you have the new file names with the correct extensions
+                    const licensePath = path.join(uploadDir, licenseNewFileName);
+                    const reviewsPath = path.join(uploadDir, reviewsNewFileName);
+                    newUser = new User({
+                        name: getFieldValue(name),
+                        email: getFieldValue(email),
+                        password: hashedPassword,
+                        roles: 'merchant',
+                        phoneNo: getFieldValue(phoneNo),
+                        description: getFieldValue(description),
+                        licensePath: licensePath,
+                        reviewsPath: reviewsPath,
+                        accountStatus: 'pending',
+                    });
+                } catch (error) {
+                    console.log('Error moving files:', error);
+                    return next(CreateError(500, 'Error moving files', error));
+                }
+                
+                    
+            } else if (roleType === 'admin' || roleType === 'user') {
+                console.log("masuk reg user biasa");
+                newUser = new User({
+                    name: getFieldValue(fields.name),
+                    email: getFieldValue(fields.email),
+                    password: hashedPassword,
+                    roles: roleType,
+                    phoneNo: getFieldValue(fields.phoneNo),
+                    address: getFieldValue(fields.address),
+                });
+            } else {
+                return next(CreateError(400, 'Invalid Role!'));
+            }
+
+            await newUser.save();
+            return next(CreateSuccess(200, `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered successfully!`));
+
+        } catch (error) {
+            console.log('Error registering user:', error);
+            return next(CreateError(500, 'Error registering user', error));
+        }
+    });
+};
 
 
 
