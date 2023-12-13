@@ -61,34 +61,27 @@ export class RegisterComponent {
     }
   );
 
-  // checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
-  //   return new Promise((resolve, reject) => {
-  //     this.authService.checkEmailAvailability(control.value).subscribe({
-  //       next: (response: any) => {
-  //         if (response.status === 200) {
-  //           console.log("Email taken");
-  //           resolve({ emailTaken: true });
-  //         } else {
-  //           resolve(null);
-  //           console.log("email no problem");
-  //         }
-  //       },
-  //       error: (error) => {
-  //         // console.log('Error checking email availability:', error);
-  //         reject({ emailTaken: true }); // Reject the promise to indicate an error
-  //       }
-  //     });
-  //   });
-  // }
-
-
-
   checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
     const email = control.value;
   
     return new Promise((resolve, reject) => {
-      this.authService.checkEmailAvailability(email).subscribe(
-        (response: any) => {
+      // this.authService.checkEmailAvailability(email).subscribe(
+      //   (response: any) => {
+      //     if (response.status === 200 && response.message === 'Email Taken') {
+      //       console.log('Email taken');
+      //       resolve({ emailTaken: true });
+      //     } else {
+      //       resolve(null);
+      //       console.log('Email available');
+      //     }
+      //   },
+      //   (error) => {
+      //     console.error('Error checking email availability:', error);
+      //     reject({ emailTaken: true });
+      //   }
+      // );
+      this.authService.checkEmailAvailability(email).subscribe({
+        next: (response: any) => {
           if (response.status === 200 && response.message === 'Email Taken') {
             console.log('Email taken');
             resolve({ emailTaken: true });
@@ -97,13 +90,14 @@ export class RegisterComponent {
             console.log('Email available');
           }
         },
-        (error) => {
+        error: (error) => {
           console.error('Error checking email availability:', error);
-          reject({ emailTaken: true }); // Reject the promise to indicate an error
+          reject({ emailTaken: true });
         }
-      );
+      });
     });
   }
+  
 
   submittedClicked = false;
   // onSubmit() {
@@ -155,7 +149,7 @@ export class RegisterComponent {
 
 
 
-  onSubmit() {
+  onSubmit2() {
     this.submittedClicked = true;
     if (this.userDataForm.get('agreeTOS').value) {
       if (this.userDataForm.valid) {
@@ -201,6 +195,56 @@ export class RegisterComponent {
       }
     }
   }
+
+  onSubmit() {
+    this.submittedClicked = true;
+    if (this.userDataForm.get('agreeTOS').value) {
+      if (this.userDataForm.valid) {
+        // Construct FormData object
+        const formData = new FormData();
+        formData.append('name', this.userDataForm.value.userName);
+        formData.append('email', this.userDataForm.value.userEmail);
+        formData.append('password', this.userDataForm.value.userPass);
+        formData.append('roles', 'user');
+        formData.append('phoneNo', this.userDataForm.value.userPhone);
+        formData.append('address', this.userDataForm.value.userAddress);
+  
+        console.log('User data:', formData);
+        this.authService.registerUser(formData).subscribe({
+          next: (response) => {
+            console.log('User registered successfully!', response);
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Yeay, your account is registered!',
+              confirmButtonText: 'OK',
+              iconColor: '#4F46E5',
+              color: '#4F46E5',
+              confirmButtonColor: '#4F46E5',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(['/']);
+              }
+            });
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              confirmButtonText: 'OK',
+              iconColor: '#4F46E5',
+              color: '#4F46E5',
+              confirmButtonColor: '#4F46E5',
+            });
+          }
+        });
+
+      }
+    }
+  }
+  
+
   
 
 }

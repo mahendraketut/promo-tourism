@@ -43,10 +43,17 @@
             </p>
           </div>
           <div
-            *ngIf="
-              userDataForm.get('userEmail').touched &&
-              userDataForm.get('userEmail').hasError('required')
-            "
+          *ngIf="
+            userDataForm.get('userEmail').touched &&
+            userDataForm.get('userEmail').hasError('emailTaken')
+          "
+        >
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium"> Oops!</span> Email Already Taken!
+          </p>
+        </div>
+          <div
+          *ngIf="userDataForm.get('userEmail')?.touched && userDataForm.get('userEmail')?.hasError('required')"
           >
             <p class="mt-2 text-sm text-red-600 dark:text-red-500">
               Email adress Required
@@ -83,10 +90,7 @@
             </p>
           </div>
           <div
-            *ngIf="
-              userDataForm.get('userPhone').touched &&
-              userDataForm.get('userPhone').hasError('required')
-            "
+          *ngIf="userDataForm.get('userPhone')?.touched && userDataForm.get('userPhone')?.hasError('required')"
           >
             <p class="mt-2 text-sm text-red-600 dark:text-red-500">
               Phone number required
@@ -113,10 +117,7 @@
           formControlName="userName"
         />
         <div
-          *ngIf="
-            userDataForm.get('userName').touched &&
-            userDataForm.get('userName').hasError('required')
-          "
+          *ngIf="userDataForm.get('userName')?.touched && userDataForm.get('userName')?.hasError('required')"
         >
           <p class="mt-2 text-sm text-red-600 dark:text-red-500">
             Full name required
@@ -139,14 +140,9 @@
           required
           placeholder="Merchant Description"
           class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          formControlName="userAddress"
+          formControlName="userDescription"
         ></textarea>
-        <div
-          *ngIf="
-            userDataForm.get('userAddress').touched &&
-            userDataForm.get('userAddress').hasError('required')
-          "
-        >
+        <div *ngIf="userDataForm.get('userAddress')?.touched && userDataForm.get('userAddress')?.hasError('required')">
           <p class="mt-2 text-sm text-red-600 dark:text-red-500">
             Merchant description required
           </p>
@@ -171,63 +167,111 @@
       <hr />
     </div>
     <div class="flex gap-4">
-      <div class="w-1/2 py-2">
-        <label
-          for="cover-photo"
-          class="block text-sm font-medium leading-6 text-gray-900"
-          >License</label
+      <!-- TODO: tut tolong perbaikin+tambah indikasi kalau filenya udah di select -->
+  <div class="w-1/2 py-2">
+    <label
+      for="license-upload"
+      class="block text-sm font-medium leading-6 text-gray-900"
+      >License</label
+    >
+    <div class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10">
+      <div class="text-center">
+        <div class="mt-4 flex text-sm leading-6 text-gray-600">
+          <label
+            for="license-upload"
+            class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
+          >
+            <span>Upload a file</span>
+            <input
+              id="license-upload"
+              type="file"
+              class="sr-only"
+              (change)="handleFileInput($event, 'license')"
+              accept=".pdf"
+            />
+          </label>
+          <p class="pl-1">or drag and drop</p>
+        </div>
+        <p class="text-xs leading-5 text-gray-600">PDF File Only</p>
+      </div>
+    </div>
+  </div>
+  <div class="w-1/2 py-2">
+    <label
+      for="reviews-upload"
+      class="block text-sm font-medium leading-6 text-gray-900"
+      >Review</label
+    >
+    <div class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10">
+      <div class="text-center">
+        <div class="mt-4 flex text-sm leading-6 text-gray-600">
+          <label
+            for="reviews-upload"
+            class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
+          >
+            <span>Upload a file</span>
+            <input
+              id="reviews-upload"
+              type="file"
+              class="sr-only"
+              (change)="handleFileInput($event, 'reviews')"
+              accept=".pdf"
+            />
+          </label>
+          <p class="pl-1">or drag and drop</p>
+        </div>
+        <p class="text-xs leading-5 text-gray-600">PDF up to 1 MB</p>
+      </div>
+    </div>
+  </div>
+    </div>
+    <div class="flex items-start justify-between gap-4">
+      <div class="w-1/2">
+        <label for="email" class="block mb-2 text-sm font-medium text-gray-900"
+          >License Description</label
         >
-        <div
-          class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10"
-        >
-          <div class="text-center">
-            <div class="mt-4 flex text-sm leading-6 text-gray-600">
-              <label
-                for="file-upload"
-                class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
-              >
-                <span>Upload a file</span>
-                <input
-                  id="file-upload"
-                  name="file-upload"
-                  accept=".pdf"
-                  type="file"
-                  class="sr-only"
-                />
-              </label>
-              <p class="pl-1">or drag and drop</p>
-            </div>
-            <p class="text-xs leading-5 text-gray-600">PDF up to 1 MB</p>
-          </div>
+        <div class="mt-2">
+          <input
+            id="licenseDesc"
+            name="licenseDesc"
+            type="text"
+            autocomplete="licenseDesc"
+            required
+            placeholder="License Description"
+            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            formControlName="licenseDescription"
+            (input)="userDataForm.get('licenseDescription').updateValueAndValidity()"
+          />
+          <div *ngIf="userDataForm.get('licenseDescription')?.touched && userDataForm.get('licenseDescription')?.hasError('required')">
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              <span class="font-medium"> Oops!</span> Required</p>
+              </div>
         </div>
       </div>
-      <div class="w-1/2 py-2">
+      <div class="w-1/2">
         <label
-          for="cover-photo"
-          class="block text-sm font-medium leading-6 text-gray-900"
-          >Review</label
+          for="phone-number"
+          class="block mb-2 text-sm font-medium text-gray-900"
+          >Reviews Description</label
         >
-        <div
-          class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10"
-        >
-          <div class="text-center">
-            <div class="mt-4 flex text-sm leading-6 text-gray-600">
-              <label
-                for="file-upload"
-                class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
-              >
-                <span>Upload a file</span>
-                <input
-                  id="file-upload"
-                  name="file-upload"
-                  accept=".pdf"
-                  type="file"
-                  class="sr-only"
-                />
-              </label>
-              <p class="pl-1">or drag and drop</p>
-            </div>
-            <p class="text-xs leading-5 text-gray-600">PDF up to 1 MB</p>
+        <div class="mt-2">
+          <input
+            id="reviewsDesc"
+            name="reviewsDesc"
+            type="text"
+            autocomplete="reviews description"
+            required
+            placeholder="Reviews Description"
+            (input)="userDataForm.get('reviewsDescription').updateValueAndValidity()"
+            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            formControlName="reviewsDescription"
+          />
+          <div
+          *ngIf="userDataForm.get('reviewsDescription')?.touched && userDataForm.get('reviewsDescription')?.hasError('required')"
+          >
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              <span class="font-medium"> Oops!</span> Required
+            </p>
           </div>
         </div>
       </div>
