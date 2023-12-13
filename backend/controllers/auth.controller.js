@@ -319,34 +319,9 @@ export const register = async (req, res, next) => {
 
                 const { name, email, phoneNo, description } = fields;
 
-                // const { license, reviews, profilePic } = files;
-                const { license, reviews } = files;
+                // const { license, reviews } = files;
 
 
-                // const validatePDF = (file) => {
-                //     console.log("MASSSSSSSSSSSSSSSSSSSSSSUUUK VALIDATE PDF");
-                //     // Make sure the file object exists and has a name property
-                //     console.log("files: ", file);
-                //     if (!file || !file.name) {
-                //       return false;
-                //     }
-                //     const fileExtension = path.extname(file.name).toLowerCase();
-                //     console.log("file ext: ", fileExtension);
-                //     return fileExtension === '.pdf';
-                //   };
-
-                // // Validate file types
-                // if (!validatePDF(license) || !validatePDF(reviews)) {
-                //     return next(CreateError(400, 'License and Reviews must be PDF files'));
-                // }
-
-                // const licensePath = path.join(uploadDir, 'merchant_license.pdf');
-                // const reviewsPath = path.join(uploadDir, 'reviews.pdf');
-                // // const profilePicPath = path.join(uploadDir, 'profile_picture.jpg');
-
-                // fs.renameSync(license.path, licensePath);
-                // fs.renameSync(reviews.path, reviewsPath);
-                // // fs.renameSync(profilePic.path, profilePicPath);
                 const validatePDF = (filesArray) => {
                     if (!filesArray || !filesArray.length || !filesArray[0].originalFilename) {
                       return false;
@@ -360,41 +335,8 @@ export const register = async (req, res, next) => {
                     return next(CreateError(400, 'License and Reviews must be PDF files'));
                   }
                   
-                  // When you set the paths for the license and reviews, make sure to use the 0th element
-                  const licensePath = path.join(uploadDir, files.license[0].newFilename);
-                  const reviewsPath = path.join(uploadDir, files.reviews[0].newFilename);
-                  
 
 
-                  //MOVE DUE TO OS LIMITATION
-                //   // When you move/rename the files, again use the 0th element
-                //   fs.renameSync(files.license[0].filepath, licensePath);
-                //   fs.renameSync(files.reviews[0].filepath, reviewsPath);
-
-
-
-
-
-                //v2
-                // const moveFile = (source, target) => {
-                //     fs.copyFileSync(source, target); // Copy the file to the new location
-                //     fs.unlinkSync(source); // Delete the original file
-                //   };
-                  
-                //   // When you set the paths for the license and reviews, use the moveFile function
-                //   try {
-                //     const licensePath = path.join(uploadDir, files.license[0].newFilename);
-                //     const reviewsPath = path.join(uploadDir, files.reviews[0].newFilename);
-                  
-                //     moveFile(files.license[0].filepath, licensePath);
-                //     moveFile(files.reviews[0].filepath, reviewsPath);
-                //   } catch (error) {
-                //     console.log('Error moving files:', error);
-                //     return next(CreateError(500, 'Error moving files', error));
-                //   }
-
-                
-              
 
                 //v3
                 const moveAndRenameFile = (source, originalName, targetDir) => {
@@ -422,8 +364,6 @@ export const register = async (req, res, next) => {
                         files.reviews[0].originalFilename, // This should have the .pdf extension
                         uploadDir
                     );
-                
-                    // Now you have the new file names with the correct extensions
                     const licensePath = path.join(uploadDir, licenseNewFileName);
                     const reviewsPath = path.join(uploadDir, reviewsNewFileName);
                     newUser = new User({
@@ -436,6 +376,8 @@ export const register = async (req, res, next) => {
                         licensePath: licensePath,
                         reviewsPath: reviewsPath,
                         accountStatus: 'pending',
+                        licenseDescription: getFieldValue(fields.licenseDescription),
+                        reviewsDescription: getFieldValue(fields.reviewsDescription),
                     });
                 } catch (error) {
                     console.log('Error moving files:', error);
@@ -452,6 +394,8 @@ export const register = async (req, res, next) => {
                     roles: roleType,
                     phoneNo: getFieldValue(fields.phoneNo),
                     address: getFieldValue(fields.address),
+                    accountStatus: 'approved',
+                    
                 });
             } else {
                 return next(CreateError(400, 'Invalid Role!'));

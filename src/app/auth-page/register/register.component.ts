@@ -61,34 +61,27 @@ export class RegisterComponent {
     }
   );
 
-  // checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
-  //   return new Promise((resolve, reject) => {
-  //     this.authService.checkEmailAvailability(control.value).subscribe({
-  //       next: (response: any) => {
-  //         if (response.status === 200) {
-  //           console.log("Email taken");
-  //           resolve({ emailTaken: true });
-  //         } else {
-  //           resolve(null);
-  //           console.log("email no problem");
-  //         }
-  //       },
-  //       error: (error) => {
-  //         // console.log('Error checking email availability:', error);
-  //         reject({ emailTaken: true }); // Reject the promise to indicate an error
-  //       }
-  //     });
-  //   });
-  // }
-
-
-
   checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
     const email = control.value;
   
     return new Promise((resolve, reject) => {
-      this.authService.checkEmailAvailability(email).subscribe(
-        (response: any) => {
+      // this.authService.checkEmailAvailability(email).subscribe(
+      //   (response: any) => {
+      //     if (response.status === 200 && response.message === 'Email Taken') {
+      //       console.log('Email taken');
+      //       resolve({ emailTaken: true });
+      //     } else {
+      //       resolve(null);
+      //       console.log('Email available');
+      //     }
+      //   },
+      //   (error) => {
+      //     console.error('Error checking email availability:', error);
+      //     reject({ emailTaken: true });
+      //   }
+      // );
+      this.authService.checkEmailAvailability(email).subscribe({
+        next: (response: any) => {
           if (response.status === 200 && response.message === 'Email Taken') {
             console.log('Email taken');
             resolve({ emailTaken: true });
@@ -97,13 +90,14 @@ export class RegisterComponent {
             console.log('Email available');
           }
         },
-        (error) => {
+        error: (error) => {
           console.error('Error checking email availability:', error);
-          reject({ emailTaken: true }); // Reject the promise to indicate an error
+          reject({ emailTaken: true });
         }
-      );
+      });
     });
   }
+  
 
   submittedClicked = false;
   // onSubmit() {
