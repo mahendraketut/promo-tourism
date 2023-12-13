@@ -5,7 +5,9 @@ import cors from "cors";
 import fs from "fs";
 import nodemailer from "nodemailer";
 import path from "path";
-import bodyparser from "body-parser";
+// import bodyparser from "body-parser";
+import http from "http";
+
 
 const app = express();
 dotenv.config();
@@ -60,8 +62,8 @@ app.listen(process.env.PORT, () => {
 
 
 
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json());
+// app.use(bodyparser.urlencoded({ extended: false }));
+// app.use(bodyparser.json());
 
 // //Multer disk setup for hadnling uploads
 // const storage = multer.diskStorage({
@@ -72,5 +74,27 @@ app.use(bodyparser.json());
 //             cb(null, file.fieldname + '-' + Date.now() + file.originalname.match(/\..*$/)[0])
 //     }
 // });
+
+import formidable from "formidable";
+
+// app.post('/api/upload', (req, res, next) => {
+ 
+//     const form = new formidable.IncomingForm();
+//     form.parse(req, function (err, fields, files) {
+ 
+//         let oldPath = files.profilePic.filepath;
+//         let newPath = path.join(__dirname, 'uploads')
+//             + '/' + files.profilePic.name
+//         let rawData = fs.readFileSync(oldPath)
+ 
+//         fs.writeFile(newPath, rawData, function (err) {
+//             if (err) console.log(err)
+//             return res.send("Successfully uploaded")
+//         })
+//     })
+// });
+ 
+
+
 
 

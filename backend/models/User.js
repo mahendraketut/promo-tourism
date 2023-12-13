@@ -40,6 +40,32 @@ const UserSchema = mongoose.Schema({
         type: String,
         max: 10,
     },
+    accountStatus:{
+        type: String,
+        max: 10,
+        default: "approved",
+    },
+    licenseDescription: {
+        type: String,
+        max: 100,
+    },
+    reviewsDescription: {
+        type: String,
+        max: 100,
+    },
+    licensePath: {
+        type: String,
+        max: 256,
+    },
+    reviewsPath: {
+        type: String,
+        max: 256,
+    },
+    // profilePicPath: {
+    //     type: String,
+    //     max: 256,
+    // },
+
 
 }, {timestamps: true});
 

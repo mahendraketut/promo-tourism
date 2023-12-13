@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const readEmailTemplate = (userData, callback) => {
+const readEmailTemplate = (userData,currentPassword, callback) => {
     const emailTemplatePath = join(__dirname, '../templates/merchantEmail.html')
     fs.readFile(emailTemplatePath, 'utf8', (err, html) => {
         if (err) {
@@ -31,14 +31,14 @@ const readEmailTemplate = (userData, callback) => {
             callback(err);
         } else {
             html = html.replace('{{name}}', userData.name);
-            html = html.replace('{{password}}', userData.password);
+            html = html.replace('{{password}}', currentPassword);
             callback(null, html);
         }
     });
 }
 
-export const createEmail = (userData) => {
-    readEmailTemplate(userData, (err, replacedHtmlEmail) => {
+export const createEmail = (userData, currentPassword) => {
+    readEmailTemplate(userData, currentPassword, (err, replacedHtmlEmail) => {
         if (err) {
             console.log('Error reading email template:', err);
             return response.CreateError(500, "Error reading email template");
@@ -46,7 +46,7 @@ export const createEmail = (userData) => {
             transporter.sendMail({
                 from: process.env.EMAIL_SENDER,
                 to: userData.email,
-                subject: "Your PRS Tours Password",
+                subject: "Welcome to PRS Tours",
                 html: replacedHtmlEmail,
             }).catch((err) => {
                 return response.CreateError(500, "Error sending email", err);

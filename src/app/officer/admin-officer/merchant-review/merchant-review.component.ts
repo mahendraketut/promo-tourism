@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-merchant-review',
@@ -7,58 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MerchantReviewComponent implements OnInit {
   dtOptions: any = {};
-  merchants: any[] = [
-    {
-      id: 'mr347234efnccvsdlkfh9',
-      name: 'HELP Merchant Sdn. Bhd.',
-      contact: '+608103734748',
-      email: 'help@merchant.com',
-      description: 'lorem ipsum dolor sit amet',
-      status: 'approved',
-      license: {
-        licenseFile: 'lorem.pdf',
-        description: 'lorem ipsum dolor sit amet',
-      },
-      testimonials: {
-        testimonialFile: 'lorem.pdf',
-        description: 'lorem ipsum dolor sit amet',
-      },
-    },
-    {
-      id: 'mr347234efnccvsdlkfh9',
-      name: 'Gloves Merchant Sdn. Bhd.',
-      contact: '+608103734748',
-      email: 'gloves@merchant.com',
-      description: 'lorem ipsum dolor sit amet',
-      status: 'pending',
-      license: {
-        licenseFile: 'lorem.pdf',
-        description: 'lorem ipsum dolor sit amet',
-      },
-      testimonials: {
-        testimonialFile: 'lorem.pdf',
-        description: 'lorem ipsum dolor sit amet',
-      },
-    },
-    {
-      id: 'mr347234efnccvsdlkfh9',
-      name: 'Poor Merchant Sdn. Bhd.',
-      contact: '+608103734748',
-      email: 'poor@merchant.com',
-      description: 'lorem ipsum dolor sit amet',
-      status: 'pending',
-      license: {
-        licenseFile: 'lorem.pdf',
-        description: 'lorem ipsum dolor sit amet',
-      },
-      testimonials: {
-        testimonialFile: 'lorem.pdf',
-        description: 'lorem ipsum dolor sit amet',
-      },
-    },
-  ];
+  merchants: any[] = [];
+
+  constructor(private authService: AuthService) {}
+
   ngOnInit(): void {
-    //the datatable
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 5,
@@ -68,5 +24,74 @@ export class MerchantReviewComponent implements OnInit {
       dom: 'Bfrtip',
       buttons: ['copy', 'print', 'excel', 'pdf'],
     };
+    this.fetchMerchants();
+  }
+
+  fetchMerchants() {
+    this.authService.getMerchants().subscribe({
+      next: (data) => {
+        //this enters the merchants data into our local array.
+        this.merchants = data;
+      },
+      error: (error) => {
+        console.error('Error fetching merchants:', error);
+      },
+      complete: () => {
+        console.log('Merchant data retrieval complete.');
+      }
+    });
+  }
+
+
+  acceptMerchant(merchantId: string) {
+    this.authService.acceptMerchant(merchantId).subscribe({
+      next: (response) => {
+        console.log('Merchant accepted:', response);
+      },
+      error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+      },
+      complete: () => {
+        console.log('Accepting merchant complete.');
+        Swal.fire({
+          icon: 'success',
+          title: 'Merchant accepted!',
+          text: 'Merchant has been accepted.',
+        }).then(() => {
+          // Reload the page
+          window.location.reload();
+        });
+      }
+    });
+  }
+
+  rejectMerchant(merchantId: string) {
+    this.authService.rejectMerchant(merchantId).subscribe({
+      next: (response) => {
+        console.log('Merchant rejected:', response);
+      },
+      error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+      },
+      complete: () => {
+        console.log('Rejecting merchant complete.');
+        Swal.fire({
+          icon: 'success',
+          title: 'Merchant rejected!',
+          text: 'Merchant has been rejected.',
+        }).then(() => {
+          // Reload the page
+          window.location.reload();
+        });
+      }
+    });
   }
 }
