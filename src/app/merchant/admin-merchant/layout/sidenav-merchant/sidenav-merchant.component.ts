@@ -6,9 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidenav-merchant.component.css'],
 })
 export class SidenavMerchantComponent {
-  sidenavOpen: boolean = true;
+  logo: any;
 
-  toggleSidenav() {
-    this.sidenavOpen = !this.sidenavOpen;
+  constructor() {
+    this.logo = 'assets/images/logo.png';
   }
 }
