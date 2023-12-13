@@ -10,13 +10,18 @@ import Swal from 'sweetalert2';
   styleUrls: ['./sidenav-merchant.component.css'],
 })
 export class SidenavMerchantComponent {
+
+  logo: any;
+
   constructor(private router: Router, private authService: AuthService, private tokenService: TokenService) {
+    this.logo = 'assets/images/logo.png';
   }
   sidenavOpen: boolean = true;
 
 
   toggleSidenav() {
     this.sidenavOpen = !this.sidenavOpen;
+
   }
 
   onLogout(){

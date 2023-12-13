@@ -76,6 +76,8 @@ export class ForgotComponent {
     if (this.resetPasswordForm.valid) {
       const newPassword = this.resetPasswordForm.get('newPassword').value;
       //send request to backend to validate the old password
+      //if valid, then update the new password
+      //if not, then return error message
     }
   }
 }

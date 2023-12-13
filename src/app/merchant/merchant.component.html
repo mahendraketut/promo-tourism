@@ -5,18 +5,15 @@
   </div>
 </div>
 <div *ngIf="userRole == 'merchant'">
-  <app-navbar-merchant></app-navbar-merchant>
-  <div class="md:relative">
-    <div class="fixed">
-      <app-sidenav-merchant></app-sidenav-merchant>
-    </div>
-    <div class="md:ml-56">
-      <div class="main-content">
-        <div class="container mx-auto">
-          <router-outlet></router-outlet>
-        </div>
+  <!-- <app-navbar-merchant></app-navbar-merchant> -->
+  <app-sidenav-merchant></app-sidenav-merchant>
+  <div class="md:ml-64 relative bg-slate-50 min-h-screen">
+    <!-- Set a relative position and z-index -->
+    <div class="main-content">
+      <div class="">
+        <router-outlet></router-outlet>
       </div>
-      <app-footer-merchant></app-footer-merchant>
     </div>
+    <app-footer-merchant></app-footer-merchant>
   </div>
 </div>

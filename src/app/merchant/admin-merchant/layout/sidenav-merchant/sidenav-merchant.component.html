@@ -1,125 +1,242 @@
-<div
-  class="hidden bg-white drop-shadow-md h-screen py-4 px-4 overflow-y-auto sm:sticky md:block"
->
-  <!-- icon expand or minimize sidenav -->
-  <div class="block items-center justify-end w-full md:hidden my-4">
-    <button
-      class="focus:outline-none flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-      (click)="toggleSidenav()"
-      [ngClass]="{ hidden: sidenavOpen == false }"
+<div class="inline-flex sm:hidden h-16 shadow-xl w-full">
+  <button
+    data-drawer-target="default-sidebar"
+    data-drawer-toggle="default-sidebar"
+    aria-controls="default-sidebar"
+    type="button"
+    class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+  >
+    <span class="sr-only">Open sidebar</span>
+    <svg
+      class="w-6 h-6"
+      aria-hidden="true"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <i class="fa-solid fa-chevron-left"></i
-      ><span class="text-sm ms-5">Hide</span>
-    </button>
-    <button
-      class="focus:outline-none flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-      (click)="toggleSidenav()"
-      [ngClass]="{ hidden: sidenavOpen == true }"
+      <path
+        clip-rule="evenodd"
+        fill-rule="evenodd"
+        d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+      ></path>
+    </svg>
+  </button>
+  <div class="flex items-center">
+    <a class="flex items-center" href=""
+      ><img
+        alt="PromoTourism Logo"
+        class="h-8 mr-3"
+        src="assets/img/favicon.png"
+      /><span
+        class="self-center text-2xl font-semibold text-blue-500 whitespace-nowrap"
+      >
+        Promo</span
+      ><span class="self-center text-2xl font-normal text-blue-500"
+        >Tourism</span
+      ></a
     >
-      <i class="fa-solid fa-chevron-right"></i>
-      <span class="text-sm ms-5">Expand</span>
-    </button>
   </div>
-  <a routerLink="/merchant" class="my-4">
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-      routerLinkActive="text-blue-500 font-bold"
-    >
-      <i class="fa-solid fa-house"></i
-      ><span class="text-sm ms-5">Dashboard</span>
-    </div>
-  </a>
-  <!-- Product menu: start -->
-  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Product</p>
-  <a
-    routerLink="/merchant/product"
-    routerLinkActive="text-blue-500 font-bold"
-    class="my-4"
-  >
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-    >
-      <i class="fa-solid fa-ticket"></i
-      ><span class="text-sm ms-5">List Product</span>
-    </div>
-  </a>
-  <a
-    routerLink="/merchant/add-product"
-    routerLinkActive="text-blue-500 font-bold"
-    class="my-4"
-  >
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-    >
-      <i class="fa-solid fa-plus"></i
-      ><span class="text-sm ms-5">Add Product</span>
-    </div>
-  </a>
-  <!-- Product menu: end -->
-  <!-- Order menu: start -->
-  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Order</p>
-  <a
-    routerLink="/merchant/order"
-    routerLinkActive="text-blue-500 font-bold"
-    class="my-4"
-  >
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-    >
-      <i class="fa-solid fa-file-invoice"></i
-      ><span class="text-sm ms-5">List Order</span>
-    </div>
-  </a>
-  <!-- Order menu: end -->
-  <!-- Transaction menu: start -->
-  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Transaction</p>
-  <a
-    routerLink="/merchant/transaction"
-    routerLinkActive="text-blue-500 font-bold"
-    class="my-4"
-  >
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-    >
-      <i class="fa-solid fa-wallet"></i
-      ><span class="text-sm ms-5">List Transaction</span>
-    </div>
-  </a>
-  <!-- Transaction menu: end -->
-  <!-- Report menu: start -->
-  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Report</p>
-  <a
-    routerLink="/merchant/report"
-    routerLinkActive="text-blue-500 font-bold"
-    class="my-4"
-  >
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-    >
-      <i class="fa-solid fa-chart-bar"></i
-      ><span class="text-sm ms-5">Merchant Report</span>
-    </div>
-  </a>
-  <!-- Report menu: end -->
-  <!-- Setting menu: start -->
-  <p class="text-sm font-bold w-full px-8 pt-5 text-gray-700">Setting</p>
-  <!-- <a
-    routerLink="/merchant"
-    routerLinkActive="text-blue-500 font-bold"
-    class="my-4"
-  >
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-    >
-      <i class="fa-solid fa-user"></i><span class="text-sm ms-5">Profile</span>
-    </div>
-  </a> -->
-  <a routerLink="/" routerLinkActive="text-blue-500 font-bold" class="my-4" (click)="onLogout()">
-    <div
-      class="flex items-center justify-start w-full px-8 py-2 text-gray-700 hover:text-blue-900"
-    >
-      <i class="fa-solid fa-sign-out"></i
-      ><span class="text-sm ms-5">Logout</span>
-    </div>
-  </a>
 </div>
+
+<aside
+  id="default-sidebar"
+  class="fixed top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0 sm:drop-shadow-xl"
+  aria-label="Sidebar"
+>
+  <div
+    class="grid grid-rows-2 gap-4 place-content-evenly h-full px-3 py-4 bg-white"
+  >
+    <div class="">
+      <div class="flex items-center justify-start w-full mb-5">
+        <img
+          alt="PromoTourism Logo"
+          class="w-1/2"
+          src="assets/img/logo-landscape.png"
+        />
+      </div>
+
+      <ul class="space-y-2 font-medium w-full">
+        <!-- button dashboard: start -->
+        <li>
+          <a
+            href="#"
+            routerLink="/merchant"
+            routerLinkActive=""
+            class="flex items-center p-2 text-gray-900 rounded-lg"
+          >
+            <svg
+              class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 21 21"
+            >
+              <g
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              >
+                <path d="M9 4.025A7.5 7.5 0 1 0 16.975 12H9V4.025Z" />
+                <path
+                  d="M12.5 1c-.169 0-.334.014-.5.025V9h7.975c.011-.166.025-.331.025-.5A7.5 7.5 0 0 0 12.5 1Z"
+                />
+              </g>
+            </svg>
+            <span class="ms-3">Dashboard</span>
+          </a>
+        </li>
+        <!-- button dashboard: end -->
+        <!-- button product: start -->
+        <li>
+          <a
+            href="#"
+            routerLink="/merchant/product"
+            class="flex items-center p-2 text-gray-900 rounded-lg"
+          >
+            <svg
+              class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 18 18"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 10h3.439a.991.991 0 0 1 .908.6 3.978 3.978 0 0 0 7.306 0 .99.99 0 0 1 .908-.6H17M1 10v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6M1 10l2-9h12l2 9"
+              />
+            </svg>
+            <span class="flex-1 ms-3 whitespace-nowrap">Product</span>
+          </a>
+        </li>
+        <!-- button product: end -->
+        <!-- button order: start -->
+        <li>
+          <a
+            href="#"
+            routerLink="/merchant/order"
+            class="flex items-center p-2 text-gray-900 rounded-lg"
+          >
+            <svg
+              class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5h6M9 8h6m-6 3h6M4.996 5h.01m-.01 3h.01m-.01 3h.01M2 1h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"
+              />
+            </svg>
+            <span class="flex-1 ms-3 whitespace-nowrap">Order</span>
+          </a>
+        </li>
+        <!-- button order: end -->
+        <!-- button transaction: start -->
+        <li>
+          <a
+            href="#"
+            routerLink="/merchant/transaction"
+            class="flex items-center p-2 text-gray-900 rounded-lg"
+          >
+            <svg
+              class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11.905 1.316 15.633 6M18 10h-5a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h5m0-5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1m0-5V7a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h15a1 1 0 0 0 1-1v-3m-6.367-9L7.905 1.316 2.352 6h9.281Z"
+              />
+            </svg>
+            <span class="flex-1 ms-3 whitespace-nowrap">Transaction</span>
+          </a>
+        </li>
+        <!-- button transaction: end -->
+        <!-- button analytics report: start -->
+        <li>
+          <a
+            href="#"
+            routerLink="/merchant/report"
+            class="flex items-center p-2 text-gray-900 rounded-lg"
+          >
+            <svg
+              class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 18 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 12v5m5-9v9m5-5v5m5-9v9M1 7l5-6 5 6 5-6"
+              />
+            </svg>
+
+            <span class="flex-1 ms-3 whitespace-nowrap">Analytics Report</span>
+          </a>
+        </li>
+        <!-- button analytics report: end -->
+      </ul>
+    </div>
+
+    <div class="flex items-end justify-center">
+      <div
+        class="grid row-span-2 w-full bg-gradient-to-tr from-blue-500 via-blue-700 to-blue-800 rounded-3xl text-white shadow-md p-2"
+      >
+        <div class="mb-5 w-full">
+          <div class="w-full flex justify-center my-2">
+            <svg
+              class="w-8 h-8"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
+          </div>
+          <h1 class="w-full text-center">John Doe</h1>
+          <p class="w-full text-center text-xs font-light text-gray-200">
+            johndoe@gmail.com
+          </p>
+          <p class="w-full text-center text-xs font-light my-1 text-gray-200">
+            Merchant
+          </p>
+        </div>
+        <!-- logout button: start -->
+        <div class="w-full">
+          <a
+            href="#"
+            routerLink="/"
+            (click)="onLogout()
+            class="flex items-center justify-center p-2 text-gray-900 rounded-2xl text-center bg-slate-50"
+          >
+            <span class="w-fit ms-3 whitespace-nowrap">Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
