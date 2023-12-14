@@ -12,27 +12,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { v4 as uuidv4 } from "uuid";
 
-//TODO: register error handling perlu diperbaikin, biar bisa di acc front end.
 
-// export const checkEmail = async (req, res, next) => {
-//     console.log("checkEmail Kepanggil");
-//     try {
-//         const email = req.body.email;
-//         console.log("email: ", email);
-//         const doesEmailExist = await User.findOne({ email: req.body.email});
-//         console.log("does email exist: ", doesEmailExist);
-//         if(doesEmailExist != null){
-//             console.log("email taken:", emailTaken);
-
-//             return next(CreateSuccess(200, "Email Taken", emailTaken = true));
-//         }
-//         else{
-//             return next(CreateError(500, "Internal Server Error"));
-//         }
-//     } catch (error) {
-//         return next(CreateError(500, "Internal Server Error" ,error));
-//     }
-// };
 
 export const checkEmail = async (req, res, next) => {
     console.log('checkEmail Kepanggil');
@@ -125,77 +105,76 @@ export const register = async (req, res, next) => {
         }
 
                 //v3
-                const moveAndRenameFile = (source, originalName, targetDir) => {
-                    // Extract the file extension from the original file name
-                    const fileExtension = path.extname(originalName);
-                    // Generate a new file name using the original name with a unique prefix
-                    const uniquePrefix = uuidv4(); // Or any other method to generate a unique string
-                    const newFileName = uniquePrefix + fileExtension; // Keep the .pdf extension
-                    // Create the full path for the new file
-                    const targetPath = path.join(targetDir, newFileName);
-                
-                    fs.copyFileSync(source, targetPath); // Copy the file to the new location
-                    fs.unlinkSync(source); // Delete the original file
-                
-                    return newFileName; // Return the new file name for storing in the database
-                };
-                try {
-                    const licenseNewFileName = moveAndRenameFile(
-                        files.license[0].filepath,
-                        files.license[0].originalFilename, // This should have the .pdf extension
-                        uploadDir
-                    );
-                    const reviewsNewFileName = moveAndRenameFile(
-                        files.reviews[0].filepath,
-                        files.reviews[0].originalFilename, // This should have the .pdf extension
-                        uploadDir
-                    );
-                    const licensePath = path.join(uploadDir, licenseNewFileName);
-                    const reviewsPath = path.join(uploadDir, reviewsNewFileName);
-                    newUser = new User({
-                        name: getFieldValue(name),
-                        email: getFieldValue(email),
-                        password: hashedPassword,
-                        roles: 'merchant',
-                        phoneNo: getFieldValue(phoneNo),
-                        description: getFieldValue(description),
-                        licensePath: licensePath,
-                        reviewsPath: reviewsPath,
-                        accountStatus: 'pending',
-                        licenseDescription: getFieldValue(fields.licenseDescription),
-                        reviewsDescription: getFieldValue(fields.reviewsDescription),
-                    });
-                } catch (error) {
-                    console.log('Error moving files:', error);
-                    return next(CreateError(500, 'Error moving files', error));
-                }
-                
-                    
-            } else if (roleType === 'admin' || roleType === 'user') {
-                console.log("masuk reg user biasa");
-                newUser = new User({
-                    name: getFieldValue(fields.name),
-                    email: getFieldValue(fields.email),
-                    password: hashedPassword,
-                    roles: roleType,
-                    phoneNo: getFieldValue(fields.phoneNo),
-                    address: getFieldValue(fields.address),
-                    accountStatus: 'approved',
-                    
-                });
-            } else {
-                return next(CreateError(400, 'Invalid Role!'));
-            }
-
-      await newUser.save();
-      return next(
-        CreateSuccess(
-          200,
-          `${
-            roleType.charAt(0).toUpperCase() + roleType.slice(1)
-          } registered successfully!`
-        )
-      );
+        const moveAndRenameFile = (source, originalName, targetDir) => {
+            // Extract the file extension from the original file name
+            const fileExtension = path.extname(originalName);
+            // Generate a new file name using the original name with a unique prefix
+            const uniquePrefix = uuidv4(); // Or any other method to generate a unique string
+            const newFileName = uniquePrefix + fileExtension; // Keep the .pdf extension
+            // Create the full path for the new file
+            const targetPath = path.join(targetDir, newFileName);
+        
+            fs.copyFileSync(source, targetPath); // Copy the file to the new location
+            fs.unlinkSync(source); // Delete the original file
+        
+            return newFileName; // Return the new file name for storing in the database
+        };
+        try {
+            const licenseNewFileName = moveAndRenameFile(
+                files.license[0].filepath,
+                files.license[0].originalFilename, // This should have the .pdf extension
+                uploadDir
+            );
+            const reviewsNewFileName = moveAndRenameFile(
+                files.reviews[0].filepath,
+                files.reviews[0].originalFilename, // This should have the .pdf extension
+                uploadDir
+            );
+            const licensePath = path.join(uploadDir, licenseNewFileName);
+            const reviewsPath = path.join(uploadDir, reviewsNewFileName);
+            newUser = new User({
+                name: getFieldValue(name),
+                email: getFieldValue(email),
+                password: hashedPassword,
+                roles: 'merchant',
+                phoneNo: getFieldValue(phoneNo),
+                description: getFieldValue(description),
+                licensePath: licensePath,
+                reviewsPath: reviewsPath,
+                accountStatus: 'pending',
+                licenseDescription: getFieldValue(fields.licenseDescription),
+                reviewsDescription: getFieldValue(fields.reviewsDescription),
+            });
+        } catch (error) {
+            console.log('Error moving files:', error);
+            return next(CreateError(500, 'Error moving files', error));
+        }
+        
+            
+    } else if (roleType === 'admin' || roleType === 'user') {
+        console.log("masuk reg user biasa");
+        newUser = new User({
+            name: getFieldValue(fields.name),
+            email: getFieldValue(fields.email),
+            password: hashedPassword,
+            roles: roleType,
+            phoneNo: getFieldValue(fields.phoneNo),
+            address: getFieldValue(fields.address),
+            accountStatus: 'approved',
+            
+        });
+    } else {
+        return next(CreateError(400, 'Invalid Role!'));
+    }
+    await newUser.save();
+    return next(
+      CreateSuccess(
+        200,
+        `${
+          roleType.charAt(0).toUpperCase() + roleType.slice(1)
+        } registered successfully!`
+      )
+    );
     } catch (error) {
       console.log("Error registering user:", error);
       return next(CreateError(500, "Error registering user", error));

@@ -1,17 +1,5 @@
 import mongoose from "mongoose";
 
-
-const ImageSchema = mongoose.Schema({
-    url: {
-        type: String,
-        required: true,
-    },
-    isCover: {
-        type: Boolean,
-        default: false,
-    },
-});
-
 const ProductSchema = mongoose.Schema({
     name:{
         type: String,
@@ -36,10 +24,12 @@ const ProductSchema = mongoose.Schema({
     category:{
         type: String,
     },
-    images: [ImageSchema],
-
-
-
+    imagesPath:[{
+        type: String,
+    }],
+    coverImagePath:{
+        type: String,
+    },
 });
 
 export default mongoose.model("Product", ProductSchema);

@@ -34,30 +34,6 @@ export class ProductService {
 
 
 
-  
-
-  // //Sends a POST request to the back-end API to create a new product.
-  // createProduct(data:any): Observable<any> {
-  //   console.log("sampe createprod");
-  //   let api = `${this.endpoint}/create`;
-  //   //this is the image handling
-  //   const formData = new FormData();
-  //   //If there are image(s) in the data object, append them to the formData object.
-  //   //Otherwise, append the data object to the formData object.
-  //   Object.keys(data).forEach(key => {
-  //     if (key === 'images' && Array.isArray(data[key])) {
-  //       // Handle multiple images
-  //       data[key].forEach((image: File) => {
-  //         formData.append('images', image, image.name);
-  //       });
-  //     } else {
-  //       formData.append(key, data[key]);
-  //     }
-  //   });
-
-  //   //Post the formData object to the back-end API.
-  //   return this.http.post(api, formData).pipe(catchError(this.errorMgmt));
-  // }
 
   upload(file: File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
@@ -70,35 +46,11 @@ export class ProductService {
     });
 
     return this.http.request(req);
-  }
+  };
 
-  createProduct(data:any, files:any): Observable<any> {
-    console.log("sampe createprod");
-    let api = `${this.endpoint}/create`;
-    //this is the image handling
-    const formData: FormData = new FormData();
-    if(files){
-      for (let i = 0; i < files.length; i++) {
-        formData.append('images', files[i]);
-      }
-    }
-
-    console.log("formdata:",formData);
-    // //If there are image(s) in the data object, append them to the formData object.
-    // //Otherwise, append the data object to the formData object.
-    // Object.keys(data).forEach(key => {
-    //   if (key === 'images' && Array.isArray(data[key])) {
-    //     // Handle multiple images
-    //     data[key].forEach((image: File) => {
-    //       formData.append('images', image, image.name);
-    //     });
-    //   } else {
-    //     formData.append(key, data[key]);
-    //   }
-    // });
-
-    //Post the formData object to the back-end API.
-    return this.http.post(api, formData).pipe(catchError(this.errorMgmt));
+  addProduct(data:any): Observable<any> {
+    let api = `${this.endpoint}/add`;
+    return this.http.post(api, data).pipe(catchError(this.errorMgmt));
   }
 
 
