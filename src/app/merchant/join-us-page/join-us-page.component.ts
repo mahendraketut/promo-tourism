@@ -11,6 +11,7 @@ export class JoinUsPageComponent {
   tourismMalaysiaLogo: any = 'assets/img/tourismMalaysia.png';
   promoTourismLogo: any = 'assets/img/logo-landscape.png';
   seller: string = 'assets/img/seller.png';
+  isMerchantRegForm: boolean = false;
 
   constructor(private viewportScroller: ViewportScroller) {}
 
@@ -22,5 +23,9 @@ export class JoinUsPageComponent {
     // if (element) {
     //   this.viewportScroller.scrollToAnchor(elementId);
     // }
+  }
+
+  isMerchantRegFormChange() {
+    this.isMerchantRegForm = !this.isMerchantRegForm;
   }
 }

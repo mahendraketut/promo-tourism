@@ -1,5 +1,8 @@
 <div class="h-screen">
-  <div class="flex items-center h-screen mx-auto">
+  <div
+    *ngIf="isMerchantRegForm == false"
+    class="flex items-center h-screen mx-auto"
+  >
     <div class="md:h-fit md:w-3/6">
       <div class="flex items-center h-40">
         <img
@@ -23,7 +26,7 @@
 
       <div class="flex justify-start mt-5">
         <a
-          (click)="smoothScroll('registerMerchant')"
+          (click)="(isMerchantRegFormChange)"
           class="text-black px-8 p-2 border-black border-2 rounded-full font-poppins hover:bg-blue-700 hover:text-white hover:border-blue-500 hover:border-2"
         >
           Join as Merchant
@@ -35,7 +38,11 @@
     </div>
   </div>
 </div>
-<div id="registerMerchant" class="flex items-center h-screen">
+<div
+  *ngIf="isMerchantRegForm"
+  id="registerMerchant"
+  class="flex items-center h-screen"
+>
   <div class="w-full">
     <app-register-merchant></app-register-merchant>
   </div>
