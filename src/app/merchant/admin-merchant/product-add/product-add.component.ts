@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TempService } from 'src/app/temp.service';
+import { ProductService } from 'src/app/services/product.service';
 import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import  Swal  from 'sweetalert2';
 
@@ -12,24 +12,23 @@ export class ProductAddComponent {
   coverPreviews: { url: string; fileName: string }[] = [];
   imagePreviews: { url: string; fileName: string }[] = [];
   productForm: FormGroup;
+  productImages: File[] = [];
+  coverImage: File | null = null;
 
-  constructor(private tempService: TempService) { 
+  constructor(private productService: ProductService) { 
     this.productForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
       //PRODUCT STOCK IS PRODUCT QUANTITY
-      // productDiscount: new FormControl('', Validators.required),
       quantity: new FormControl('', Validators.required),
       category: new FormControl('', Validators.required),
-      productImages: new FormArray([]),
-      productCovers: new FormArray([]),
-
     });
+    
   }
 
 
-  onCoverChange(event: Event): void {
+  onCoverChangeOld(event: Event): void {
 
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -51,7 +50,33 @@ export class ProductAddComponent {
       }
     }
   }
-  onFileChange(event: Event): void {
+
+
+
+  onCoverChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    if (input.files && input.files.length) {
+      this.coverImage = input.files[0];
+      this.coverPreviews = []; // Clear existing previews
+
+      for (let i = 0; i < files.length; i++) {
+        const selectedFile = files[i];
+        const fileName = selectedFile.name;
+
+        // Read and display image preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          const previewURL = reader.result as string;
+          this.coverPreviews.push({ url: previewURL, fileName });
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    }
+  }
+
+
+  onFileChangeOld(event: Event): void {
     const input = event.target as HTMLInputElement;
     const files = input.files;
 
@@ -73,7 +98,30 @@ export class ProductAddComponent {
     }
   }
 
-  onSubmit() {
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    if (input.files) {
+      this.productImages = Array.from(input.files);
+      this.imagePreviews = []; // Clear existing previews
+
+      for (let i = 0; i < files.length; i++) {
+        const selectedFile = files[i];
+        const fileName = selectedFile.name;
+
+        // Read and display image preview
+        const reader = new FileReader();
+        reader.onload = () => {
+          const previewURL = reader.result as string;
+          this.imagePreviews.push({ url: previewURL, fileName });
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    }
+  }
+
+
+  onSubmitOld() {
     if (this.productForm.valid) {
       console.log('form valid');
       const imagesArray = this.productForm.get('productImages') as FormArray;
@@ -96,7 +144,7 @@ export class ProductAddComponent {
   
       // Now you can work with the product data or pass it to the service
       console.log("prod data: ", productData);
-      const isAdded = this.tempService.addProduct(productData);
+      const isAdded = this.productService.addProduct(productData);
       if(isAdded){
         Swal.fire(
           'Success!',
@@ -117,6 +165,46 @@ export class ProductAddComponent {
     }
   }
   
+  onSubmit() {
+    if (this.productForm.valid) {
+      console.log('form valid');
+      // Create FormData object
+      const formData = new FormData();
+      
+      // Append text fields
+      formData.append('name', this.productForm.get('name').value);
+      formData.append('description', this.productForm.get('description').value);
+      formData.append('price', this.productForm.get('price').value);
+      formData.append('quantity', this.productForm.get('quantity').value);
+      formData.append('category', this.productForm.get('category').value);
+      
+      // Append cover image if available
+      if (this.coverImage) {
+        formData.append('cover', this.coverImage, this.coverImage.name);
+      }
+      
+      // Append product images
+      this.productImages.forEach((file, index) => {
+        formData.append(`images[${index}]`, file, file.name);
+      });
+
+      console.log("form data: ", formData);
+
+      // Call the service method to send the form data
+      this.productService.addProduct(formData).subscribe({
+        next: (response) => {
+          console.log("res:", response);
+          Swal.fire('Success!', 'Your product has been added.', 'success');
+        },
+        error: (error) => {
+          console.log("err:" ,error);
+          Swal.fire('Error!', 'Your product has not been added.', 'error');
+        }
+      });
+    }
+  }
+
+
 
   showFileDetails(file: File): void {
     // Display file details as needed, e.g., file name, size, type
