@@ -44,7 +44,16 @@ export class LoginComponent {
             if (this.tokenService.decodeToken().roles == 'user') {
               this.router.navigate(['/']);
               console.log('MASUK BRO');
-            } else if (this.tokenService.decodeToken().roles == 'merchant') {
+            } else if (
+              this.tokenService.decodeToken().roles == 'merchant' &&
+              this.tokenService.decodeToken().hasResetPassword == false
+            ) {
+              this.router.navigate(['/auth/change_password']);
+              console.log('MASUK CHANGE PASS BRO');
+            } else if (
+              this.tokenService.decodeToken().roles == 'merchant' &&
+              this.tokenService.decodeToken().hasResetPassword == true
+            ) {
               this.router.navigate(['/merchant']);
               console.log('MASUK MERCHANT BRO');
             } else if (this.tokenService.decodeToken().roles == 'officer') {
