@@ -1,29 +1,63 @@
-<div class="w-full p-5 md:px-20 md:py-10">
-  <div class="flex items-center justify-between my-1">
-    <h1 class="font-bold text-2xl">Order List</h1>
-    <!-- <a
-      routerLink="/merchant/product/add"
-      class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
-    >
-      <i class="fa-solid fa-plus"></i> Add Product</a
-    >
-  </div> -->
-  </div>
-  <div class="mt-5">
-    <table datatable [dtOptions]="dtOptions" class="row-border hover">
-      <thead class="border-y">
-        <tr>
-          <th class="px-4 py-2">No</th>
-          <th class="px-4 py-2">OrderID</th>
-          <th class="px-4 py-2">Purchasing Date</th>
-          <th class="px-4 py-2">Customer</th>
-          <th class="px-4 py-2">Order Item</th>
-          <th class="px-4 py-2">Total</th>
-          <th class="px-4 py-2">Status</th>
-          <th class="px-4 py-2">Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+<div class="relative w-full h-full mb-10">
+  <div
+    class="w-full bg-gradient-to-tr h-72 from-blue-500 via-blue-700 to-blue-800 rounded-b-3xl relative shadow-xl"
+  >
+    <div class="px-10 py-5" id="breadcrumb">
+      <h1 class="text-2xl font-medium text-white">Order</h1>
+      <!-- breadcrumb: start -->
+      <nav aria-label="breadcrumb" class="flex items-center flex-wrap text-sm">
+        <ol class="flex items-center flex-wrap gap-2">
+          <li>
+            <a href="#" routerLink="/" class="text-gray-50">Home /</a>
+          </li>
+          <li>
+            <a href="#" routerLink="/merchant" class="text-gray-50"
+              >Merchant /</a
+            >
+          </li>
+          <li>
+            <a href="#" routerLink="/merchant/order" class="text-gray-50"
+              >Order</a
+            >
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div class="hidden lg:block">
+      <div
+        class="absolute left-0 right-0 px-10 z-10"
+        style="
+          bottom: calc(
+            -1 * (100% - document.getElementById('breadcrumb') .offsetHeight) - 12rem
+          );
+        "
+      >
+        <div class="flex bg-white rounded-3xl shadow-xl">
+          <!-- content here -->
+          <div class="w-full p-5 md:px-20 md:py-10">
+            <div class="flex items-center justify-between my-1">
+              <h1 class="font-semibold text-2xl">Order List</h1>
+            </div>
+            <div class="mt-5">
+              <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                <thead class="border-y">
+                  <tr>
+                    <th class="px-4 py-2">No</th>
+                    <th class="px-4 py-2">OrderID</th>
+                    <th class="px-4 py-2">Purchasing Date</th>
+                    <th class="px-4 py-2">Customer</th>
+                    <th class="px-4 py-2">Order Item</th>
+                    <th class="px-4 py-2">Total</th>
+                    <th class="px-4 py-2">Status</th>
+                    <th class="px-4 py-2">Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

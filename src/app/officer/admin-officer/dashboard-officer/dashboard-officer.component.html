@@ -1,48 +1,209 @@
-<div class="w-full p-5 md:px-20 md:py-10">
+<div class="relative w-full h-full mb-10">
   <div
-    class="flex items-center border border-blue-100 p-5 bg-blue-50 rounded-lg w-full h-40"
+    class="w-full bg-gradient-to-tr h-72 from-blue-500 via-blue-700 to-blue-800 rounded-b-3xl relative shadow-xl"
   >
-    <div>
-      <h1 class="font-bold text-2xl w-full">Welcome Back, John Doe</h1>
-      <p class="text-base w-full">Today {{ today | date }}</p>
+    <div class="px-10 py-5">
+      <h1 class="text-2xl font-medium text-white">Dashboard</h1>
+      <!-- breadcrumb: start -->
+      <nav aria-label="breadcrumb" class="flex items-center flex-wrap text-sm">
+        <ol class="flex items-center flex-wrap gap-2">
+          <li>
+            <a href="#" routerLink="/" class="text-gray-50">Home /</a>
+          </li>
+          <li>
+            <a href="#" routerLink="/officer" class="text-gray-50">Officer /</a>
+          </li>
+          <li>
+            <a href="#" routerLink="/officer/" class="text-gray-50"
+              >Dashboard</a
+            >
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div class="flex items-center p-10" id="welcomeText">
+      <div>
+        <h1 class="font-semibold text-2xl md:text-3xl w-full text-white">
+          Welcome Back, <span>{{ name }}</span>
+        </h1>
+        <p class="text-base w-full text-white">Today {{ today | date }}</p>
+      </div>
+    </div>
+    <!-- make the summary of product, order, rating, and transaction overlap content above -->
+    <div class="hidden lg:block">
+      <div
+        class="absolute left-0 right-0 grid grid-cols-3 gap-4 px-10 z-10"
+        style="
+          bottom: calc(
+            -1 * (100% - document.getElementById('welcomeText') .offsetHeight) -
+              12rem
+          );
+        "
+      >
+        <div class="flex bg-white rounded-3xl shadow-xl h-24">
+          <div class="w-2/4 flex items-center justify-center">
+            <svg
+              class="w-10 h-10 text-gray-800"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4.333 6.764a3 3 0 1 1 3.141-5.023M2.5 16H1v-2a4 4 0 0 1 4-4m7.379-8.121a3 3 0 1 1 2.976 5M15 10a4 4 0 0 1 4 4v2h-1.761M13 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-4 6h2a4 4 0 0 1 4 4v2H5v-2a4 4 0 0 1 4-4Z"
+              />
+            </svg>
+          </div>
+          <div class="w-3/4 flex items-center">
+            <div class="w-full">
+              <h1 class="text-base">User</h1>
+              <p class="text-3xl font-bold">50</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex bg-white rounded-3xl shadow-xl h-24">
+          <div class="w-2/4 flex items-center justify-center">
+            <svg
+              class="w-11 h-10 text-gray-800"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 18 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3.308 9a2.257 2.257 0 0 0 2.25-2.264 2.25 2.25 0 0 0 4.5 0 2.25 2.25 0 0 0 4.5 0 2.25 2.25 0 1 0 4.5 0C19.058 5.471 16.956 1 16.956 1H3.045S1.058 5.654 1.058 6.736A2.373 2.373 0 0 0 3.308 9Zm0 0a2.243 2.243 0 0 0 1.866-1h.767a2.242 2.242 0 0 0 3.733 0h.767a2.242 2.242 0 0 0 3.733 0h.767a2.247 2.247 0 0 0 1.867 1A2.22 2.22 0 0 0 18 8.649V19H9v-7H5v7H2V8.524c.37.301.83.469 1.308.476ZM12 12h3v3h-3v-3Z"
+              />
+            </svg>
+          </div>
+          <div class="w-3/4 flex items-center">
+            <div class="w-full">
+              <h1 class="text-base">Merchant</h1>
+              <p class="text-3xl font-bold">50</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex bg-white rounded-3xl shadow-xl h-24">
+          <div class="w-2/4 flex items-center justify-center">
+            <svg
+              class="w-10 h-10 text-gray-800"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 21 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9V4a3 3 0 0 0-6 0v5m9.92 10H2.08a1 1 0 0 1-1-1.077L2 6h14l.917 11.923A1 1 0 0 1 15.92 19Z"
+              />
+            </svg>
+          </div>
+          <div class="w-3/4 flex items-center">
+            <div class="w-full">
+              <h1 class="text-base">Product</h1>
+              <p class="text-3xl font-bold">45</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-  <div class="mt-8 flex justify-between gap-4">
-    <div class="w-1/2 bg-white border border-blue-100 rounded-lg p-5">
-      <h1 class="font-bold text-xl">Total Merchant Registered</h1>
-      <p class="text-base">Manage your store here</p>
-    </div>
-    <div class="w-1/2 bg-white border border-blue-100 rounded-lg p-5">
-      <h1 class="font-bold text-xl">Total Product Registered</h1>
-      <p class="text-base">Manage your store here</p>
-    </div>
-  </div>
+<div class="w-full px-5 md:px-10 md:py-5">
   <div
-    class="bg-white border border-blue-100 mt-4 rounded-lg overflow-hidden col-span-2"
+    class="block lg:hidden bg-white rounded-3xl shadow-xl overflow-hidden col-span-2"
   >
-    <div class="px-5 pt-5">
-      <h1 class="font-bold text-xl">All Menu</h1>
+    <div class="p-5">
+      <h1 class="font-bold text-xl">Overview Data</h1>
+      <p class="text-base">Manage your system here</p>
     </div>
-    <div class="grid grid-cols-2 gap-x-4 gap-y-4 p-5">
-      <button
-        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
-        routerLink="/officer/account-management"
-      >
-        <div class="flex justify-center">
-          <i class="fa-solid fa-ticket text-6xl text-center"></i>
+    <div class="grid grid-cols-1 gap-4 px-5 mb-5 z-10">
+      <div class="flex bg-white rounded-3xl shadow-xl h-24">
+        <div class="w-2/4 flex items-center justify-center">
+          <svg
+            class="w-10 h-10 text-gray-800"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 16"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4.333 6.764a3 3 0 1 1 3.141-5.023M2.5 16H1v-2a4 4 0 0 1 4-4m7.379-8.121a3 3 0 1 1 2.976 5M15 10a4 4 0 0 1 4 4v2h-1.761M13 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-4 6h2a4 4 0 0 1 4 4v2H5v-2a4 4 0 0 1 4-4Z"
+            />
+          </svg>
         </div>
-        <p class="text-base w-full text-center mt-3">Account Management</p>
-      </button>
-      <button
-        class="bg-blue-50 rounded-lg p-5 hover:bg-blue-100"
-        routerLink="/officer/report"
-      >
-        <div class="flex justify-center">
-          <i class="fa-solid fa-file-invoice text-6xl text-center"></i>
+        <div class="w-3/4 flex items-center">
+          <div class="w-full">
+            <h1 class="text-base">User</h1>
+            <p class="text-3xl font-bold">50</p>
+          </div>
         </div>
-        <p class="text-base w-full text-center mt-3">Analytics Report</p>
-      </button>
+      </div>
+      <div class="flex bg-white rounded-3xl shadow-xl h-24">
+        <div class="w-2/4 flex items-center justify-center">
+          <svg
+            class="w-11 h-10 text-gray-800"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 18 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3.308 9a2.257 2.257 0 0 0 2.25-2.264 2.25 2.25 0 0 0 4.5 0 2.25 2.25 0 0 0 4.5 0 2.25 2.25 0 1 0 4.5 0C19.058 5.471 16.956 1 16.956 1H3.045S1.058 5.654 1.058 6.736A2.373 2.373 0 0 0 3.308 9Zm0 0a2.243 2.243 0 0 0 1.866-1h.767a2.242 2.242 0 0 0 3.733 0h.767a2.242 2.242 0 0 0 3.733 0h.767a2.247 2.247 0 0 0 1.867 1A2.22 2.22 0 0 0 18 8.649V19H9v-7H5v7H2V8.524c.37.301.83.469 1.308.476ZM12 12h3v3h-3v-3Z"
+            />
+          </svg>
+        </div>
+        <div class="w-3/4 flex items-center">
+          <div class="w-full">
+            <h1 class="text-base">Merchant</h1>
+            <p class="text-3xl font-bold">50</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex bg-white rounded-3xl shadow-xl h-24">
+        <div class="w-2/4 flex items-center justify-center">
+          <svg
+            class="w-10 h-10 text-gray-800"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 21 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9V4a3 3 0 0 0-6 0v5m9.92 10H2.08a1 1 0 0 1-1-1.077L2 6h14l.917 11.923A1 1 0 0 1 15.92 19Z"
+            />
+          </svg>
+        </div>
+        <div class="w-3/4 flex items-center">
+          <div class="w-full">
+            <h1 class="text-base">Product</h1>
+            <p class="text-3xl font-bold">45</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
