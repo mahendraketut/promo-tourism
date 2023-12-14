@@ -217,12 +217,14 @@
               />
             </svg>
           </div>
-          <h1 class="w-full text-center">John Doe</h1>
+          <h1 class="w-full text-center">{{ name }}</h1>
           <p class="w-full text-center text-xs font-light text-gray-200">
-            johndoe@gmail.com
+            {{ email }}
           </p>
-          <p class="w-full text-center text-xs font-light my-1 text-gray-200">
-            Merchant
+          <p
+            class="w-full text-center text-xs font-light my-1 text-gray-200 text capitalize"
+          >
+            {{ role }}
           </p>
         </div>
         <!-- logout button: start -->
