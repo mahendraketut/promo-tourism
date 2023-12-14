@@ -35,242 +35,24 @@ import { v4 as uuidv4 } from "uuid";
 // };
 
 export const checkEmail = async (req, res, next) => {
-  console.log("checkEmail Kepanggil");
-  try {
-    const email = req.body.email;
-    console.log("email: ", email);
-    const doesEmailExist = await User.findOne({ email: req.body.email });
-    console.log("does email exist: ", doesEmailExist);
-
-    if (doesEmailExist) {
-      return next(CreateSuccess(200, "Email Taken"));
-    } else {
-      return next(CreateSuccess(200, "Email Available"));
-    }
-  } catch (error) {
-    return next(CreateError(500, "Internal Server Error", error));
-  }
-};
-
-//versi ini aman, tapi ga make formdata, ini yang pake json biasa
-export const register2 = async (req, res, next) => {
-  try {
-    console.log("masuk register");
-    //cari user udah ada apa belom
-    const doesEmailExist = await User.findOne({ email: req.body.email });
-    console.log("does email exist: ", doesEmailExist);
-    if (doesEmailExist) {
-      return next(CreateError(400, "Email already exists"));
-    } else {
-      console.log("req info: ", req.body);
-      console.log("masuk else");
-      const salt = await bcrypt.genSalt(10);
-      console.log("salt: ", salt);
-      let hashedPassword = "";
-      if (req.body.password != null) {
-        hashedPassword = await new Promise((resolve, reject) => {
-          bcrypt.hash(req.body.password, salt, function (err, hash) {
-            if (err) reject(err);
-            resolve(hash);
-          });
-        });
-        // hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-        console.log("hashedpw: ", hashedPassword);
-        console.log("req info: ", req.body);
-      }
-      // const hashedPassword = await bcrypt.hash(req.body.password, salt);
-      // TODO hendry, kontolmu tolong di refactor nanti ya
-      console.log("JS KONTOL: ", hashedPassword);
-
-      const roleType = req.body.roles;
-      console.log("role type: ", roleType);
-      if (roleType == "admin") {
-        console.log("seorang admin");
-        try {
-          console.log("masuk trycatch");
-          const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            roles: req.body.roles,
-            phoneNo: req.body.phoneNo,
-          });
-          await newUser.save();
-          return next(CreateSuccess(200, "Admin registered successfully!"));
-        } catch (error) {
-          console.log("error di create email", error);
-        }
-        console.log("new user: ", newUser);
-      } else if (roleType == "user") {
-        try {
-          console.log("seorang user");
-          const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            roles: "user",
-            phoneNo: req.body.phoneNo,
-            address: req.body.address,
-          });
-          await newUser.save();
-          return next(CreateSuccess(200, "User registered successfully!"));
-        } catch (error) {
-          console.log("error di create email", error);
-        }
-      } else if (roleType == "merchant") {
-        console.log("masuk merchant");
-
-        const temporaryPassword = Randomstring.generate(8);
-        console.log("merch pw: ", temporaryPassword);
-        const newUser = new User({
-          name: req.body.name,
-          email: req.body.email,
-          password: temporaryPassword,
-          roles: "merchant",
-          phoneNo: req.body.phoneNo,
-          description: req.body.description,
-          accountStatus: "pending",
-          //TODO:add file handling afterwards
-        });
-        await newUser.save();
-        return next(CreateSuccess(200, "Merchant registered successfully!"));
+    console.log('checkEmail Kepanggil');
+    try {
+      const email = req.body.email;
+      console.log('email: ', email);
+      const doesEmailExist = await User.findOne({ email: req.body.email });
+      console.log('does email exist: ', doesEmailExist);
+      
+      if (doesEmailExist) {
+        return next(CreateSuccess(200, 'Email Taken'));
       } else {
-        return next(CreateError(400, "Invalid Role!"));
+        return next(CreateSuccess(200, 'Email Available'));
       }
+    } catch (error) {
+      return next(CreateError(500, 'Internal Server Error', error));
     }
-  } catch (error) {
-    return next(CreateError(500, "Internal Server Error", error));
-  }
-};
+  };
 
-export const register3 = async (req, res, next) => {
-  try {
-    console.log("masuk register");
-    // Check if the email exists
-    const doesEmailExist = await User.findOne({ email: req.body.email });
-    console.log("does email exist: ", doesEmailExist);
-    if (doesEmailExist) {
-      return next(CreateError(400, "Email already exists"));
-    } else {
-      console.log("req info: ", req.body);
-      console.log("masuk else");
 
-      const salt = await bcrypt.genSalt(10);
-      let hashedPassword = "";
-
-      if (req.body.password != null) {
-        hashedPassword = await new Promise((resolve, reject) => {
-          bcrypt.hash(req.body.password, salt, function (err, hash) {
-            if (err) reject(err);
-            resolve(hash);
-          });
-        });
-      }
-
-      const roleType = req.body.roles;
-      console.log("role type: ", roleType);
-
-      if (roleType === "merchant") {
-        const form = new formidable.IncomingForm();
-
-        form.parse(req, async (err, fields, files) => {
-          if (err) {
-            return next(CreateError(500, "File upload failed", err));
-          }
-
-          const { name, email, phoneNo, description } = fields;
-
-          // const { license, reviews, profilePic } = files;
-          const { license, reviews } = files;
-
-          // Define upload directory
-          const uploadDir = path.join(__dirname, "merchant_uploads");
-          if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir);
-          }
-
-          const validatePDF = (file) => {
-            const fileExtension = path.extname(file.name).toLowerCase();
-            return fileExtension === ".pdf";
-          };
-
-          // Validate file types
-          if (!validatePDF(license) || !validatePDF(reviews)) {
-            return next(
-              CreateError(400, "License and Reviews must be PDF files")
-            );
-          }
-
-          const licensePath = path.join(uploadDir, "merchant_license.pdf");
-          const reviewsPath = path.join(uploadDir, "reviews.pdf");
-          // const profilePicPath = path.join(uploadDir, 'profile_picture.jpg');
-
-          fs.renameSync(license.path, licensePath);
-          fs.renameSync(reviews.path, reviewsPath);
-          // fs.renameSync(profilePic.path, profilePicPath);
-
-          try {
-            const newUser = new User({
-              name,
-              email,
-              password: hashedPassword,
-              roles: "merchant",
-              phoneNo,
-              description,
-              licensePath,
-              reviewsPath,
-              // profilePicPath,
-              accountStatus: "pending",
-            });
-            await newUser.save();
-            return next(
-              CreateSuccess(200, "Merchant registered successfully!")
-            );
-          } catch (error) {
-            console.log("Error creating merchant:", error);
-            return next(CreateError(500, "Error creating merchant", error));
-          }
-        });
-      } else if (roleType === "admin") {
-        try {
-          console.log("masuk trycatch");
-          const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            roles: req.body.roles,
-            phoneNo: req.body.phoneNo,
-          });
-          await newUser.save();
-          return next(CreateSuccess(200, "Admin registered successfully!"));
-        } catch (error) {
-          console.log("error di create email", error);
-        }
-      } else if (roleType === "user") {
-        try {
-          console.log("seorang user");
-          const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            roles: "user",
-            phoneNo: req.body.phoneNo,
-            address: req.body.address,
-          });
-          await newUser.save();
-          return next(CreateSuccess(200, "User registered successfully!"));
-        } catch (error) {
-          console.log("error di create email", error);
-        }
-      } else {
-        return next(CreateError(400, "Invalid Role!"));
-      }
-    }
-  } catch (error) {
-    return next(CreateError(500, "Internal Server Error", error));
-  }
-};
 
 export const register = async (req, res, next) => {
   const form = new IncomingForm();
@@ -342,65 +124,68 @@ export const register = async (req, res, next) => {
           );
         }
 
-        //v3
-        const moveAndRenameFile = (source, originalName, targetDir) => {
-          // Extract the file extension from the original file name
-          const fileExtension = path.extname(originalName);
-          // Generate a new file name using the original name with a unique prefix
-          const uniquePrefix = uuidv4(); // Or any other method to generate a unique string
-          const newFileName = uniquePrefix + fileExtension; // Keep the .pdf extension
-          // Create the full path for the new file
-          const targetPath = path.join(targetDir, newFileName);
-
-          fs.copyFileSync(source, targetPath); // Copy the file to the new location
-          fs.unlinkSync(source); // Delete the original file
-
-          return newFileName; // Return the new file name for storing in the database
-        };
-        try {
-          const licenseNewFileName = moveAndRenameFile(
-            files.license[0].filepath,
-            files.license[0].originalFilename, // This should have the .pdf extension
-            uploadDir
-          );
-          const reviewsNewFileName = moveAndRenameFile(
-            files.reviews[0].filepath,
-            files.reviews[0].originalFilename, // This should have the .pdf extension
-            uploadDir
-          );
-          const licensePath = path.join(uploadDir, licenseNewFileName);
-          const reviewsPath = path.join(uploadDir, reviewsNewFileName);
-          newUser = new User({
-            name: getFieldValue(name),
-            email: getFieldValue(email),
-            password: hashedPassword,
-            roles: "merchant",
-            phoneNo: getFieldValue(phoneNo),
-            description: getFieldValue(description),
-            licensePath: licensePath,
-            reviewsPath: reviewsPath,
-            accountStatus: "pending",
-            licenseDescription: getFieldValue(fields.licenseDescription),
-            reviewsDescription: getFieldValue(fields.reviewsDescription),
-          });
-        } catch (error) {
-          console.log("Error moving files:", error);
-          return next(CreateError(500, "Error moving files", error));
-        }
-      } else if (roleType === "admin" || roleType === "user") {
-        console.log("masuk reg user biasa");
-        newUser = new User({
-          name: getFieldValue(fields.name),
-          email: getFieldValue(fields.email),
-          password: hashedPassword,
-          roles: roleType,
-          phoneNo: getFieldValue(fields.phoneNo),
-          address: getFieldValue(fields.address),
-          accountStatus: "approved",
-        });
-      } else {
-        return next(CreateError(400, "Invalid Role!"));
-      }
+                //v3
+                const moveAndRenameFile = (source, originalName, targetDir) => {
+                    // Extract the file extension from the original file name
+                    const fileExtension = path.extname(originalName);
+                    // Generate a new file name using the original name with a unique prefix
+                    const uniquePrefix = uuidv4(); // Or any other method to generate a unique string
+                    const newFileName = uniquePrefix + fileExtension; // Keep the .pdf extension
+                    // Create the full path for the new file
+                    const targetPath = path.join(targetDir, newFileName);
+                
+                    fs.copyFileSync(source, targetPath); // Copy the file to the new location
+                    fs.unlinkSync(source); // Delete the original file
+                
+                    return newFileName; // Return the new file name for storing in the database
+                };
+                try {
+                    const licenseNewFileName = moveAndRenameFile(
+                        files.license[0].filepath,
+                        files.license[0].originalFilename, // This should have the .pdf extension
+                        uploadDir
+                    );
+                    const reviewsNewFileName = moveAndRenameFile(
+                        files.reviews[0].filepath,
+                        files.reviews[0].originalFilename, // This should have the .pdf extension
+                        uploadDir
+                    );
+                    const licensePath = path.join(uploadDir, licenseNewFileName);
+                    const reviewsPath = path.join(uploadDir, reviewsNewFileName);
+                    newUser = new User({
+                        name: getFieldValue(name),
+                        email: getFieldValue(email),
+                        password: hashedPassword,
+                        roles: 'merchant',
+                        phoneNo: getFieldValue(phoneNo),
+                        description: getFieldValue(description),
+                        licensePath: licensePath,
+                        reviewsPath: reviewsPath,
+                        accountStatus: 'pending',
+                        licenseDescription: getFieldValue(fields.licenseDescription),
+                        reviewsDescription: getFieldValue(fields.reviewsDescription),
+                    });
+                } catch (error) {
+                    console.log('Error moving files:', error);
+                    return next(CreateError(500, 'Error moving files', error));
+                }
+                
+                    
+            } else if (roleType === 'admin' || roleType === 'user') {
+                console.log("masuk reg user biasa");
+                newUser = new User({
+                    name: getFieldValue(fields.name),
+                    email: getFieldValue(fields.email),
+                    password: hashedPassword,
+                    roles: roleType,
+                    phoneNo: getFieldValue(fields.phoneNo),
+                    address: getFieldValue(fields.address),
+                    accountStatus: 'approved',
+                    
+                });
+            } else {
+                return next(CreateError(400, 'Invalid Role!'));
+            }
 
       await newUser.save();
       return next(
@@ -492,8 +277,8 @@ export const changePassword = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-    user.password = hashedNewPassword;
-    await user.save();
+        user.password = hashedNewPassword;
+        await user.save();
 
     return next(CreateSuccess(200, "Password Changed Successfully"));
   } catch (error) {
