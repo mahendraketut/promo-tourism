@@ -232,6 +232,7 @@
                           id="license-upload"
                           type="file"
                           class="sr-only"
+                          formControlName="license"
                           (change)="handleFileInput($event, 'license')"
                           accept=".pdf"
                         />
@@ -243,7 +244,16 @@
                     </p>
                   </div>
                 </div>
+
+                <div *ngIf="userDataForm.get('license')?.value">
+                  <p>
+                    License File Name: {{ licenseFileName }} ({{
+                      licenseFileSize
+                    }})
+                  </p>
+                </div>
               </div>
+
               <div class="mt-2">
                 <label
                   for="email"
@@ -305,6 +315,7 @@
                           id="reviews-upload"
                           type="file"
                           class="sr-only"
+                          formControlName="reviews"
                           (change)="handleFileInput($event, 'reviews')"
                           accept=".pdf"
                         />
@@ -315,6 +326,14 @@
                       PDF File Only up to 1 MB
                     </p>
                   </div>
+                </div>
+
+                <div *ngIf="userDataForm.get('reviews')?.value">
+                  <p>
+                    Reviews File Name: {{ reviewsFileName }} ({{
+                      reviewsFileSize
+                    }})
+                  </p>
                 </div>
               </div>
               <div class="mt-2">

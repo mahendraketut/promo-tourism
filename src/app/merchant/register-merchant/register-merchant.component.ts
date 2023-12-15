@@ -45,7 +45,9 @@ export class RegisterMerchantComponent {
     userName: new FormControl('', [Validators.required]),
     userDescription: new FormControl('', [Validators.required]), // This will be used for description instead
     roles: new FormControl('merchant'), // Assuming 'merchant' is a constant value
+    license: new FormControl(),
     licenseDescription: new FormControl('', [Validators.required]),
+    reviews: new FormControl(),
     reviewsDescription: new FormControl('', [Validators.required]),
   });
   checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
@@ -106,71 +108,60 @@ export class RegisterMerchantComponent {
 
   selectedFiles: Record<string, File> = {};
 
+  // handleFileInput(event: Event, fieldName: string): void {
+  //   console.log('file masuk: ', fieldName);
+  //   const element = event.currentTarget as HTMLInputElement;
+  //   let fileList: FileList | null = element.files;
+  //   if (fileList) {
+  //     this.selectedFiles[fieldName] = fileList[0];
+  //   }
+  // }
+
   handleFileInput(event: Event, fieldName: string): void {
-    console.log('file masuk: ', fieldName);
     const element = event.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
+    const fileList: FileList | null = element.files;
+
     if (fileList) {
-      this.selectedFiles[fieldName] = fileList[0];
+      // Set the form control value
+      this.userDataForm.get(fieldName)?.setValue(fileList[0]);
+
+      // Trigger validation update
+      this.userDataForm.get(fieldName)?.updateValueAndValidity();
     }
+  }
+
+  formatFileSize(size: number): string {
+    const kilobytes = size / 1024;
+    if (kilobytes < 1024) {
+      return kilobytes.toFixed(2) + ' KB';
+    } else {
+      const megabytes = kilobytes / 1024;
+      return megabytes.toFixed(2) + ' MB';
+    }
+  }
+
+  // Display File Name
+  get licenseFileName(): string | undefined {
+    return this.userDataForm.get('license')?.value?.name;
+  }
+
+  // Display File Size
+  get licenseFileSize(): string | undefined {
+    return this.formatFileSize(this.userDataForm.get('license')?.value?.size);
+  }
+
+  // Display File Name
+  get reviewsFileName(): string | undefined {
+    return this.userDataForm.get('reviews')?.value?.name;
+  }
+
+  // Display File Size
+  get reviewsFileSize(): string | undefined {
+    return this.formatFileSize(this.userDataForm.get('reviews')?.value?.size);
   }
 
   //tracks if user submitted the form.
   submittedClicked = false;
-
-  //v2
-  // onSubmit() {
-  //   console.log("submit ke klik");
-  //   this.submittedClicked = true;
-  //   console.log("validitas form: ", this.userDataForm.valid);
-  //   console.log("error form", this.userDataForm.errors);
-  //   if (this.userDataForm.valid) {
-  //     const formData = new FormData();
-
-  //     // Append file inputs to the FormData object
-  //     // formData.append('license', this.userDataForm.get('license').value);
-  //     // formData.append('reviews', this.userDataForm.get('reviews').value);
-
-  //     console.log("sebelum di append");
-  //     formData.append('email', this.userDataForm.get('userEmail').value);
-  //     formData.append('roles', this.userDataForm.get('roles').value);
-  //     formData.append('phoneNo', this.userDataForm.get('userPhone').value);
-  //     formData.append('description', this.userDataForm.get('userDescription').value);
-  //     formData.append('name', this.userDataForm.get('userName').value);
-  //     formData.append('licenseDescription', this.userDataForm.get('licenseDescription').value);
-  //     formData.append('reviewsDescription', this.userDataForm.get('reviewsDescription').value);
-
-  //     console.log("fd setelah append: ", formData);
-
-  //     // Call the service to send the form data to the backend
-  //     this.authService.registerUser(formData).subscribe({
-  //       next: (response) => {
-  //         // Handle the response
-  //         console.log(response);
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Success!',
-  //           text: 'Your merchant account has been registered! Please wait for approval.',
-  //           confirmButtonText: 'OK',
-  //         }).then((result) => {
-  //           if (result.isConfirmed) {
-  //             this.router.navigate(['/auth/login']);
-  //           }
-  //         });
-  //       },
-  //       error: (error) => {
-  //         // Handle the error
-  //         console.log(error);
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Registration Failed',
-  //           text: 'There was an issue with your registration. Please try again.',
-  //           // ... other options
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
 
   onSubmit() {
     console.log('submit ke klik');
