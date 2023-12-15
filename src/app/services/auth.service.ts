@@ -60,21 +60,6 @@ export class AuthService {
     return this.http.post(api, { email, password }).pipe(catchError(this.errorMgmt));
   }
 
-  // //General error management.
-  // errorMgmt(error: HttpErrorResponse) {
-  //   let errorMessage = '';
-  //   if (error.error instanceof ErrorEvent) {
-  //     // Get client-side error
-  //     errorMessage = error.error.message;
-  //   } else {
-  //     // Get server-side error
-  //     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-  //   }
-  //   console.log(errorMessage);
-  //   return throwError(() => {
-  //     return errorMessage;
-  //   });
-  // }
 
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
@@ -89,8 +74,78 @@ export class AuthService {
     return throwError(() => error); // Return the actual error object
   }
   
+  //filters with account status
+  getMerchants(): Observable<any[]> {
+    let api = `${this.endpoint}/merchants`;
+    return this.http.get<any[]>(api).pipe(
+      map((response: any) => {
+        const merchantsResponse = response.merchants;
+  
+        if (Array.isArray(merchantsResponse)) {
+          //Filters merchants according to their account status
+          const pendingMerchants = merchantsResponse.filter((merchant: any) => merchant.accountStatus === 'pending');
+          const approvedMerchants = merchantsResponse.filter((merchant: any) => merchant.accountStatus === 'approved');
+          const rejectedMerchants = merchantsResponse.filter((merchant: any) => merchant.accountStatus === 'rejected');
+          //Combines them into one
+          const sortedMerchants = pendingMerchants.concat(approvedMerchants, rejectedMerchants);
+  
+          //Removes password from the response.
+          //We did remove this in the back-end, but just to be safe, i removed it again.
+          const merchantsWithoutPasswords = sortedMerchants.map((merchant: any) => {
+            const { password, ...rest } = merchant;
+            return rest;
+          });
+  
+          return merchantsWithoutPasswords;
+        } else {
+          console.log("bukan array");
+          return [];
+        }
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+  
+  acceptMerchant(merchantId: string): Observable<any> {
+    let api = `${this.endpoint}/accept?id=${merchantId}`;
+    return this.http.post(api, {}).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+  
+  rejectMerchant(merchantId: string): Observable<any> {
+    let api = `${this.endpoint}/reject?id=${merchantId}`; 
+    return this.http.post(api, {}).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
 
+  logoutUser(): void {
+    localStorage.removeItem('token'); // Remove the token from local storage
+    this.logoutBackend();
 
+    // You might want to add any additional cleanup steps here
+  }
+
+  // Call the API endpoint for logging out on the backend
+  logoutBackend(): Observable<any> {
+    // Adjust the endpoint to your backend logout API
+    const logoutApi = `${this.endpoint}/logout`;
+    return this.http.get(logoutApi); // Assuming a GET request is used for logout in your backend
+  }
+
+  changePassword(currentPassword: string, newPassword: string, userId: string): Observable<any> {
+    console.log("masuk service changepass");
+    let api = `${this.endpoint}/changepassword`;
+    return this.http.patch(api, {currentPassword, newPassword, userId}).pipe(catchError(this.errorMgmt));
+  }
+}
   //Get merchants, but it also filters the merchants based on accountStatus
   //Only merchants with accountStatus === 'pending' will be returned.
   // getMerchants(): Observable<any[]> {
@@ -145,76 +200,20 @@ export class AuthService {
   //   );
   // }
 
-  //filters with account status
-  getMerchants(): Observable<any[]> {
-    let api = `${this.endpoint}/merchants`;
-    return this.http.get<any[]>(api).pipe(
-      map((response: any) => {
-        const merchantsResponse = response.merchants;
-  
-        if (Array.isArray(merchantsResponse)) {
-          //Filters merchants according to their account status
-          const pendingMerchants = merchantsResponse.filter((merchant: any) => merchant.accountStatus === 'pending');
-          const approvedMerchants = merchantsResponse.filter((merchant: any) => merchant.accountStatus === 'approved');
-          const rejectedMerchants = merchantsResponse.filter((merchant: any) => merchant.accountStatus === 'rejected');
-          //Combines them into one
-          const sortedMerchants = pendingMerchants.concat(approvedMerchants, rejectedMerchants);
-  
-          //Removes password from the response.
-          //We did remove this in the back-end, but just to be safe, i removed it again.
-          const merchantsWithoutPasswords = sortedMerchants.map((merchant: any) => {
-            const { password, ...rest } = merchant;
-            return rest;
-          });
-  
-          return merchantsWithoutPasswords;
-        } else {
-          console.log("bukan array");
-          return [];
-        }
-      }),
-      catchError(this.errorMgmt)
-    );
-  }
-  
-  
 
 
-  acceptMerchant(merchantId: string): Observable<any> {
-    let api = `${this.endpoint}/accept?id=${merchantId}`;
-    return this.http.post(api, {}).pipe(
-      map((response: any) => {
-        return response;
-      }),
-      catchError(this.errorMgmt)
-    );
-  }
-  
-  rejectMerchant(merchantId: string): Observable<any> {
-    let api = `${this.endpoint}/reject?id=${merchantId}`; 
-    return this.http.post(api, {}).pipe(
-      map((response: any) => {
-        return response;
-      }),
-      catchError(this.errorMgmt)
-    );
-  }
-
-  logoutUser(): void {
-    localStorage.removeItem('token'); // Remove the token from local storage
-    this.logoutBackend();
-
-    // You might want to add any additional cleanup steps here
-  }
-
-  // Call the API endpoint for logging out on the backend
-  logoutBackend(): Observable<any> {
-    // Adjust the endpoint to your backend logout API
-    const logoutApi = `${this.endpoint}/logout`;
-    return this.http.get(logoutApi); // Assuming a GET request is used for logout in your backend
-  }
-}
-
-
-
-
+  // //General error management.
+  // errorMgmt(error: HttpErrorResponse) {
+  //   let errorMessage = '';
+  //   if (error.error instanceof ErrorEvent) {
+  //     // Get client-side error
+  //     errorMessage = error.error.message;
+  //   } else {
+  //     // Get server-side error
+  //     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  //   }
+  //   console.log(errorMessage);
+  //   return throwError(() => {
+  //     return errorMessage;
+  //   });
+  // }
