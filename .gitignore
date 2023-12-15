@@ -43,3 +43,4 @@ Thumbs.db
 
 /backend/controllers/productimg/
 /backend/controllers/merchant_uploads/
+/backend/.env
