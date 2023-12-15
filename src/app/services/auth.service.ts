@@ -91,8 +91,8 @@ export class AuthService {
   
 
 
-  //Get merchants, but it also filters the merchants based on accountStatus
-  //Only merchants with accountStatus === 'pending' will be returned.
+  // Get merchants, but it also filters the merchants based on accountStatus
+  // Only merchants with accountStatus === 'pending' will be returned.
   // getMerchants(): Observable<any[]> {
   //   let api = `${this.endpoint}/merchants`;
   //   console.log("masuk service get merchants");

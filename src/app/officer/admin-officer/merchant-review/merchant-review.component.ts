@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -11,6 +13,9 @@ import Swal from 'sweetalert2';
 export class MerchantReviewComponent implements OnInit {
   dtOptions: any = {};
   merchants: any[] = [];
+  @ViewChild(DataTableDirective, {static: false})
+  datatableElement: DataTableDirective
+  dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(private authService: AuthService) {}
 
@@ -26,12 +31,17 @@ export class MerchantReviewComponent implements OnInit {
     };
     this.fetchMerchants();
   }
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
 
   fetchMerchants() {
     this.authService.getMerchants().subscribe({
       next: (data) => {
         //this enters the merchants data into our local array.
         this.merchants = data;
+        this.dtTrigger.next(null as any);
       },
       error: (error) => {
         console.error('Error fetching merchants:', error);
