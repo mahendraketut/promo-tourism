@@ -232,7 +232,6 @@
                           id="license-upload"
                           type="file"
                           class="sr-only"
-                          formControlName="license"
                           (change)="handleFileInput($event, 'license')"
                           accept=".pdf"
                         />
@@ -245,11 +244,9 @@
                   </div>
                 </div>
 
-                <div *ngIf="userDataForm.get('license')?.value">
+                <div *ngIf="selectedFiles['license']">
                   <p>
-                    License File Name: {{ licenseFileName }} ({{
-                      licenseFileSize
-                    }})
+                    License File Name: {{ fileDetails['license']?.name }} ({{ fileDetails['license']?.size }})
                   </p>
                 </div>
               </div>
@@ -315,7 +312,6 @@
                           id="reviews-upload"
                           type="file"
                           class="sr-only"
-                          formControlName="reviews"
                           (change)="handleFileInput($event, 'reviews')"
                           accept=".pdf"
                         />
@@ -328,11 +324,9 @@
                   </div>
                 </div>
 
-                <div *ngIf="userDataForm.get('reviews')?.value">
+                <div *ngIf="selectedFiles['reviews']">
                   <p>
-                    Reviews File Name: {{ reviewsFileName }} ({{
-                      reviewsFileSize
-                    }})
+                    Reviews File Name: {{ fileDetails['reviews']?.name }} ({{ fileDetails['reviews']?.size }})
                   </p>
                 </div>
               </div>

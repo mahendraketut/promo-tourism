@@ -16,6 +16,7 @@ export class RegisterMerchantComponent {
   isPersonalData: boolean;
   isAttachment: boolean;
   isPersonalDataBtnClicked: boolean;
+  fileDetails: { [key: string]: { name: string, size: string } } = {};
 
   constructor(private router: Router, private authService: AuthService) {
     this.logo = '/assets/img/logo-landscape.png';
@@ -45,9 +46,7 @@ export class RegisterMerchantComponent {
     userName: new FormControl('', [Validators.required]),
     userDescription: new FormControl('', [Validators.required]), // This will be used for description instead
     roles: new FormControl('merchant'), // Assuming 'merchant' is a constant value
-    license: new FormControl(),
     licenseDescription: new FormControl('', [Validators.required]),
-    reviews: new FormControl(),
     reviewsDescription: new FormControl('', [Validators.required]),
   });
   checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
@@ -108,28 +107,33 @@ export class RegisterMerchantComponent {
 
   selectedFiles: Record<string, File> = {};
 
-  // handleFileInput(event: Event, fieldName: string): void {
-  //   console.log('file masuk: ', fieldName);
-  //   const element = event.currentTarget as HTMLInputElement;
-  //   let fileList: FileList | null = element.files;
-  //   if (fileList) {
-  //     this.selectedFiles[fieldName] = fileList[0];
-  //   }
-  // }
+
 
   handleFileInput(event: Event, fieldName: string): void {
     const element = event.currentTarget as HTMLInputElement;
-    const fileList: FileList | null = element.files;
-
+    let fileList: FileList | null = element.files;
+    
     if (fileList) {
-      // Set the form control value
-      this.userDataForm.get(fieldName)?.setValue(fileList[0]);
-
-      // Trigger validation update
-      this.userDataForm.get(fieldName)?.updateValueAndValidity();
+      const file = fileList[0];
+    
+      // Instead of setting the FormControl value, store the file details separately.
+      // Assuming you have a property to hold the file for submission later
+      this.selectedFiles[fieldName] = file;
+    
+      // Store file details for display
+      this.fileDetails[fieldName] = {
+        name: file.name,
+        size: this.formatFileSize(file.size)
+      };
+  
+      // If you need to trigger validation or updates based on the file input, 
+      // do so here without setting the file as a control value.
+      // For example, you might mark the control as touched or set an associated value.
+      this.userDataForm.get(fieldName)?.markAsTouched();
     }
   }
-
+  
+  
   formatFileSize(size: number): string {
     const kilobytes = size / 1024;
     if (kilobytes < 1024) {
@@ -139,26 +143,7 @@ export class RegisterMerchantComponent {
       return megabytes.toFixed(2) + ' MB';
     }
   }
-
-  // Display File Name
-  get licenseFileName(): string | undefined {
-    return this.userDataForm.get('license')?.value?.name;
-  }
-
-  // Display File Size
-  get licenseFileSize(): string | undefined {
-    return this.formatFileSize(this.userDataForm.get('license')?.value?.size);
-  }
-
-  // Display File Name
-  get reviewsFileName(): string | undefined {
-    return this.userDataForm.get('reviews')?.value?.name;
-  }
-
-  // Display File Size
-  get reviewsFileSize(): string | undefined {
-    return this.formatFileSize(this.userDataForm.get('reviews')?.value?.size);
-  }
+  
 
   //tracks if user submitted the form.
   submittedClicked = false;
@@ -213,16 +198,25 @@ export class RegisterMerchantComponent {
         next: (response) => {
           // Handle the response
           console.log(response);
-          Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'Your merchant account has been registered! Please wait for approval.',
-            confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigate(['/auth/login']);
-            }
-          });
+          if(response.status === 200){
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Your merchant account has been registered! Please wait for approval.',
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(['/auth/login']);
+              }
+            });
+          }
+          else if(response.status === 201){
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Please input the appropriate PDF files!',
+            });
+          }
         },
         error: (error) => {
           // Handle the error

@@ -100,7 +100,8 @@ export const register = async (req, res, next) => {
         // In the part of the code where you validate and process the uploaded files
         if (!validatePDF(files.license) || !validatePDF(files.reviews)) {
           return next(
-            CreateError(400, "License and Reviews must be PDF files")
+            // CreateError(403, "License and Reviews must be PDF files")
+            CreateSuccess(201, "License and Reviews must be PDF files")
           );
         }
 
