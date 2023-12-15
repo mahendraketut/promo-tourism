@@ -1,7 +1,7 @@
-<div class="h-screen">
+<div class="">
   <div
     *ngIf="isMerchantRegForm == false"
-    class="flex items-center h-screen mx-auto"
+    class="container mx-auto px-5 flex items-center h-screen"
   >
     <div class="md:h-fit md:w-3/6">
       <div class="flex items-center h-40">
@@ -25,12 +25,12 @@
       </div>
 
       <div class="flex justify-start mt-5">
-        <a
-          (click)="(isMerchantRegFormChange)"
+        <button
+          (click)="isMerchantRegForm = true"
           class="text-black px-8 p-2 border-black border-2 rounded-full font-poppins hover:bg-blue-700 hover:text-white hover:border-blue-500 hover:border-2"
         >
           Join as Merchant
-        </a>
+        </button>
       </div>
     </div>
     <div class="hidden md:w-3/6 md:block">
@@ -43,7 +43,7 @@
   id="registerMerchant"
   class="flex items-center h-screen"
 >
-  <div class="w-full">
+  <div class="w-full mx-0">
     <app-register-merchant></app-register-merchant>
   </div>
 </div>

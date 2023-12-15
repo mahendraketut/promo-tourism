@@ -1,298 +1,381 @@
-<div class="mt-10 my-10 justify-center items-center">
-  <h1 class="text-center text-4xl font-bold text-gray-900">
-    Promo Tourism Merchant Registration
-  </h1>
-</div>
-<form
-  [formGroup]="userDataForm"
-  class="flex items-center space-y-6 justify-center"
-  action="#"
-  method="POST"
-  (ngSubmit)="onSubmit()"
->
-  <div class="w-3/4 border rounded-2xl shadow-sm p-4" *ngIf="isPersonalData">
-    <div class="w-full py-5">
-      <h2 class="font-bold text-center text-xl">Personal Information</h2>
-      <hr />
-    </div>
-    <div class="flex items-start justify-between gap-4">
-      <div class="w-1/2">
-        <label for="email" class="block mb-2 text-sm font-medium text-gray-900"
-          >Email address</label
-        >
-        <div class="mt-2">
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            placeholder="Email Address"
-            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            formControlName="userEmail"
-            (input)="userDataForm.get('userEmail').updateValueAndValidity()"
-          />
-          <div
-            *ngIf="
-              userDataForm.get('userEmail').touched &&
-              userDataForm.get('userEmail').hasError('email')
-            "
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              <span class="font-medium"> Oops!</span> Invalid Email Address!
-            </p>
-          </div>
-          <div
-          *ngIf="
-            userDataForm.get('userEmail').touched &&
-            userDataForm.get('userEmail').hasError('emailTaken')
-          "
-        >
-          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-            <span class="font-medium"> Oops!</span> Email Already Taken!
-          </p>
-        </div>
-          <div
-          *ngIf="userDataForm.get('userEmail')?.touched && userDataForm.get('userEmail')?.hasError('required')"
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              Email adress Required
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="w-1/2">
-        <label
-          for="phone-number"
-          class="block mb-2 text-sm font-medium text-gray-900"
-          >Phone Number</label
-        >
-        <div class="mt-2">
-          <input
-            id="phone-number"
-            name="phone-number"
-            type="tel"
-            autocomplete="phone-number"
-            required
-            placeholder="Phone Number"
-            (input)="userDataForm.get('userPhone').updateValueAndValidity()"
-            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            formControlName="userPhone"
-          />
-          <div
-            *ngIf="
-              userDataForm.get('userPhone').touched &&
-              userDataForm.get('userPhone').hasError('minlength')
-            "
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              <span class="font-medium"> Oops!</span> Invalid Phone Number!
-            </p>
-          </div>
-          <div
-          *ngIf="userDataForm.get('userPhone')?.touched && userDataForm.get('userPhone')?.hasError('required')"
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              Phone number required
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4">
-      <label
-        for="full-name"
-        class="block mb-2 text-sm font-medium text-gray-900"
-        >Full Name</label
-      >
-      <div class="mt-2">
-        <input
-          id="full-name"
-          name="full-name"
-          type="text"
-          autocomplete="full-name"
-          required
-          placeholder="Full Name"
-          class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          formControlName="userName"
-        />
-        <div
-          *ngIf="userDataForm.get('userName')?.touched && userDataForm.get('userName')?.hasError('required')"
-        >
-          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-            Full name required
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4">
-      <label
-        for="merchant-description"
-        class="block mb-2 text-sm font-medium text-gray-900"
-        >Merchant Description</label
-      >
-      <div class="mt-2">
-        <textarea
-          id="merchant-description"
-          name="merchant-description"
-          type="text"
-          autocomplete="merchant-description"
-          required
-          placeholder="Merchant Description"
-          class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          formControlName="userDescription"
-        ></textarea>
-        <div *ngIf="userDataForm.get('userAddress')?.touched && userDataForm.get('userAddress')?.hasError('required')">
-          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-            Merchant description required
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex justify-end mt-4">
-      <button
-        type="button"
-        class="flex justify-center items-center rounded-full px-5 w-fit bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        (click)="changeForm()"
-      >
-        <i class="fa-solid fa-circle-chevron-right me-2"></i> Next
-      </button>
-    </div>
+<div class="flex h-screen justify-center bg-slate-50">
+  <!-- Left screen for image -->
+  <div class="w-3/5 hidden md:block rounded-e-3xl shadow-2xl">
+    <img
+      [src]="cover"
+      P
+      alt="Login Image"
+      class="w-full h-full object-cover rounded-e-3xl"
+    />
   </div>
-
-  <div class="w-3/4 border rounded-2xl shadow-sm p-4" *ngIf="isAttachment">
-    <div class="w-full py-5">
-      <h2 class="font-bold text-center text-xl">Merchant Legality Data</h2>
-      <hr />
-    </div>
-    <div class="flex gap-4">
-      <!-- TODO: tut tolong perbaikin+tambah indikasi kalau filenya udah di select -->
-  <div class="w-1/2 py-2">
-    <label
-      for="license-upload"
-      class="block text-sm font-medium leading-6 text-gray-900"
-      >License</label
-    >
-    <div class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10">
-      <div class="text-center">
-        <div class="mt-4 flex text-sm leading-6 text-gray-600">
-          <label
-            for="license-upload"
-            class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
-          >
-            <span>Upload a file</span>
-            <input
-              id="license-upload"
-              type="file"
-              class="sr-only"
-              (change)="handleFileInput($event, 'license')"
-              accept=".pdf"
-            />
-          </label>
-          <p class="pl-1">or drag and drop</p>
-        </div>
-        <p class="text-xs leading-5 text-gray-600">PDF File Only</p>
-      </div>
-    </div>
-  </div>
-  <div class="w-1/2 py-2">
-    <label
-      for="reviews-upload"
-      class="block text-sm font-medium leading-6 text-gray-900"
-      >Review</label
-    >
-    <div class="flex justify-center rounded-lg border border-gray-900/25 px-6 py-10">
-      <div class="text-center">
-        <div class="mt-4 flex text-sm leading-6 text-gray-600">
-          <label
-            for="reviews-upload"
-            class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
-          >
-            <span>Upload a file</span>
-            <input
-              id="reviews-upload"
-              type="file"
-              class="sr-only"
-              (change)="handleFileInput($event, 'reviews')"
-              accept=".pdf"
-            />
-          </label>
-          <p class="pl-1">or drag and drop</p>
-        </div>
-        <p class="text-xs leading-5 text-gray-600">PDF up to 1 MB</p>
-      </div>
-    </div>
-  </div>
-    </div>
-    <div class="flex items-start justify-between gap-4">
-      <div class="w-1/2">
-        <label for="email" class="block mb-2 text-sm font-medium text-gray-900"
-          >License Description</label
+  <!-- Right screen for form -->
+  <div
+    class="flex items-center w-full h-screen md:w-2/5 overflow-y-auto animate__animated animate__fadeInDown"
+  >
+    <div class="w-full px-10 lg:px-20">
+      <div class="my-10 justify-center items-center w-full">
+        <h1
+          class="text-center text-2xl lg:text-3xl font-semibold text-gray-900"
         >
-        <div class="mt-2">
-          <input
-            id="licenseDesc"
-            name="licenseDesc"
-            type="text"
-            autocomplete="licenseDesc"
-            required
-            placeholder="License Description"
-            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            formControlName="licenseDescription"
-            (input)="userDataForm.get('licenseDescription').updateValueAndValidity()"
-          />
-          <div *ngIf="userDataForm.get('licenseDescription')?.touched && userDataForm.get('licenseDescription')?.hasError('required')">
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              <span class="font-medium"> Oops!</span> Required</p>
+          Promo Tourism <br />Merchant Registration
+        </h1>
+      </div>
+      <form
+        [formGroup]="userDataForm"
+        class="w-full"
+        action="#"
+        method="POST"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="w-full p-4" *ngIf="isPersonalData">
+          <div class="w-full mb-5">
+            <h2 class="font-semibold text-left text-xl">
+              1. Personal Information
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="">
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Email address</label
+              >
+              <div class="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                  placeholder="Email Address"
+                  class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  formControlName="userEmail"
+                  (input)="
+                    userDataForm.get('userEmail').updateValueAndValidity()
+                  "
+                />
+                <div
+                  *ngIf="
+                    userDataForm.get('userEmail').touched &&
+                    userDataForm.get('userEmail').hasError('email')
+                  "
+                >
+                  <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <span class="font-medium"> Oops!</span> Invalid Email
+                    Address!
+                  </p>
+                </div>
+                <div
+                  *ngIf="
+                    userDataForm.get('userEmail').touched &&
+                    userDataForm.get('userEmail').hasError('emailTaken')
+                  "
+                >
+                  <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <span class="font-medium"> Oops!</span> Email Already Taken!
+                  </p>
+                </div>
+                <div
+                  *ngIf="
+                    userDataForm.get('userEmail')?.touched &&
+                    userDataForm.get('userEmail')?.hasError('required')
+                  "
+                >
+                  <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    Email adress Required
+                  </p>
+                </div>
               </div>
-        </div>
-      </div>
-      <div class="w-1/2">
-        <label
-          for="phone-number"
-          class="block mb-2 text-sm font-medium text-gray-900"
-          >Reviews Description</label
-        >
-        <div class="mt-2">
-          <input
-            id="reviewsDesc"
-            name="reviewsDesc"
-            type="text"
-            autocomplete="reviews description"
-            required
-            placeholder="Reviews Description"
-            (input)="userDataForm.get('reviewsDescription').updateValueAndValidity()"
-            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            formControlName="reviewsDescription"
-          />
-          <div
-          *ngIf="userDataForm.get('reviewsDescription')?.touched && userDataForm.get('reviewsDescription')?.hasError('required')"
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              <span class="font-medium"> Oops!</span> Required
-            </p>
+            </div>
+            <div class="">
+              <label
+                for="phone-number"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Phone Number</label
+              >
+              <div class="mt-2">
+                <input
+                  id="phone-number"
+                  name="phone-number"
+                  type="tel"
+                  autocomplete="phone-number"
+                  required
+                  placeholder="Phone Number"
+                  (input)="
+                    userDataForm.get('userPhone').updateValueAndValidity()
+                  "
+                  class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  formControlName="userPhone"
+                />
+                <div
+                  *ngIf="
+                    userDataForm.get('userPhone').touched &&
+                    userDataForm.get('userPhone').hasError('minlength')
+                  "
+                >
+                  <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <span class="font-medium"> Oops!</span> Invalid Phone
+                    Number!
+                  </p>
+                </div>
+                <div
+                  *ngIf="
+                    userDataForm.get('userPhone')?.touched &&
+                    userDataForm.get('userPhone')?.hasError('required')
+                  "
+                >
+                  <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    Phone number required
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <label
+              for="full-name"
+              class="block mb-2 text-sm font-medium text-gray-900"
+              >Merchant Name</label
+            >
+            <div class="mt-2">
+              <input
+                id="full-name"
+                name="full-name"
+                type="text"
+                autocomplete="full-name"
+                required
+                placeholder="Merchant Name"
+                class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                formControlName="userName"
+              />
+              <div
+                *ngIf="
+                  userDataForm.get('userName')?.touched &&
+                  userDataForm.get('userName')?.hasError('required')
+                "
+              >
+                <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                  Merchant name required
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <label
+              for="merchant-description"
+              class="block mb-2 text-sm font-medium text-gray-900"
+              >Merchant Description</label
+            >
+            <div class="mt-2">
+              <textarea
+                id="merchant-description"
+                name="merchant-description"
+                type="text"
+                autocomplete="merchant-description"
+                required
+                placeholder="Merchant Description"
+                class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:h-44 p-2.5"
+                formControlName="userDescription"
+              ></textarea>
+              <div
+                *ngIf="
+                  userDataForm.get('userDescription')?.touched &&
+                  userDataForm.get('userDescription')?.hasError('required')
+                "
+              >
+                <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                  Merchant description required
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end mt-4">
+            <button
+              type="button"
+              class="flex justify-center items-center rounded-full px-5 w-full h-10 bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              (click)="isPersonalDataSectionValidatedAndClicked()"
+            >
+              <i class="fa-solid fa-circle-chevron-right me-2"></i> Next
+            </button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="flex justify-end mt-4 gap-2">
-      <!-- back button -->
-      <button
-        type="button"
-        (click)="changeForm()"
-        class="flex justify-center items-center rounded-full px-5 w-fit bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
-        <i class="fa-solid fa-circle-chevron-left me-2"></i>Back
-      </button>
-      <button
-        type="button"
-        (click)="onSubmit()"
-        class="flex justify-center items-center rounded-full px-5 w-fit bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
-        <i class="fa-solid fa-floppy-disk me-2"></i>Submit
-      </button>
+        <div class="w-full p-4" *ngIf="isAttachment">
+          <div class="w-full mb-5">
+            <h2 class="font-semibold text-left text-xl">
+              2. Merchant Legality Data
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 gap-4">
+            <!-- TODO: tut tolong perbaikin+tambah indikasi kalau filenya udah di select -->
+            <div class="">
+              <div>
+                <label
+                  for="license-upload"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >License</label
+                >
+                <div
+                  class="flex justify-center items-center rounded-lg border border-gray-900/25 px-6 py-6 h-30"
+                >
+                  <div class="text-center">
+                    <div
+                      class="flex text-sm leading-6 text-gray-600 justify-center"
+                    >
+                      <label
+                        for="license-upload"
+                        class="relative cursor-pointer rounded-md font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
+                      >
+                        <span class="w-full">Upload a file</span>
+                        <input
+                          id="license-upload"
+                          type="file"
+                          class="sr-only"
+                          (change)="handleFileInput($event, 'license')"
+                          accept=".pdf"
+                        />
+                      </label>
+                    </div>
+                    <p class="text-xs">or drag and drop</p>
+                    <p class="text-xs leading-5 text-gray-600">
+                      PDF File Only up to 1 MB
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-2">
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-gray-900"
+                  >License Description</label
+                >
+                <div class="mt-2">
+                  <input
+                    id="licenseDesc"
+                    name="licenseDesc"
+                    type="text"
+                    autocomplete="licenseDesc"
+                    required
+                    placeholder="License Description"
+                    class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    formControlName="licenseDescription"
+                    (input)="
+                      userDataForm
+                        .get('licenseDescription')
+                        .updateValueAndValidity()
+                    "
+                  />
+                  <div
+                    *ngIf="
+                      userDataForm.get('licenseDescription')?.touched &&
+                      userDataForm
+                        .get('licenseDescription')
+                        ?.hasError('required')
+                    "
+                  >
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                      <span class="font-medium"> Oops!</span> License
+                      Description is Required
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="">
+              <div>
+                <label
+                  for="reviews-upload"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Review</label
+                >
+                <div
+                  class="flex justify-center items-center rounded-lg border border-gray-900/25 px-6 py-6 h-30"
+                >
+                  <div class="text-center">
+                    <div
+                      class="flex text-sm leading-6 text-gray-600 justify-center"
+                    >
+                      <label
+                        for="reviews-upload"
+                        class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-blue-500"
+                      >
+                        <span class="w-full text-center">Upload a file</span>
+                        <input
+                          id="reviews-upload"
+                          type="file"
+                          class="sr-only"
+                          (change)="handleFileInput($event, 'reviews')"
+                          accept=".pdf"
+                        />
+                      </label>
+                    </div>
+                    <p class="text-xs">or drag and drop</p>
+                    <p class="text-xs leading-5 text-gray-600">
+                      PDF File Only up to 1 MB
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-2">
+                <label
+                  for="phone-number"
+                  class="block text-sm font-medium text-gray-900"
+                  >Reviews Description</label
+                >
+                <div class="mt-2">
+                  <input
+                    id="reviewsDesc"
+                    name="reviewsDesc"
+                    type="text"
+                    autocomplete="reviews description"
+                    required
+                    placeholder="Reviews Description"
+                    (input)="
+                      userDataForm
+                        .get('reviewsDescription')
+                        .updateValueAndValidity()
+                    "
+                    class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    formControlName="reviewsDescription"
+                  />
+                  <div
+                    *ngIf="
+                      userDataForm.get('reviewsDescription')?.touched &&
+                      userDataForm
+                        .get('reviewsDescription')
+                        ?.hasError('required')
+                    "
+                  >
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                      <span class="font-medium"> Oops!</span> Review Description
+                      is Required
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end mt-4 gap-2">
+            <!-- back button -->
+            <button
+              type="button"
+              (click)="changeForm()"
+              class="flex justify-center items-center rounded-full px-5 w-1/2 bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              <i class="fa-solid fa-circle-chevron-left me-2"></i>Back
+            </button>
+            <button
+              type="button"
+              (click)="onSubmit()"
+              class="flex justify-center items-center rounded-full px-5 w-1/2 h-10 bg-blue-700 py-1.5 text-sm font-normal leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              <i class="fa-solid fa-floppy-disk me-2"></i>Submit
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-</form>
+</div>
