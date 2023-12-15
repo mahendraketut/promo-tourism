@@ -2,7 +2,8 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PasswordService } from 'src/app/services/password.service';
+import { TokenService } from 'src/app/token.service';
+import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,9 +15,10 @@ export class ChangePasswordComponent {
   logo: any;
 
   constructor(
-    private passwordService: PasswordService,
+    private tokenService: TokenService,
     private router: Router,
-    private location: Location //inject the location using angular commons
+    private location: Location,
+    private authService: AuthService
   ) {
     this.logo = '/assets/img/logo-landscape.png';
   }
@@ -48,64 +50,73 @@ export class ChangePasswordComponent {
     }
   );
 
-  // changePasswordValidator(formGroup: FormGroup) {
-  //   const oldPassword = formGroup.get('oldPassword').value;
-  //   const newPassword = formGroup.get('newPassword').value;
-  //   const confirmPassword = formGroup.get('confirmPassword').value;
 
-  //   if (newPassword !== confirmPassword) {
-  //     formGroup.get('confirmPassword').setErrors({ mismatch: true });
-  //   } else {
-  //     formGroup.get('confirmPassword').setErrors(null);
-  //   }
-  //   // if (newPassword !== confirmPassword) {
-  //   //   const matchNewPassword = true;
-  //   // } else {
-  //   //   const matchNewPassword = false;
-  //   // }
-  // }
-
-  onSubmit() {
-    if (this.changePasswordForm.valid) {
-      const oldPassword = this.changePasswordForm.get('oldPassword').value;
-      const newPassword = this.changePasswordForm.get('newPassword').value;
-
-      //send request to backend to validate the old password
-      //if old password is valid, then change the password
-      //else, show error message
-      this.passwordService.changePassword(oldPassword, newPassword).subscribe(
-        (response) => {
+onSubmit() {
+  if (this.changePasswordForm.valid) {
+    const tokenData = this.tokenService.decodeToken();
+    console.log(tokenData);
+    const oldPassword = this.changePasswordForm.get('oldPassword').value;
+    const newPassword = this.changePasswordForm.get('newPassword').value;
+    this.authService.changePassword(oldPassword, newPassword, tokenData.id).subscribe({
+      next: (response) => {
+        console.log(response);
+        if (response.status === 200) {
           Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: 'Password changed successfully',
+            text: 'Password changed successfully, please login again!',
             timer: 3000,
-            showConfirmButton: true,
-          }).then(() => {
-            this.location.back(); // Redirect to the previous page
+            showConfirmButton: false,
           });
-        },
-        (error) => {
+          this.authService.logoutUser();
+          this.router.navigate(['/auth/login']);
+        }
+        else if(response.status === 400){
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Failed to change password, Please check your current password again!',
+            text: 'Incorrect password!',
             timer: 3000,
             showConfirmButton: false,
           });
         }
-      );
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please fill all the fields',
-        timer: 3000,
-        showConfirmButton: false,
-      });
-    }
+        else if(response.status === 404){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'User not found',
+            timer: 3000,
+            showConfirmButton: false,
+          });
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Unable to change password!',
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      },
+      complete: () => {
+        console.log('complete');
+      },
+    });
   }
+  else{
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Please fill all the fields',
+      timer: 3000,
+      showConfirmButton: false,
+    });
+  }
+
+}
 }
 
-// TODO Hendry tolong nanti di email change password nya kasi redirect ke link changePass
+// TODO: gabisa tut-- Hendry tolong nanti di email change password nya kasi redirect ke link changePass
 // localhost:4200/auth/change_password

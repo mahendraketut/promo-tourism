@@ -228,7 +228,9 @@ export const login = async (req, res, next) => {
 //TODO: paling bener nge send user ID berdasarkan token di front-end
 //perlu userId, currentPassword, newPassword dari front-end
 export const changePassword = async (req, res, next) => {
+  console.log('masuk change pw');
   try {
+    console.log("req body: ", req.body);
     // const userId = req.user.id;
     const userId = req.body.userId;
 
@@ -251,6 +253,7 @@ export const changePassword = async (req, res, next) => {
     const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
         user.password = hashedNewPassword;
+        user.hasResetPassword = true;
         await user.save();
 
     return next(CreateSuccess(200, "Password Changed Successfully"));

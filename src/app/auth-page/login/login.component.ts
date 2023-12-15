@@ -55,13 +55,10 @@ export class LoginComponent {
               this.tokenService.decodeToken().hasResetPassword == true
             ) {
               this.router.navigate(['/merchant']);
-              console.log('MASUK MERCHANT BRO');
             } else if (this.tokenService.decodeToken().roles == 'officer') {
               this.router.navigate(['/officer']);
-              console.log('MASUK OFFICER BRO');
             } else {
               this.router.navigate(['/']);
-              console.log('MASUK BRO, TAPI ELSE NIH');
             }
           } else {
             Swal.fire({
