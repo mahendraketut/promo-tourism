@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { TokenService } from 'src/app/token.service';
 import  Swal  from 'sweetalert2';
 
 @Component({
@@ -15,7 +16,8 @@ export class ProductAddComponent {
   productImages: File[] = [];
   coverImage: File | null = null;
 
-  constructor(private productService: ProductService) { 
+  constructor(private productService: ProductService, private tokenService: TokenService) {
+     
     this.productForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -121,55 +123,13 @@ export class ProductAddComponent {
   }
 
 
-  onSubmitOld() {
-    if (this.productForm.valid) {
-      console.log('form valid');
-      const imagesArray = this.productForm.get('productImages') as FormArray;
-      const coversArray = this.productForm.get('productCovers') as FormArray;
-  
-      // Clear existing form array values
-      imagesArray.clear();
-      coversArray.clear();
-  
-      // Add existing preview data to form arrays
-      this.imagePreviews.forEach((preview) => {
-        imagesArray.push(new FormControl(preview.url));
-      });
-  
-      this.coverPreviews.forEach((preview) => {
-        coversArray.push(new FormControl(preview.url));
-      });
-  
-      const productData = this.productForm.value;
-  
-      // Now you can work with the product data or pass it to the service
-      console.log("prod data: ", productData);
-      const isAdded = this.productService.addProduct(productData);
-      if(isAdded){
-        Swal.fire(
-          'Success!',
-          'Your product has been added.',
-          'success'
-        )
-
-      }
-      else{
-        Swal.fire(
-          'Error!',
-          'Your product has not been added.',
-          'error'
-        )
-      }
-        
-
-    }
-  }
   
   onSubmit() {
     if (this.productForm.valid) {
       console.log('form valid');
       // Create FormData object
       const formData = new FormData();
+      const userId = this.tokenService.getUserId();
       
       // Append text fields
       formData.append('name', this.productForm.get('name').value);
@@ -177,6 +137,7 @@ export class ProductAddComponent {
       formData.append('price', this.productForm.get('price').value);
       formData.append('quantity', this.productForm.get('quantity').value);
       formData.append('category', this.productForm.get('category').value);
+      formData.append('owner', userId);
       
       // Append cover image if available
       if (this.coverImage) {

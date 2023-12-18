@@ -20,4 +20,13 @@ export class TokenService {
     }
     return null;
   }
+
+  getUserId(): string | null {
+    const decodedToken = this.decodeToken();
+    if (decodedToken) {
+      return decodedToken.id;
+    }
+    return null;
+  }
+
 }
