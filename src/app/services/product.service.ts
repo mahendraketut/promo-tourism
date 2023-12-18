@@ -77,6 +77,7 @@ export class ProductService {
 
   //Sends a DELETE request to the back-end API to delete a product.
   deleteProduct(id:any): Observable<any> {
+    console.log("prod id: ", id);
     let api = `${this.endpoint}/delete/${id}`;
     return this.http.delete(api).pipe(catchError(this.errorMgmt));
     // return this.http.delete(api);
@@ -98,6 +99,23 @@ export class ProductService {
     });
   }
 
-  
-
+  getProductsByMerchantId(id: any): Observable<any[]> {
+    let api = `${this.endpoint}/merchant/${id}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        // Assuming the response is an object that contains an array of products
+        console.log("response raw: ", response);
+        const productsResponse = response.data;
+        if (Array.isArray(productsResponse)) {
+          // If additional processing is needed, do it here
+          console.log("prod res: ", productsResponse);
+          return productsResponse;
+        } else {
+          console.log("The response is not an array.");
+          return []; // Return an empty array if the response is not as expected
+        }
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
 }

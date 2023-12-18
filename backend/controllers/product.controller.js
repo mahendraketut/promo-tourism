@@ -84,7 +84,8 @@ export const addProduct = async (req, res, next) => {
             description: getFieldValue(fields.description),
             category: getFieldValue(fields.category),
             imagesPath: [],
-            coverImagePath: ''
+            coverImagePath: '',
+            owner: getFieldValue(fields.owner),
         });
 
         // Process cover image if present (for files.coverImagePath and files.cover)
@@ -115,11 +116,6 @@ export const addProduct = async (req, res, next) => {
 
 
 
-
-
-
-
-
 //Retreives all the products from the database.
 export const getAllProducts = async (req, res, next) => {
     try {
@@ -146,7 +142,7 @@ export const getProductById = async (req, res, next) => {
 }
 
 //Updates product according to the request send from the front-end.
-export const updateProduct = async (req, res, next) => {
+export const updateProductv1 = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
         if(product){
@@ -170,10 +166,83 @@ export const updateProduct = async (req, res, next) => {
     }
 }
 
+export const updateProduct = async (req, res, next) => {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const uploadDir = path.join(__dirname, "productimg");
+  
+    const form = formidable({
+      multiples: true,
+      uploadDir,
+      keepExtensions: true
+    });
+  
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        console.error("Form parse error:", err);
+        return next(CreateError(500, "Could not update product", err));
+      }
+  
+      const getFieldValue = (fieldValue) => Array.isArray(fieldValue) ? fieldValue[0] : fieldValue;
+  
+      try {
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+          return next(CreateError(404, "Product not found"));
+        }
+  
+        // Move and rename file function is same as in addProduct
+  
+        // Update cover image if present (for files.coverImagePath and files.cover)
+        let coverImagePath;
+        if (files.coverImagePath) {
+          coverImagePath = moveAndRenameFile(files.coverImagePath, uploadDir);
+        } else if (files.cover) {
+          coverImagePath = moveAndRenameFile(files.cover, uploadDir);
+        }
+  
+        // Update additional images if present
+        let imagesPath;
+        if (files.images) {
+          imagesPath = Object.keys(files)
+            .filter(key => key.startsWith('images[')) // Filter keys that start with 'images['
+            .map(key => moveAndRenameFile(files[key], uploadDir)) // Process each image file
+            .filter(Boolean);
+        }
+  
+        // Update the product with new fields
+        product.name = getFieldValue(fields.name) || product.name;
+        product.price = parseFloat(getFieldValue(fields.price)) || product.price;
+        product.quantity = parseInt(getFieldValue(fields.quantity), 10) || product.quantity;
+        product.description = getFieldValue(fields.description) || product.description;
+        product.category = getFieldValue(fields.category) || product.category;
+        product.owner = getFieldValue(fields.owner) || product.owner;
+  
+        // Update images if new ones were uploaded
+        if (coverImagePath) {
+          product.coverImagePath = coverImagePath;
+        }
+        if (imagesPath && imagesPath.length > 0) {
+          product.imagesPath = imagesPath;
+        }
+  
+        const updatedProduct = await product.save();
+        console.log("Product updated:", updatedProduct);
+        return next(CreateSuccess(200, "Product updated", updatedProduct));
+      } catch (error) {
+        console.error("Error updating product:", error);
+        return next(CreateError(500, "Error updating product", error));
+      }
+    });
+  };
+  
+
 //Deletes the product according to the product ID sent from the front-end.
 export const deleteProduct = async (req, res, next) => {
+    console.log("masuk delete bro");
     try {
+        console.log("params id: ", req.params.id);
         const product = await Product.findById(req.params.id);
+        
         if(product){
             await Product.findByIdAndDelete(req.params.id);
             return next(CreateSuccess(200, "Product Deleted"));
@@ -181,6 +250,21 @@ export const deleteProduct = async (req, res, next) => {
         else{
             return next(CreateError(404, "Not Found"));
         }
+    } catch (error) {
+        return next(CreateError(500, error));
+    }
+}
+
+//retreives product accotding to the owner's user id
+
+export const getProductsByUserId = async (req, res, next) => {
+    try {
+        const products = await Product.find({owner: req.params.id});
+        console.log("#####################################################");
+        console.log("req.params.userId", req.params.id);
+        console.log("#####################################################");
+        console.log("retreived products", products);
+        return next(CreateSuccess(200, "Products listed",products));
     } catch (error) {
         return next(CreateError(500, error));
     }

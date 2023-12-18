@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TempService } from 'src/app/temp.service';
+import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
+import { TokenService } from 'src/app/token.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -11,64 +13,9 @@ export class ProductListComponent implements OnInit {
 
   dtOptions: any = {};
   products: any = [
-    // {
-    //   id: 1,
-    //   name: 'Product 1',
-    //   price: 100,
-    //   quantity: 10,
-    //   description: 'Description 1',
-    //   image: 'assets/images/product-1.jpg',
-    //   category: 'Category 1',
-    //   // availability: '20/12/2023 - 20/1/2024',
-    //   status: 'Active',
-    // },
-    // {
-    //   id: 2,
-    //   name: 'Product 2',
-    //   price: 200,
-    //   quantity: 20,
-    //   description: 'Description 2',
-    //   image: 'assets/images/product-2.jpg',
-    //   category: 'Category 2',
-    //   // availability: '20/12/2023 - 20/1/2024',
-    //   status: 'Active',
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Product 3',
-    //   price: 300,
-    //   quantity: 30,
-    //   description: 'Description 3',
-    //   image: 'assets/images/product-3.jpg',
-    //   category: 'Category 3',
-    //   // availability: '20/12/2023 - 20/1/2024',
-    //   status: 'Active',
-    // },
-    // {
-    //   id: 4,
-    //   name: 'Product 4',
-    //   price: 400,
-    //   quantity: 40,
-    //   description: 'Description 4',
-    //   image: 'assets/images/product-4.jpg',
-    //   category: 'Category 4',
-    //   availability: '20/12/2023 - 20/1/2024',
-    //   status: 'Active',
-    // },
-    // {
-    //   id: 5,
-    //   name: 'Product 5',
-    //   price: 500,
-    //   quantity: 50,
-    //   description: 'Description 5',
-    //   image: 'assets/images/product-5.jpg',
-    //   category: 'Category 5',
-    //   availability: '20/12/2023 - 20/1/2024',
-    //   status: 'Active',
-    // },
   ];
-  constructor(private tempService: TempService, private router: Router) {
-    this.products = this.tempService.getProducts();
+  constructor(private productService:ProductService, private router: Router, private tokenService: TokenService) {
+    this.products = this.productService.getProductsByMerchantId(this.tokenService.getUserId());
     console.log('all prod: ', this.products);
   }
 
@@ -97,5 +44,66 @@ export class ProductListComponent implements OnInit {
         },
       ],
     };
+    const merchantId = this.tokenService.getUserId();
+    this.productService.getProductsByMerchantId(merchantId).subscribe(
+      (productsArray) => {
+        this.products = productsArray; // This should now be an array
+        console.log('Products for merchant:', this.products);
+      },
+      (error) => {
+        console.error('Error fetching products:', error);
+      }
+    );
   }
+  // onDelete(productId:string){
+  //   console.log("masuk ts prod id: ", productId);
+  //   //TODO: tut, tolong tambah swal disini buat nge warning user yakin mau delete, ini gabisa rdi reverse
+  //   this.productService.deleteProduct(productId).subscribe(
+  //     (response) => {
+  //       // console.log('Product deleted:', response);
+  //       this.ngOnInit();
+  //     },
+  //     (error) => {
+  //       console.error('Error deleting product:', error);
+  //     }
+  //   );
+  // }
+
+  onDelete(productId: string) {
+    // Confirmation dialog
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If confirmed, proceed with deletion
+        this.productService.deleteProduct(productId).subscribe({
+          next: (response) => {
+            console.log('Product deleted:', response);
+            Swal.fire(
+              'Deleted!',
+              'Your product has been deleted.',
+              'success'
+            );
+            this.ngOnInit(); // Or better, remove the item from the array instead of reloading
+          },
+          error: (error) => {
+            console.error('Error deleting product:', error);
+            Swal.fire(
+              'Error!',
+              'There was an error deleting your product.',
+              'error'
+            );
+          }
+        });
+      }
+    });
+  }
+  
+
 }

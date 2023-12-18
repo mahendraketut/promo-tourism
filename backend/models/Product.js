@@ -30,6 +30,9 @@ const ProductSchema = mongoose.Schema({
     coverImagePath:{
         type: String,
     },
+    owner:{
+        type: String,
+    },
 });
 
 export default mongoose.model("Product", ProductSchema);
