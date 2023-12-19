@@ -105,3 +105,4 @@ export class MerchantReviewComponent implements OnInit {
     });
   }
 }
+
