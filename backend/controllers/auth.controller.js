@@ -38,6 +38,7 @@ export const register = async (req, res, next) => {
   const form = new IncomingForm();
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const uploadDir = path.join(__dirname, "merchant_uploads");
+  console.log("Upload Dir for reg", uploadDir);
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
@@ -130,8 +131,10 @@ export const register = async (req, res, next) => {
                 files.reviews[0].originalFilename, // This should have the .pdf extension
                 uploadDir
             );
-            const licensePath = path.join(uploadDir, licenseNewFileName);
-            const reviewsPath = path.join(uploadDir, reviewsNewFileName);
+            // const licensePath = path.join(uploadDir, licenseNewFileName);
+            // const reviewsPath = path.join(uploadDir, reviewsNewFileName);
+            const licensePath = licenseNewFileName;
+            const reviewsPath = reviewsNewFileName;
             newUser = new User({
                 name: getFieldValue(name),
                 email: getFieldValue(email),
