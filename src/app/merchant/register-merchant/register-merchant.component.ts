@@ -106,71 +106,52 @@ export class RegisterMerchantComponent {
 
   selectedFiles: Record<string, File> = {};
 
+  allowDrop(event: DragEvent): void {
+    event.preventDefault();
+  }
+
   handleFileInput(event: Event, fieldName: string): void {
-    console.log('file masuk: ', fieldName);
-    const element = event.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
-    if (fileList) {
-      this.selectedFiles[fieldName] = fileList[0];
+    if (event instanceof DragEvent) {
+      // Handle the drop event
+      event.preventDefault();
+      const files = event.dataTransfer?.files;
+
+      if (files && files.length > 0) {
+        this.selectedFiles[fieldName] = files[0];
+      }
+    } else if (event instanceof Event) {
+      // Handle the file input change event
+      const element = event.currentTarget as HTMLInputElement;
+      const fileList: FileList | null = element.files;
+
+      if (fileList && fileList.length > 0) {
+        this.selectedFiles[fieldName] = fileList[0];
+      }
+    }
+  }
+  // handleFileInput(event: Event, fieldName: string): void {
+  //   console.log('file masuk: ', fieldName);
+  //   const element = event.currentTarget as HTMLInputElement;
+  //   let fileList: FileList | null = element.files;
+  //   if (fileList) {
+  //     this.selectedFiles[fieldName] = fileList[0];
+  //   }
+  // }
+
+  //method to handle file size converter
+  //to convert file size from bytes to megabytes and return the size in string
+  //if the size still in kb, then return KB
+  handleFileSizeConverter(fileSizeInBytes: number): string {
+    let fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+    if (fileSizeInMB < 1) {
+      return (fileSizeInBytes / 1024).toFixed(2) + ' KB';
+    } else {
+      return fileSizeInMB.toFixed(2) + ' MB';
     }
   }
 
   //tracks if user submitted the form.
   submittedClicked = false;
-
-  //v2
-  // onSubmit() {
-  //   console.log("submit ke klik");
-  //   this.submittedClicked = true;
-  //   console.log("validitas form: ", this.userDataForm.valid);
-  //   console.log("error form", this.userDataForm.errors);
-  //   if (this.userDataForm.valid) {
-  //     const formData = new FormData();
-
-  //     // Append file inputs to the FormData object
-  //     // formData.append('license', this.userDataForm.get('license').value);
-  //     // formData.append('reviews', this.userDataForm.get('reviews').value);
-
-  //     console.log("sebelum di append");
-  //     formData.append('email', this.userDataForm.get('userEmail').value);
-  //     formData.append('roles', this.userDataForm.get('roles').value);
-  //     formData.append('phoneNo', this.userDataForm.get('userPhone').value);
-  //     formData.append('description', this.userDataForm.get('userDescription').value);
-  //     formData.append('name', this.userDataForm.get('userName').value);
-  //     formData.append('licenseDescription', this.userDataForm.get('licenseDescription').value);
-  //     formData.append('reviewsDescription', this.userDataForm.get('reviewsDescription').value);
-
-  //     console.log("fd setelah append: ", formData);
-
-  //     // Call the service to send the form data to the backend
-  //     this.authService.registerUser(formData).subscribe({
-  //       next: (response) => {
-  //         // Handle the response
-  //         console.log(response);
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Success!',
-  //           text: 'Your merchant account has been registered! Please wait for approval.',
-  //           confirmButtonText: 'OK',
-  //         }).then((result) => {
-  //           if (result.isConfirmed) {
-  //             this.router.navigate(['/auth/login']);
-  //           }
-  //         });
-  //       },
-  //       error: (error) => {
-  //         // Handle the error
-  //         console.log(error);
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Registration Failed',
-  //           text: 'There was an issue with your registration. Please try again.',
-  //           // ... other options
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
 
   onSubmit() {
     console.log('submit ke klik');

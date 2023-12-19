@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { TokenService } from 'src/app/token.service';
 import Swal from 'sweetalert2';
 
@@ -10,12 +10,16 @@ import Swal from 'sweetalert2';
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-
   dtOptions: any = {};
-  products: any = [
-  ];
-  constructor(private productService:ProductService, private router: Router, private tokenService: TokenService) {
-    this.products = this.productService.getProductsByMerchantId(this.tokenService.getUserId());
+  products: any = [];
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private tokenService: TokenService
+  ) {
+    this.products = this.productService.getProductsByMerchantId(
+      this.tokenService.getUserId()
+    );
     console.log('all prod: ', this.products);
   }
 
@@ -69,6 +73,18 @@ export class ProductListComponent implements OnInit {
   //   );
   // }
 
+  onUpdate(productId: string) {
+    this.router.navigate(['/merchant/product/update', productId]);
+  }
+
+  navigateWithoutParams(route: string, id: string) {
+    const navigationExtras: NavigationExtras = {
+      skipLocationChange: true,
+    };
+
+    this.router.navigate([route, id], navigationExtras);
+  }
+
   onDelete(productId: string) {
     // Confirmation dialog
     Swal.fire({
@@ -78,18 +94,14 @@ export class ProductListComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         // If confirmed, proceed with deletion
         this.productService.deleteProduct(productId).subscribe({
           next: (response) => {
             console.log('Product deleted:', response);
-            Swal.fire(
-              'Deleted!',
-              'Your product has been deleted.',
-              'success'
-            );
+            Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
             this.ngOnInit(); // Or better, remove the item from the array instead of reloading
           },
           error: (error) => {
@@ -99,11 +111,9 @@ export class ProductListComponent implements OnInit {
               'There was an error deleting your product.',
               'error'
             );
-          }
+          },
         });
       }
     });
   }
-  
-
 }

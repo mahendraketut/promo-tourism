@@ -43,6 +43,7 @@
               <table datatable [dtOptions]="dtOptions" class="row-border hover">
                 <thead class="border-y">
                   <tr>
+                    <!-- TODO delete this part nanti -->
                     <!-- <th class="px-4 py-2">No</th>
                     <th class="px-4 py-2">MerchantID</th>
                     <th class="px-4 py-2">Merchant Name</th>
@@ -59,6 +60,7 @@
                     <th class="px-4 py-2">Action</th>
                   </tr>
                 </thead>
+                <!-- TODO delete this part nanti -->
                 <!--
                 <tbody>
                   <tr *ngFor="let merchant of merchants; let i = index">
@@ -148,8 +150,7 @@
                           </g>
                         </svg>
                       </button>
-                      <!-- TODO:TUT, ini kalau udah rejected, gabisa di acc lagi! -->
-                      <!-- TODO fixed button hilang kalau udah acc or rej -->
+
                       <button
                         *ngIf="
                           merchant.accountStatus !== 'approved';
@@ -174,7 +175,7 @@
                           />
                         </svg>
                       </button>
-                      <!-- TODO:TUT, ini kalau udah accepted, gabisa di rejeect lagi! -->
+
                       <button
                         *ngIf="
                           merchant.accountStatus !== 'approved';

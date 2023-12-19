@@ -1,26 +1,34 @@
 import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
-import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { TokenService } from 'src/app/token.service';
-import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-product-add',
-  templateUrl: './product-add.component.html',
-  styleUrls: ['./product-add.component.css'],
+  selector: 'app-product-update',
+  templateUrl: './product-update.component.html',
+  styleUrls: ['./product-update.component.css'],
 })
-export class ProductAddComponent {
+export class ProductUpdateComponent {
   coverPreviews: { url: string; fileName: string }[] = [];
   imagePreviews: { url: string; fileName: string }[] = [];
-  productForm: FormGroup;
+  productId: string;
+  productData: any;
+  productUpdateForm: FormGroup;
   productImages: File[] = [];
   coverImage: File | null = null;
 
+  //constructor
   constructor(
+    private route: ActivatedRoute,
     private productService: ProductService,
-    private tokenService: TokenService
+    private formBuilder: FormBuilder
   ) {
-    this.productForm = new FormGroup({
+    this.productUpdateForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
@@ -29,6 +37,81 @@ export class ProductAddComponent {
       category: new FormControl('', Validators.required),
     });
   }
+
+  //ngOnInit
+  ngOnInit(): void {
+    this.productId = this.route.snapshot.paramMap.get('productId');
+    this.productService.getProduct(this.productId).subscribe(
+      (productData) => {
+        this.productData = productData;
+        console.log('Product data:', this.productData);
+
+        // Assuming the property name is coverImagePath
+        const coverImageURL = this.productData?.data?.coverImagePath;
+        //assuming we want to add the list of product images into imagePreviews
+        const productImagesURL = this.productData?.data?.imagesPath;
+        console.log('Cover image URL:', coverImageURL);
+        console.log('Product images URL:', productImagesURL);
+
+        this.productUpdateForm.patchValue({
+          name: this.productData?.data?.name,
+          description: this.productData?.data?.description,
+          price: this.productData?.data?.price,
+          quantity: this.productData?.data?.quantity,
+          category: this.productData?.data?.category,
+        });
+
+        //set initial values for cover image previews
+        if (coverImageURL) {
+          this.coverPreviews.push({
+            url: coverImageURL,
+            fileName: this.getFileNameFromURL(coverImageURL),
+          });
+        }
+
+        //set initial values for product images previews
+        if (productImagesURL) {
+          productImagesURL.forEach((image: any) => {
+            this.imagePreviews.push({
+              url: image,
+              fileName: this.getFileNameFromURL(image),
+            });
+          });
+        }
+      },
+      (error) => {
+        console.error('Error fetch data product', error);
+      }
+    );
+  }
+
+  // initializeForm(): void {
+  //   this.productUpdateForm = this.formBuilder.group({
+  //     name: [this.productData.name, Validators.required],
+  //     description: [this.productData.description, Validators.required],
+  //     price: [this.productData.price, Validators.required],
+  //     quantity: [this.productData.quantity, Validators.required],
+  //     category: [this.productData.category, Validators.required],
+  //   });
+
+  //   //set initial values for cover image previews
+  //   if (this.productData.coverImage) {
+  //     this.coverPreviews.push({
+  //       url: this.productData.coverImage,
+  //       fileName: this.getFileNameFromURL(this.productData.coverImage),
+  //     });
+  //   }
+
+  //   //set initial values for product image previews
+  //   if (this.productData.images) {
+  //     this.productData.images.forEach((image: any) => {
+  //       this.imagePreviews.push({
+  //         url: image,
+  //         fileName: this.getFileNameFromURL(image),
+  //       });
+  //     });
+  //   }
+  // }
 
   onCoverChangeOld(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -118,47 +201,6 @@ export class ProductAddComponent {
     }
   }
 
-  onSubmit() {
-    if (this.productForm.valid) {
-      console.log('form valid');
-      // Create FormData object
-      const formData = new FormData();
-      const userId = this.tokenService.getUserId();
-
-      // Append text fields
-      formData.append('name', this.productForm.get('name').value);
-      formData.append('description', this.productForm.get('description').value);
-      formData.append('price', this.productForm.get('price').value);
-      formData.append('quantity', this.productForm.get('quantity').value);
-      formData.append('category', this.productForm.get('category').value);
-      formData.append('owner', userId);
-
-      // Append cover image if available
-      if (this.coverImage) {
-        formData.append('cover', this.coverImage, this.coverImage.name);
-      }
-
-      // Append product images
-      this.productImages.forEach((file, index) => {
-        formData.append(`images[${index}]`, file, file.name);
-      });
-
-      console.log('form data: ', formData);
-
-      // Call the service method to send the form data
-      this.productService.addProduct(formData).subscribe({
-        next: (response) => {
-          console.log('res:', response);
-          Swal.fire('Success!', 'Your product has been added.', 'success');
-        },
-        error: (error) => {
-          console.log('err:', error);
-          Swal.fire('Error!', 'Your product has not been added.', 'error');
-        },
-      });
-    }
-  }
-
   showFileDetails(file: File): void {
     // Display file details as needed, e.g., file name, size, type
     console.log(
@@ -167,11 +209,8 @@ export class ProductAddComponent {
   }
 
   getFileNameFromURL(url: string): string {
-    // Extract file name from URL
-    const startIndex = url.lastIndexOf('/') + 1;
-    const endIndex =
-      url.lastIndexOf('?') !== -1 ? url.lastIndexOf('?') : url.length;
-    return url.substring(startIndex, endIndex);
+    const parts = url.split('/');
+    return parts[parts.length - 1];
   }
 
   getFileSizeFromURL(url: string): string {
@@ -185,5 +224,17 @@ export class ProductAddComponent {
   resetImagePreviews(): void {
     this.imagePreviews = [];
     this.coverPreviews = [];
+  }
+
+  //onSubmit
+  onSubmit(): void {
+    console.log('Form data:', this.productUpdateForm.value);
+    console.log('Product data:', this.productData);
+    const formData = this.productUpdateForm.value;
+    this.productService
+      .updateProduct(this.productId, formData)
+      .subscribe((data) => {
+        console.log('Product updated:', data);
+      });
   }
 }
