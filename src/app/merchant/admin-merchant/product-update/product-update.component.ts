@@ -7,6 +7,10 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
+import { environment } from 'src/app/environment';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { TokenService } from 'src/app/token.service';
 
 @Component({
   selector: 'app-product-update',
@@ -26,7 +30,10 @@ export class ProductUpdateComponent {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private tokenService: TokenService
+
   ) {
     this.productUpdateForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -38,18 +45,18 @@ export class ProductUpdateComponent {
     });
   }
 
-  //ngOnInit
+
+//fixed, dia join product image dari env dulu.
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('productId');
     this.productService.getProduct(this.productId).subscribe(
       (productData) => {
         this.productData = productData;
         console.log('Product data:', this.productData);
-
-        // Assuming the property name is coverImagePath
-        const coverImageURL = this.productData?.data?.coverImagePath;
-        //assuming we want to add the list of product images into imagePreviews
-        const productImagesURL = this.productData?.data?.imagesPath;
+  
+        // Assuming the property name is coverImagePath and imagesPath are relative paths
+        const coverImageURL = environment.productImgUrl + '/' + this.productData?.data?.coverImagePath;
+        const productImagesURL = this.productData?.data?.imagesPath.map((imgPath: string) => environment.productImgUrl + '/' + imgPath);
         console.log('Cover image URL:', coverImageURL);
         console.log('Product images URL:', productImagesURL);
 
@@ -85,33 +92,6 @@ export class ProductUpdateComponent {
     );
   }
 
-  // initializeForm(): void {
-  //   this.productUpdateForm = this.formBuilder.group({
-  //     name: [this.productData.name, Validators.required],
-  //     description: [this.productData.description, Validators.required],
-  //     price: [this.productData.price, Validators.required],
-  //     quantity: [this.productData.quantity, Validators.required],
-  //     category: [this.productData.category, Validators.required],
-  //   });
-
-  //   //set initial values for cover image previews
-  //   if (this.productData.coverImage) {
-  //     this.coverPreviews.push({
-  //       url: this.productData.coverImage,
-  //       fileName: this.getFileNameFromURL(this.productData.coverImage),
-  //     });
-  //   }
-
-  //   //set initial values for product image previews
-  //   if (this.productData.images) {
-  //     this.productData.images.forEach((image: any) => {
-  //       this.imagePreviews.push({
-  //         url: image,
-  //         fileName: this.getFileNameFromURL(image),
-  //       });
-  //     });
-  //   }
-  // }
 
   onCoverChangeOld(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -228,13 +208,57 @@ export class ProductUpdateComponent {
 
   //onSubmit
   onSubmit(): void {
+    // Log the form data for debugging
     console.log('Form data:', this.productUpdateForm.value);
-    console.log('Product data:', this.productData);
-    const formData = this.productUpdateForm.value;
-    this.productService
-      .updateProduct(this.productId, formData)
-      .subscribe((data) => {
-        console.log('Product updated:', data);
-      });
+  
+    // Create a FormData object
+    const formData = new FormData();
+  
+    // Append form fields to the FormData
+    formData.append('name', this.productUpdateForm.get('name')?.value);
+    formData.append('description', this.productUpdateForm.get('description')?.value);
+    formData.append('price', this.productUpdateForm.get('price')?.value);
+    formData.append('quantity', this.productUpdateForm.get('quantity')?.value);
+    formData.append('category', this.productUpdateForm.get('category')?.value);
+  
+    // Append the cover image if it exists
+    if (this.coverImage) {
+      formData.append('cover', this.coverImage);
+    }
+  
+    // Append product images if they exist
+    this.productImages.forEach((file, index) => {
+      formData.append(`images[${index}]`, file, file.name);
+    });
+
+    formData.append('owner', this.tokenService.getUserId());
+
+    this.productService.updateProduct(this.productId, formData)
+    .subscribe({
+      next: (data) => {
+        // Display a success alert with SweetAlert2
+        Swal.fire({
+          title: 'Success!',
+          text: 'Product updated successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Navigate back to the previous page
+            this.router.navigate(['/merchant/product']);
+          }
+        });
+      },
+      error: (error) => {
+        // Display an error alert with SweetAlert2
+        Swal.fire({
+          title: 'Error!',
+          text: 'There was a problem updating the product.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        console.error('Error updating product:', error);
+      }
+    });
   }
 }
