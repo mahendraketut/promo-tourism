@@ -208,7 +208,6 @@
             </h2>
           </div>
           <div class="grid grid-cols-1 gap-4">
-            <!-- TODO: tut tolong perbaikin+tambah indikasi kalau filenya udah di select -->
             <div class="">
               <div>
                 <label
@@ -218,6 +217,8 @@
                 >
                 <div
                   class="flex justify-center items-center rounded-lg border border-gray-900/25 px-6 py-6 h-30"
+                  (drop)="handleFileInput($event, 'license')"
+                  (dragover)="allowDrop($event)"
                 >
                   <div class="text-center">
                     <div
@@ -242,6 +243,14 @@
                       PDF File Only up to 1 MB
                     </p>
                   </div>
+                </div>
+                <div *ngIf="selectedFiles['license']" class="mt-1">
+                  <p>
+                    <span class="font-semibold">File: </span
+                    >{{ selectedFiles["license"].name }} ({{
+                      handleFileSizeConverter(selectedFiles["license"].size)
+                    }})
+                  </p>
                 </div>
               </div>
               <div class="mt-2">
@@ -291,6 +300,8 @@
                 >
                 <div
                   class="flex justify-center items-center rounded-lg border border-gray-900/25 px-6 py-6 h-30"
+                  (drop)="handleFileInput($event, 'reviews')"
+                  (dragover)="allowDrop($event)"
                 >
                   <div class="text-center">
                     <div
@@ -315,6 +326,15 @@
                       PDF File Only up to 1 MB
                     </p>
                   </div>
+                </div>
+
+                <div *ngIf="selectedFiles['reviews']" class="mt-1">
+                  <p>
+                    <span class="font-semibold">File: </span
+                    >{{ selectedFiles["reviews"].name }} ({{
+                      handleFileSizeConverter(selectedFiles["reviews"].size)
+                    }})
+                  </p>
                 </div>
               </div>
               <div class="mt-2">

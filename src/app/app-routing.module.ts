@@ -27,6 +27,7 @@ import { OrderDetailComponent } from './landing-page/order/order-detail/order-de
 import { OrderCustomerListComponent } from './landing-page/order/order-customer-list/order-customer-list.component';
 import { ChangePasswordComponent } from './auth-page/change-password/change-password.component';
 import { ForgotComponent } from './auth-page/forgot/forgot.component';
+import { ProductUpdateComponent } from './merchant/admin-merchant/product-update/product-update.component';
 
 const routes: Routes = [
   {
@@ -84,6 +85,10 @@ const routes: Routes = [
       {
         path: 'product',
         component: ProductListComponent,
+      },
+      {
+        path: 'product_update/:productId',
+        component: ProductUpdateComponent,
       },
       {
         path: 'add-product',

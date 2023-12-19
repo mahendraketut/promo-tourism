@@ -66,12 +66,17 @@
                     <td>
                       <!-- action button using dropdown -->
 
-                      <a
-                        routerLink="/merchant/edit-product/{{ product.id }}"
+                      <button
+                        (click)="
+                          navigateWithoutParams(
+                            '/merchant/product_update',
+                            product._id
+                          )
+                        "
                         class="bg-gradient-to-tr from-blue-500 via-blue-700 to-blue-800 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full me-2"
                       >
-                        <i class="fa-solid fa-edit"></i> Edit</a
-                      >
+                        <i class="fa-solid fa-edit"></i> Edit
+                      </button>
                       <button
                         class="bg-gradient-to-bl from-red-700 via-red-500 to-red-400 hover:bg-red-700 text-white py-2 px-4 text-sm rounded-full"
                         (click)="onDelete(product._id)"
