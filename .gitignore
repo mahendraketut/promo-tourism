@@ -41,6 +41,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-/backend/controllers/productimg/
+/backend/productimg/
 /backend/controllers/merchant_uploads/
 /backend/.env

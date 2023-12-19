@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../environment';
 import {
   HttpClient,
   HttpHeaders,
@@ -30,18 +31,18 @@ export class ProductService {
     return this.http.get(api).pipe(catchError(this.errorMgmt));
   }
 
-  upload(file: File): Observable<HttpEvent<any>> {
-    const formData: FormData = new FormData();
+  // upload(file: File): Observable<HttpEvent<any>> {
+  //   const formData: FormData = new FormData();
 
-    formData.append('file', file);
+  //   formData.append('file', file);
 
-    const req = new HttpRequest('POST', `${this.endpoint}/upload`, formData, {
-      reportProgress: true,
-      responseType: 'json',
-    });
+  //   const req = new HttpRequest('POST', `${this.endpoint}/upload`, formData, {
+  //     reportProgress: true,
+  //     responseType: 'json',
+  //   });
 
-    return this.http.request(req);
-  }
+  //   return this.http.request(req);
+  // }
 
   addProduct(data: any): Observable<any> {
     let api = `${this.endpoint}/add`;
@@ -49,26 +50,35 @@ export class ProductService {
   }
 
   //Sends a PATCH request to the back-end API to update a product.
-  updateProduct(id: any, data: any): Observable<any> {
-    let api = `${this.endpoint}/update/${id}`;
-    const formData = new FormData();
-    //If there are image(s) in the data object, append them to the formData object.
-    //Otherwise, append the data object to the formData object.
-    Object.keys(data).forEach((key) => {
-      if (key === 'images' && Array.isArray(data[key])) {
-        // Handle multiple images
-        data[key].forEach((image: File) => {
-          formData.append('images', image, image.name);
-        });
-      } else {
-        formData.append(key, data[key]);
-      }
-    });
-    return this.http
-      .patch(api, formData, { headers: this.headers })
+  // updateProduct(id: any, data: any): Observable<any> {
+  //   let api = `${this.endpoint}/update/${id}`;
+  //   const formData = new FormData();
+  //   //If there are image(s) in the data object, append them to the formData object.
+  //   //Otherwise, append the data object to the formData object.
+  //   Object.keys(data).forEach((key) => {
+  //     if (key === 'images' && Array.isArray(data[key])) {
+  //       // Handle multiple images
+  //       data[key].forEach((image: File) => {
+  //         formData.append('images', image, image.name);
+  //       });
+  //     } else {
+  //       formData.append(key, data[key]);
+  //     }
+  //   });
+  //   return this.http
+  //     .patch(api, formData, { headers: this.headers })
+  //     .pipe(catchError(this.errorMgmt));
+  //   // return this.http.patch(api, data, { headers: this.headers });
+  // }
+
+  // ProductService
+  updateProduct(id: any, data: FormData): Observable<any> {
+    let api = `${environment.productUrl}/update/${id}`;
+    // No need to set 'Content-Type': 'multipart/form-data' as Angular does it automatically with FormData
+    return this.http.patch(api, data)
       .pipe(catchError(this.errorMgmt));
-    // return this.http.patch(api, data, { headers: this.headers });
   }
+
 
   //Sends a DELETE request to the back-end API to delete a product.
   deleteProduct(id: any): Observable<any> {
@@ -113,4 +123,13 @@ export class ProductService {
       catchError(this.errorMgmt)
     );
   }
+  
+
+  getImageUrl(relativePath: string): string {
+    return `${environment.apiUrl}/productimg/${relativePath}`;
+  }
+
+
+
+
 }
