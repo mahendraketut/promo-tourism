@@ -145,7 +145,20 @@ export class AuthService {
     let api = `${this.endpoint}/changepassword`;
     return this.http.patch(api, {currentPassword, newPassword, userId}).pipe(catchError(this.errorMgmt));
   }
+
+  forgetPasswordFirst(email: string): Observable<any> {
+    console.log("masuk service forgetpass");
+    console.log("masuk service forgetpass");
+    let api = `${this.endpoint}/forgetpassword`;
+    return this.http.post(api, {email}).pipe(catchError(this.errorMgmt));
+  }
+  forgetPasswordSecond(newPassword: string, verificationCode: string, email: string): Observable<any> {
+    console.log("masuk service forgetpass");
+    let api = `${this.endpoint}/val`;
+    return this.http.post(api, {newPassword, verificationCode, email}).pipe(catchError(this.errorMgmt));
+  }
 }
+
   //Get merchants, but it also filters the merchants based on accountStatus
   //Only merchants with accountStatus === 'pending' will be returned.
   // getMerchants(): Observable<any[]> {

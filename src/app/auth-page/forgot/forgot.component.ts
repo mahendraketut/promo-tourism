@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-forgot',
@@ -11,23 +17,62 @@ export class ForgotComponent {
   isChangePassword: boolean;
   logo: any;
 
-  constructor() {
+  constructor(private authService: AuthService, private router: Router) {
     this.isRequestForgot = false;
     this.isChangePassword = false;
     this.logo = '/assets/img/logo-landscape.png';
   }
   //Request reset password area: start
   requestResetForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+    ], [
+      // Custom asynchronous validator to handle emailTaken error
+      this.checkEmailTaken.bind(this)
+    ]),
   });
 
-  requestResetValidator(formGroup: FormGroup) {
-    const email = formGroup.get('email').value;
-  }
 
+  checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
+    const email = control.value;
+  
+    return new Promise((resolve, reject) => {
+      this.authService.checkEmailAvailability(email).subscribe({
+        next: (response: any) => {
+          if (response.status === 200 && response.message === 'Email Taken') {
+            console.log('Email taken');
+            resolve(null); // Email is taken, thus valid
+          } else {
+            console.log('Email not found');
+            resolve({ emailNotFound: true }); // Email not found, thus invalid
+          }
+        },
+        
+      });
+    });
+  }
   onSubmitRequest() {
-    this.isRequestForgot = true;
-    this.isChangePassword = true;
+
+    if (this.requestResetForm.valid) {
+      const email = this.requestResetForm.get('email').value;
+      //send request to backend to validate the old password
+      this.authService.forgetPasswordFirst(email).subscribe({
+        next: (response: any) => {
+          if (response.status === 200) {
+            console.log('Email found');
+            this.isRequestForgot = true;
+            this.isChangePassword = true;
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Email not found',
+              text: 'Please enter a valid email',
+            });
+          }
+        },
+      });
+    }
   }
 
   //Request reset password area: end
@@ -46,17 +91,6 @@ export class ForgotComponent {
     }
   }
 
-  // verification code checker
-  verificationCodeValidator(formGroup: FormGroup) {
-    const verificationCode = formGroup.get('verificationCode').value;
-    //check if verification code is valid
-    if (verificationCode === '123456') {
-      return null;
-    } else {
-      formGroup.get('verificationCode').setErrors({ invalidCode: true });
-      return { invalidCode: true }; // invalid verification code
-    }
-  }
 
   resetPasswordForm = new FormGroup(
     {
@@ -68,16 +102,77 @@ export class ForgotComponent {
       confirmPassword: new FormControl('', [Validators.required]),
     },
     {
-      validators: [this.passwordMatchValidator, this.verificationCodeValidator],
+      validators: [this.passwordMatchValidator],
     }
   );
 
   onSubmitResetPassword() {
     if (this.resetPasswordForm.valid) {
       const newPassword = this.resetPasswordForm.get('newPassword').value;
-      //send request to backend to validate the old password
-      //if valid, then update the new password
-      //if not, then return error message
+      const verificationCode = this.resetPasswordForm.get('verificationCode')
+        .value;
+      const email = this.requestResetForm.get('email').value;
+      try {
+        this.authService.forgetPasswordSecond(newPassword, verificationCode, email)
+        .subscribe({
+          next: (response: any) => {
+            if (response.status === 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Password changed',
+                text: 'Please login with your new password',
+              });
+              this.router.navigate(['auth/login']);
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Password change failed',
+                text: 'Please try again!',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Reload the current page
+                  location.reload();
+                }
+              });
+            }
+          },
+          error: (error) => {
+            // Handle HTTP errors here
+            if (error.status === 400) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Invalid Verification Code',
+                text: 'Please retry the process!',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  location.reload();
+                }
+              });
+            } else {
+              // Handle other errors
+              Swal.fire({
+                icon: 'error',
+                title: 'Password change failed',
+                text: 'Please try again!',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Reload the current page
+                  location.reload();
+                }
+              });
+            }
+          }
+        });
+
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Password change failed',
+          text: 'Please try again!',
+        });
+        this.router.navigate(['auth/forgot']);
+      }
+
     }
   }
 }

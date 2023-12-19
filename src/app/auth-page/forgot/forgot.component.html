@@ -57,6 +57,16 @@
                 Invalid email address
               </p>
             </div>
+            <div
+              *ngIf="
+                requestResetForm.get('email').touched &&
+                requestResetForm.get('email').hasError('emailNotFound')
+              "
+            >
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                Email Address Not Found!
+              </p>
+            </div>
           </div>
         </div>
         <!-- email input: end -->
@@ -108,16 +118,6 @@
           >
             <p class="mt-2 text-sm text-red-600 dark:text-red-500">
               Verification Code is required.
-            </p>
-          </div>
-          <div
-            *ngIf="
-              resetPasswordForm.get('verificationCode').touched &&
-              resetPasswordForm.hasError('invalidCode', 'verificationCode')
-            "
-          >
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-              Invalid Verification Code.
             </p>
           </div>
         </div>

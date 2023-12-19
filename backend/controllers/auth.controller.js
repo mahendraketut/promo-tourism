@@ -301,39 +301,12 @@ export const forgetPassword = async (req, res, next) => {
   }
 };
 
-//perlu verification code sama email dari front-end
-// export const validateVerificationCode = async (req, res, next) => {
-//     try {
-//         const email = req.body.email;
-//         const verificationCode = req.body.verificationCode;
-//         console.log("email: ", email);
-//         console.log("vercode: ", verificationCode);
-
-//         // Check if the user exists with the given email
-//         const user = await User.findOne({ email });
-//         if (!user) {
-//             return next(CreateError(404, 'User not found'));
-//         }
-//         console.log("user found: ", user);
-//         console.log("front end vercode: ", verificationCode);
-//         console.log("back end vercode: ", user.resetPasswordCode);
-//         // Check if the verification code is correct
-//         if (user.resetPasswordCode !== verificationCode) {
-//             return next(CreateError(400, 'Invalid verification code'));
-//         }
-
-//         return next(CreateSuccess(200, 'Verification Code Validated Successfully'));
-
-//     } catch (error) {
-//         return next(CreateError(500, 'Validate Verification Code Error', error));
-//     }
-// };
-
 //perlu verification code, newPassword, sama email dari front-end.
 //dia nyari user berdasarkan email, terus dia ngecek vercode sama vercode di db.
 //abis itu, psw baru di hash, di save ke db dan reset vercode jadi null.
 export const validateVerificationCode = async (req, res, next) => {
   try {
+    console.log("ValidateVerCode: ", req.body);
     const email = req.body.email;
     const verificationCode = req.body.verificationCode;
     const newPassword = req.body.newPassword;
