@@ -28,6 +28,7 @@ import { OrderCustomerListComponent } from './landing-page/order/order-customer-
 import { ChangePasswordComponent } from './auth-page/change-password/change-password.component';
 import { ForgotComponent } from './auth-page/forgot/forgot.component';
 import { ProductUpdateComponent } from './merchant/admin-merchant/product-update/product-update.component';
+import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-review-detail/merchant-review-detail.component';
 
 const routes: Routes = [
   {
@@ -125,6 +126,10 @@ const routes: Routes = [
       {
         path: 'account-management',
         component: MerchantReviewComponent,
+      },
+      {
+        path: 'detail-merchant/:id',
+        component: MerchantReviewDetailComponent,
       },
       {
         path: 'report',

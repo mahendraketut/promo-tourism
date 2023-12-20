@@ -58,6 +58,7 @@ import { ChangePasswordComponent } from './auth-page/change-password/change-pass
 import { PdfService } from './services/pdf.service';
 import { ForgotComponent } from './auth-page/forgot/forgot.component';
 import { ProductUpdateComponent } from './merchant/admin-merchant/product-update/product-update.component';
+import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-review-detail/merchant-review-detail.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { ProductUpdateComponent } from './merchant/admin-merchant/product-update
     ChangePasswordComponent,
     ForgotComponent,
     ProductUpdateComponent,
+    MerchantReviewDetailComponent,
   ],
   imports: [
     BrowserModule,
