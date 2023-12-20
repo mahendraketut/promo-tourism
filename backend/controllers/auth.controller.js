@@ -354,10 +354,25 @@ export const getMerchants = async (req, res, next) => {
     console.log("merchants: ", merchants);
 
     res.status(200).json({ merchants });
+    // return next(CreateSuccess(200, "Merchants Found", merchants));
   } catch (error) {
     return next(CreateError(500, "Internal Server Error", error));
   }
 };
+
+
+
+export const getMerchantById = async (req, res, next) => {
+  try {
+    const merchant = await User.findById(req.params.id).select(
+      "-password"
+    );
+      // return next(CreateSuccess(200, "Merchant Found", merchant));
+    res.status(200).json({ merchant });
+  } catch (error) {
+    return next(CreateError(500, "Internal Server Error", error));
+  }
+}
 
 export const acceptMerchant = async (req, res, next) => {
   console.log("masuk acc merchant");

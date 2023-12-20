@@ -105,6 +105,15 @@ export class AuthService {
       catchError(this.errorMgmt)
     );
   }
+  getMerchantById(merchantId: string): Observable<any> {
+    let api = `${this.endpoint}/merchant/${merchantId}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
   
   acceptMerchant(merchantId: string): Observable<any> {
     let api = `${this.endpoint}/accept?id=${merchantId}`;
@@ -157,6 +166,7 @@ export class AuthService {
     let api = `${this.endpoint}/val`;
     return this.http.post(api, {newPassword, verificationCode, email}).pipe(catchError(this.errorMgmt));
   }
+
 }
 
   //Get merchants, but it also filters the merchants based on accountStatus

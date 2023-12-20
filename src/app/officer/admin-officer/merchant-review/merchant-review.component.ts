@@ -33,10 +33,6 @@ export class MerchantReviewComponent implements OnInit {
     };
     this.fetchMerchants();
   }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
 
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event

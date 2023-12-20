@@ -1,3 +1,4 @@
+
 <div class="relative w-full h-full mb-10">
   <div
     class="w-full bg-gradient-to-tr h-72 from-blue-500 via-blue-700 to-blue-800 rounded-b-3xl relative shadow-xl"
@@ -82,7 +83,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant name here using data binding -->
-                        Margot Foster
+                        {{merchantData.merchant.name}}
                       </dd>
                     </div>
                     <!-- merchant name: end -->
@@ -97,6 +98,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant email here using data binding -->
+                        {{merchantData.merchant.email}}
                       </dd>
                     </div>
                     <!-- merchant email: end -->
@@ -111,6 +113,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant contact here using data binding -->
+                        {{merchantData.merchant.phoneNo}}
                       </dd>
                     </div>
                     <!-- merchant contact: end -->
@@ -125,6 +128,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant description here using data binding -->
+                        {{merchantData.merchant.description}}
                       </dd>
                     </div>
                     <!-- merchant description: end -->
@@ -139,6 +143,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant status here using data binding -->
+                        {{merchantData.merchant.accountStatus}}
                       </dd>
                     </div>
                     <!-- merchant status: end -->
@@ -153,6 +158,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put account created here using data binding -->
+                        {{merchantData.merchant.createdAt}}
                       </dd>
                     </div>
                     <!-- account created: end -->
@@ -187,7 +193,7 @@
                                 </svg>
                                 <div class="ml-4 flex min-w-0 flex-1 gap-2">
                                   <span class="truncate font-medium"
-                                    >coverletter_back_end_developer.pdf</span
+                                    >{{merchantData.merchant.licensePath}}</span
                                   >
                                   <span class="flex-shrink-0 text-gray-400"
                                     >4.5mb</span
@@ -210,7 +216,7 @@
                                 >
                                   Category:
                                 </p>
-                                <p class="text-justify w-4/5">Review</p>
+                                <p class="text-justify w-4/5">License</p>
                               </div>
                               <div class="flex items-start justify-start">
                                 <p
@@ -219,12 +225,7 @@
                                   Description:
                                 </p>
                                 <p class="text-justify w-4/5">
-                                  Lorem ipsum dolor, sit amet consectetur
-                                  adipisicing elit. Molestias provident saepe
-                                  quidem consequatur esse vel exercitationem
-                                  quia commodi, molestiae beatae? Soluta,
-                                  distinctio saepe! Dolore, quisquam atque
-                                  nesciunt sint repudiandae perferendis.
+                                  {{merchantData.merchant.licenseDescription}}
                                 </p>
                               </div>
                             </div>
@@ -247,7 +248,7 @@
                                 </svg>
                                 <div class="ml-4 flex min-w-0 flex-1 gap-2">
                                   <span class="truncate font-medium"
-                                    >coverletter_back_end_developer.pdf</span
+                                    >{{merchantData.merchant.reviewsPath}}</span
                                   >
                                   <span class="flex-shrink-0 text-gray-400"
                                     >4.5mb</span
@@ -279,12 +280,7 @@
                                   Description:
                                 </p>
                                 <p class="text-justify w-4/5">
-                                  Lorem ipsum dolor, sit amet consectetur
-                                  adipisicing elit. Molestias provident saepe
-                                  quidem consequatur esse vel exercitationem
-                                  quia commodi, molestiae beatae? Soluta,
-                                  distinctio saepe! Dolore, quisquam atque
-                                  nesciunt sint repudiandae perferendis.
+                                  {{merchantData.merchant.reviewsDescription}}
                                 </p>
                               </div>
                             </div>
