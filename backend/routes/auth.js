@@ -1,5 +1,5 @@
 import express from "express";
-import { checkEmail, register, login, logout, changePassword, forgetPassword, validateVerificationCode, getMerchants, acceptMerchant, rejectMerchant } from "../controllers/auth.controller.js";
+import { checkEmail, register, login, logout, changePassword, forgetPassword, validateVerificationCode, getMerchants, acceptMerchant, rejectMerchant, getMerchantById } from "../controllers/auth.controller.js";
 import bodyParser from "body-parser";
 
 const router = express.Router();
@@ -9,14 +9,15 @@ const jsonParser = bodyParser.json();
 
 // Use jsonParser only on specific routes
 router.post('/check', jsonParser, checkEmail);
-router.post('/register', register); // register will use formidable, no bodyParser needed here
+router.post('/register', register);
 router.post('/login', jsonParser, login);
-router.post('/logout', logout); // This route may not need bodyParser
+router.post('/logout', logout); 
 router.patch('/changepassword', jsonParser, changePassword);
 router.post('/forgetpassword', jsonParser, forgetPassword);
 router.post('/val', jsonParser, validateVerificationCode);
-router.get('/merchants', getMerchants); // This is a GET request, typically no bodyParser needed
+router.get('/merchants', getMerchants);
 router.post('/accept', jsonParser, acceptMerchant);
 router.post('/reject', jsonParser, rejectMerchant);
+router.get('/merchant/:id', jsonParser, getMerchantById);
 
 export default router;
