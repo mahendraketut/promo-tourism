@@ -1,0 +1,304 @@
+<div class="relative w-full h-full mb-10">
+  <div
+    class="w-full bg-gradient-to-tr h-72 from-blue-500 via-blue-700 to-blue-800 rounded-b-3xl relative shadow-xl"
+  >
+    <div class="px-10 py-5" id="breadcrumb">
+      <h1 class="text-2xl font-medium text-white">Account Management</h1>
+      <!-- breadcrumb: start -->
+      <nav aria-label="breadcrumb" class="flex items-center flex-wrap text-sm">
+        <ol class="flex items-center flex-wrap gap-2">
+          <li>
+            <a href="#" routerLink="/" class="text-gray-50">Home /</a>
+          </li>
+          <li>
+            <a href="#" routerLink="/officer" class="text-gray-50">Officer /</a>
+          </li>
+          <li>
+            <a
+              href="#"
+              routerLink="/officer/account-management"
+              class="text-gray-50"
+              >Account Management /</a
+            >
+          </li>
+          <li>
+            <a href="#" routerLink="/officer" class="text-gray-50"
+              >Detail Merchant</a
+            >
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div class="">
+      <div
+        class="absolute left-0 right-0 px-10 z-10"
+        style="
+          bottom: calc(
+            -1 * (100% - document.getElementById('breadcrumb') .offsetHeight) - 12rem
+          );
+        "
+      >
+        <div class="flex bg-white rounded-3xl shadow-xl mb-5">
+          <!-- content here -->
+          <div class="w-full p-5 md:px-20 md:py-10">
+            <div class="flex items-center justify-between my-1">
+              <div>
+                <h1 class="font-semibold text-2xl">Detail Merchant Account</h1>
+              </div>
+              <div>
+                <button
+                  class="bg-gradient-to-tr from-blue-500 via-blue-700 to-blue-800 hover:bg-blue-700 text-white font-normal py-2 px-4 rounded-full"
+                >
+                  Approve
+                </button>
+                <button
+                  class="ms-1 bg-gradient-to-bl from-red-700 via-red-500 to-red-400 hover:bg-red-700 text-white font-normal py-2 px-4 rounded-full"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+            <div class="mt-5">
+              <!-- content will be here -->
+              <div>
+                <div class="px-4 sm:px-0">
+                  <h3 class="text-base font-semibold leading-7 text-gray-900">
+                    Merchant Information
+                  </h3>
+                  <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+                    Personal details and application.
+                  </p>
+                </div>
+                <div class="mt-6 border-t border-gray-100">
+                  <dl class="divide-y divide-gray-100">
+                    <!-- merchant name: start -->
+                    <div
+                      class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                    >
+                      <dt class="text-sm font-medium leading-6 text-gray-900">
+                        Merchant Name
+                      </dt>
+                      <dd
+                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                      >
+                        <!-- TODO Put merchant name here using data binding -->
+                        Margot Foster
+                      </dd>
+                    </div>
+                    <!-- merchant name: end -->
+                    <!-- merchant email: start -->
+                    <div
+                      class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                    >
+                      <dt class="text-sm font-medium leading-6 text-gray-900">
+                        Merchant Email
+                      </dt>
+                      <dd
+                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                      >
+                        <!-- TODO Put merchant email here using data binding -->
+                      </dd>
+                    </div>
+                    <!-- merchant email: end -->
+                    <!-- merchant contact: start -->
+                    <div
+                      class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                    >
+                      <dt class="text-sm font-medium leading-6 text-gray-900">
+                        Merchant Contact
+                      </dt>
+                      <dd
+                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                      >
+                        <!-- TODO Put merchant contact here using data binding -->
+                      </dd>
+                    </div>
+                    <!-- merchant contact: end -->
+                    <!-- merchant description: start -->
+                    <div
+                      class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                    >
+                      <dt class="text-sm font-medium leading-6 text-gray-900">
+                        Description
+                      </dt>
+                      <dd
+                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                      >
+                        <!-- TODO Put merchant description here using data binding -->
+                      </dd>
+                    </div>
+                    <!-- merchant description: end -->
+                    <!-- merchant status: start -->
+                    <div
+                      class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                    >
+                      <dt class="text-sm font-medium leading-6 text-gray-900">
+                        Status
+                      </dt>
+                      <dd
+                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                      >
+                        <!-- TODO Put merchant status here using data binding -->
+                      </dd>
+                    </div>
+                    <!-- merchant status: end -->
+                    <!-- account created: start -->
+                    <div
+                      class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                    >
+                      <dt class="text-sm font-medium leading-6 text-gray-900">
+                        Account Created at
+                      </dt>
+                      <dd
+                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                      >
+                        <!-- TODO Put account created here using data binding -->
+                      </dd>
+                    </div>
+                    <!-- account created: end -->
+                    <div
+                      class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                    >
+                      <dt class="text-sm font-medium leading-6 text-gray-900">
+                        Attachments
+                      </dt>
+                      <dd
+                        class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0"
+                      >
+                        <!-- list of the license and review, including file name, size and description -->
+                        <ul
+                          class="border border-gray-200 rounded-md divide-y divide-gray-200"
+                        >
+                          <li class="pl-3 pr-4 py-3 text-sm">
+                            <div class="flex items-center justify-between">
+                              <div class="w-0 flex-1 flex items-center">
+                                <!-- Heroicon name: solid/paper-clip -->
+                                <svg
+                                  class="h-5 w-5 flex-shrink-0 text-gray-400"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z"
+                                    clip-rule="evenodd"
+                                  />
+                                </svg>
+                                <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                                  <span class="truncate font-medium"
+                                    >coverletter_back_end_developer.pdf</span
+                                  >
+                                  <span class="flex-shrink-0 text-gray-400"
+                                    >4.5mb</span
+                                  >
+                                </div>
+                              </div>
+                              <div class="ml-4 flex-shrink-0">
+                                <a
+                                  href="#"
+                                  target="_blank"
+                                  class="font-medium text-blue-600 hover:text-blue-500"
+                                  >Download</a
+                                >
+                              </div>
+                            </div>
+                            <div class="mt-2">
+                              <div class="flex items-start justify-start">
+                                <p
+                                  class="text-sm font-medium leading-6 w-1/5 text-gray-900 text-start"
+                                >
+                                  Category:
+                                </p>
+                                <p class="text-justify w-4/5">Review</p>
+                              </div>
+                              <div class="flex items-start justify-start">
+                                <p
+                                  class="text-sm font-medium leading-6 w-1/5 text-gray-900 text-start"
+                                >
+                                  Description:
+                                </p>
+                                <p class="text-justify w-4/5">
+                                  Lorem ipsum dolor, sit amet consectetur
+                                  adipisicing elit. Molestias provident saepe
+                                  quidem consequatur esse vel exercitationem
+                                  quia commodi, molestiae beatae? Soluta,
+                                  distinctio saepe! Dolore, quisquam atque
+                                  nesciunt sint repudiandae perferendis.
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="pl-3 pr-4 py-3 text-sm">
+                            <div class="flex items-center justify-between">
+                              <div class="w-0 flex-1 flex items-center">
+                                <!-- Heroicon name: solid/paper-clip -->
+                                <svg
+                                  class="h-5 w-5 flex-shrink-0 text-gray-400"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z"
+                                    clip-rule="evenodd"
+                                  />
+                                </svg>
+                                <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                                  <span class="truncate font-medium"
+                                    >coverletter_back_end_developer.pdf</span
+                                  >
+                                  <span class="flex-shrink-0 text-gray-400"
+                                    >4.5mb</span
+                                  >
+                                </div>
+                              </div>
+                              <div class="ml-4 flex-shrink-0">
+                                <a
+                                  href="#"
+                                  target="_blank"
+                                  class="font-medium text-blue-600 hover:text-blue-500"
+                                  >Download</a
+                                >
+                              </div>
+                            </div>
+                            <div class="mt-2">
+                              <div class="flex items-start justify-start">
+                                <p
+                                  class="text-sm font-medium leading-6 w-1/5 text-gray-900 text-start"
+                                >
+                                  Category:
+                                </p>
+                                <p class="text-justify w-4/5">Review</p>
+                              </div>
+                              <div class="flex items-start justify-start">
+                                <p
+                                  class="text-sm font-medium leading-6 w-1/5 text-gray-900 text-start"
+                                >
+                                  Description:
+                                </p>
+                                <p class="text-justify w-4/5">
+                                  Lorem ipsum dolor, sit amet consectetur
+                                  adipisicing elit. Molestias provident saepe
+                                  quidem consequatur esse vel exercitationem
+                                  quia commodi, molestiae beatae? Soluta,
+                                  distinctio saepe! Dolore, quisquam atque
+                                  nesciunt sint repudiandae perferendis.
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
