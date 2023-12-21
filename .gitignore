@@ -42,6 +42,6 @@ testem.log
 Thumbs.db
 
 /backend/productimg/
-/backend/merchant_uploads/*
-/backend/controllers/merchant_uploads/*
+/backend/merchant_uploads/
+/backend/controllers/merchant_uploads/
 /backend/.env
