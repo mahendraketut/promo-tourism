@@ -65,21 +65,7 @@ export class RegisterComponent {
     const email = control.value;
   
     return new Promise((resolve, reject) => {
-      // this.authService.checkEmailAvailability(email).subscribe(
-      //   (response: any) => {
-      //     if (response.status === 200 && response.message === 'Email Taken') {
-      //       console.log('Email taken');
-      //       resolve({ emailTaken: true });
-      //     } else {
-      //       resolve(null);
-      //       console.log('Email available');
-      //     }
-      //   },
-      //   (error) => {
-      //     console.error('Error checking email availability:', error);
-      //     reject({ emailTaken: true });
-      //   }
-      // );
+     
       this.authService.checkEmailAvailability(email).subscribe({
         next: (response: any) => {
           if (response.status === 200 && response.message === 'Email Taken') {
@@ -100,101 +86,6 @@ export class RegisterComponent {
   
 
   submittedClicked = false;
-  // onSubmit() {
-  //   this.submittedClicked = true;
-  //   if (this.userDataForm.get('agreeTOS').value) {
-  //     if (this.userDataForm.valid) {
-  //       const userData = new User(
-  //         this.userDataForm.value.userName,
-  //         this.userDataForm.value.userEmail,
-  //         this.userDataForm.value.userPass,
-  //         'user',
-  //         this.userDataForm.value.userPhone,
-  //         this.userDataForm.value.userAddress
-  //       );
-  //       userData.roles = 'user';
-  //       console.log('User data:', userData);
-  //       this.authService.registerUser(userData).subscribe({
-  //         next: (response) => {
-  //           console.log('User registered successfully!', response);
-  //           Swal.fire({
-  //             icon: 'success',
-  //             title: 'Success!',
-  //             text: 'Yeay, your account is registered!',
-  //             confirmButtonText: 'OK',
-  //             iconColor: '#4F46E5',
-  //             color: '#4F46E5',
-  //             confirmButtonColor: '#4F46E5',
-  //           }).then((result) => {
-  //             if (result.isConfirmed) {
-  //               this.router.navigate(['/']);
-  //             }
-  //           });
-  //         },
-  //         error: () => {
-  //           Swal.fire({
-  //             icon: 'error',
-  //             title: 'Oops...',
-  //             text: 'Something went wrong!',
-  //             confirmButtonText: 'OK',
-  //             iconColor: '#4F46E5',
-  //             color: '#4F46E5',
-  //             confirmButtonColor: '#4F46E5',
-  //           });
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-
-
-
-  onSubmit2() {
-    this.submittedClicked = true;
-    if (this.userDataForm.get('agreeTOS').value) {
-      if (this.userDataForm.valid) {
-        const userData = {
-          name: this.userDataForm.value.userName,
-          email: this.userDataForm.value.userEmail,
-          password: this.userDataForm.value.userPass,
-          roles: 'user',
-          phoneNo: this.userDataForm.value.userPhone,
-          address: this.userDataForm.value.userAddress, 
-        };
-        userData.roles = 'user';
-        console.log('User data:', userData);
-        this.authService.registerUser(userData).subscribe({
-          next: (response) => {
-            console.log('User registered successfully!', response);
-            Swal.fire({
-              icon: 'success',
-              title: 'Success!',
-              text: 'Yeay, your account is registered!',
-              confirmButtonText: 'OK',
-              iconColor: '#4F46E5',
-              color: '#4F46E5',
-              confirmButtonColor: '#4F46E5',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.router.navigate(['/']);
-              }
-            });
-          },
-          error: () => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Something went wrong!',
-              confirmButtonText: 'OK',
-              iconColor: '#4F46E5',
-              color: '#4F46E5',
-              confirmButtonColor: '#4F46E5',
-            });
-          }
-        });
-      }
-    }
-  }
 
   onSubmit() {
     this.submittedClicked = true;

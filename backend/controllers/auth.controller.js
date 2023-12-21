@@ -37,7 +37,7 @@ export const checkEmail = async (req, res, next) => {
 export const register = async (req, res, next) => {
   const form = new IncomingForm();
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const uploadDir = path.join(__dirname, "merchant_uploads");
+  const uploadDir = path.join(__dirname, "..", "merchant_uploads");
   console.log("Upload Dir for reg", uploadDir);
 
   form.parse(req, async (err, fields, files) => {

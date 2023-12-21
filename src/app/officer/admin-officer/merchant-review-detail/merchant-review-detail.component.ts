@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/app/environment';
+
 
 @Component({
   selector: 'app-merchant-review-detail',
@@ -10,6 +12,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class MerchantReviewDetailComponent {
   merchantId: string;
   merchantData: any;
+  licensePdfUrl: string;
+  reviewsPdfUrl: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +40,7 @@ export class MerchantReviewDetailComponent {
       next: (data) => {
         this.merchantData = data;
         console.log('Merchant data:', this.merchantData);
+        this.retreiveMerchantPdf();
       },
       error: (error) => {
         console.error('Error fetching merchant:', error);
@@ -44,5 +49,16 @@ export class MerchantReviewDetailComponent {
         console.log('Merchant data retrieval complete.');
       },
     });
+
+  }
+
+  retreiveMerchantPdf(){
+
+
+    this.licensePdfUrl = environment.merchantPdfUrl + '/' + this.merchantData?.merchant?.licensePath;
+    this.reviewsPdfUrl = environment.merchantPdfUrl + '/' + this.merchantData?.merchant?.reviewsPath;
+
+    console.log("license pdf url:", this.licensePdfUrl);
+    console.log("reviews pdf url:", this.reviewsPdfUrl);
   }
 }
