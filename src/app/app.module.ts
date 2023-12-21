@@ -13,6 +13,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { ImageModule } from 'primeng/image';
 import { AppRoutingModule } from './app-routing.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { DatePipe } from '@angular/common';
 
 // import component
 import { AppComponent } from './app.component';
@@ -119,6 +120,7 @@ import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-
     FormsModule,
   ],
   providers: [
+    DatePipe,
     PdfService,
     {
       provide: GALLERY_CONFIG,

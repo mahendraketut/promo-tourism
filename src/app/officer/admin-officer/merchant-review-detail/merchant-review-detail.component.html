@@ -1,4 +1,3 @@
-
 <div class="relative w-full h-full mb-10">
   <div
     class="w-full bg-gradient-to-tr h-72 from-blue-500 via-blue-700 to-blue-800 rounded-b-3xl relative shadow-xl"
@@ -48,11 +47,21 @@
               </div>
               <div>
                 <button
+                  *ngIf="
+                    merchantData.merchant.accountStatus !== 'approved' &&
+                    merchantData.merchant.accountStatus !== 'rejected'
+                  "
+                  (click)="acceptMerchant()"
                   class="bg-gradient-to-tr from-blue-500 via-blue-700 to-blue-800 hover:bg-blue-700 text-white font-normal py-2 px-4 rounded-full"
                 >
                   Approve
                 </button>
                 <button
+                  *ngIf="
+                    merchantData.merchant.accountStatus !== 'approved' &&
+                    merchantData.merchant.accountStatus !== 'rejected'
+                  "
+                  (click)="rejectMerchant()"
                   class="ms-1 bg-gradient-to-bl from-red-700 via-red-500 to-red-400 hover:bg-red-700 text-white font-normal py-2 px-4 rounded-full"
                 >
                   Reject
@@ -83,7 +92,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant name here using data binding -->
-                        {{merchantData.merchant.name}}
+                        {{ merchantData.merchant.name }}
                       </dd>
                     </div>
                     <!-- merchant name: end -->
@@ -98,7 +107,20 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant email here using data binding -->
-                        {{merchantData.merchant.email}}
+
+                        <div class="flex items-center justify-between">
+                          <div class="me-4">
+                            {{ merchantData.merchant.email }}
+                          </div>
+                          <div>
+                            <a
+                              href="mailto:{{ merchantData.merchant.email }}"
+                              class="underline"
+                            >
+                              Mail
+                            </a>
+                          </div>
+                        </div>
                       </dd>
                     </div>
                     <!-- merchant email: end -->
@@ -113,7 +135,30 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant contact here using data binding -->
-                        {{merchantData.merchant.phoneNo}}
+
+                        <div class="flex items-center justify-between">
+                          <div class="me-4">
+                            {{ merchantData.merchant.phoneNo }}
+                          </div>
+                          <div>
+                            <a
+                              href="tel:{{ merchantData.merchant.phoneNo }}"
+                              class="underline"
+                            >
+                              Call
+                            </a>
+
+                            <a
+                              href="https://wa.me/{{
+                                merchantData.merchant.phoneNo
+                              }}"
+                              target="_blank"
+                              class="ms-2 underline"
+                            >
+                              Whatsapp
+                            </a>
+                          </div>
+                        </div>
                       </dd>
                     </div>
                     <!-- merchant contact: end -->
@@ -128,7 +173,7 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put merchant description here using data binding -->
-                        {{merchantData.merchant.description}}
+                        {{ merchantData.merchant.description }}
                       </dd>
                     </div>
                     <!-- merchant description: end -->
@@ -140,10 +185,31 @@
                         Status
                       </dt>
                       <dd
-                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                        class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 capitalize"
                       >
                         <!-- TODO Put merchant status here using data binding -->
-                        {{merchantData.merchant.accountStatus}}
+
+                        <span
+                          *ngIf="
+                            merchantData.merchant.accountStatus == 'pending'
+                          "
+                          class="bg-yellow-400 text-white px-2 py-1 rounded-full"
+                          >Pending</span
+                        >
+                        <span
+                          *ngIf="
+                            merchantData.merchant.accountStatus == 'approved'
+                          "
+                          class="bg-green-400 text-white px-2 py-1 rounded-full"
+                          >Approved</span
+                        >
+                        <span
+                          *ngIf="
+                            merchantData.merchant.accountStatus == 'rejected'
+                          "
+                          class="bg-red-400 text-white px-2 py-1 rounded-full"
+                          >Rejected</span
+                        >
                       </dd>
                     </div>
                     <!-- merchant status: end -->
@@ -158,7 +224,10 @@
                         class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                       >
                         <!-- TODO Put account created here using data binding -->
-                        {{merchantData.merchant.createdAt}}
+                        {{
+                          merchantData.merchant.createdAt
+                            | date : "dd MMMM yyyy - hh:mm a"
+                        }}
                       </dd>
                     </div>
                     <!-- account created: end -->
@@ -192,17 +261,17 @@
                                   />
                                 </svg>
                                 <div class="ml-4 flex min-w-0 flex-1 gap-2">
-                                  <span class="truncate font-medium"
-                                    >{{merchantData.merchant.licensePath}}</span
-                                  >
-                                  <span class="flex-shrink-0 text-gray-400"
-                                    >4.5mb</span
-                                  >
+                                  <span class="truncate font-medium">{{
+                                    merchantData.merchant.licensePath
+                                  }}</span>
+                                  <span class="flex-shrink-0 text-gray-400">{{
+                                    getFileSize(licensePdfUrl)
+                                  }}</span>
                                 </div>
                               </div>
                               <div class="ml-4 flex-shrink-0">
                                 <a
-                                  href="#"
+                                  [href]="licensePdfUrl"
                                   target="_blank"
                                   class="font-medium text-blue-600 hover:text-blue-500"
                                   >Download</a
@@ -225,7 +294,7 @@
                                   Description:
                                 </p>
                                 <p class="text-justify w-4/5">
-                                  {{merchantData.merchant.licenseDescription}}
+                                  {{ merchantData.merchant.licenseDescription }}
                                 </p>
                               </div>
                             </div>
@@ -247,17 +316,17 @@
                                   />
                                 </svg>
                                 <div class="ml-4 flex min-w-0 flex-1 gap-2">
-                                  <span class="truncate font-medium"
-                                    >{{merchantData.merchant.reviewsPath}}</span
-                                  >
-                                  <span class="flex-shrink-0 text-gray-400"
-                                    >4.5mb</span
-                                  >
+                                  <span class="truncate font-medium">{{
+                                    merchantData.merchant.reviewsPath
+                                  }}</span>
+                                  <span class="flex-shrink-0 text-gray-400">{{
+                                    getFileSize(reviewsPdfUrl)
+                                  }}</span>
                                 </div>
                               </div>
                               <div class="ml-4 flex-shrink-0">
                                 <a
-                                  href="#"
+                                  [href]="reviewsPdfUrl"
                                   target="_blank"
                                   class="font-medium text-blue-600 hover:text-blue-500"
                                   >Download</a
@@ -280,7 +349,7 @@
                                   Description:
                                 </p>
                                 <p class="text-justify w-4/5">
-                                  {{merchantData.merchant.reviewsDescription}}
+                                  {{ merchantData.merchant.reviewsDescription }}
                                 </p>
                               </div>
                             </div>

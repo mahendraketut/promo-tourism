@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
+import { environment } from 'src/app/environment';
 
 @Component({
   selector: 'app-detail-product',
@@ -58,8 +59,7 @@ export class DetailProductComponent implements OnInit {
   private initConfig(): void {
     this.payPalConfig = {
       currency: 'USD',
-      clientId:
-        'AaY9Zcvuln7sB0MujUMEW--pg2f5FVKTWb-6iVHQr5Kk70GlVHWtEUhQTohWNERUUQzFEu8enqCVbsLX',
+      clientId: environment.paypal_client_id,
       createOrderOnClient: (data) =>
         <ICreateOrderRequest>{
           intent: 'CAPTURE',
