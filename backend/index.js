@@ -17,8 +17,9 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
-// Serve static files from the 'productimg' directory
+// Serve static files from the 'productimg' and 'merchant_uploads directory
 app.use('/productimg', express.static(path.join(__dirname, 'productimg')));
+app.use('/merchantup', express.static(path.join(__dirname, 'merchant_uploads')));
 
 // Import auth routes.
 import authRoutes from "./routes/auth.js";
