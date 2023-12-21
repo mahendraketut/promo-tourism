@@ -21,11 +21,14 @@ const OrderSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    paymentStatus:{
+    invoiceNumber:{
         type: String,
         required: true,
     },
-    invoiceNumber:{
+    paypalInfo:[{
+        type: Object,
+    }],
+    merchantId:{
         type: String,
         required: true,
     },
