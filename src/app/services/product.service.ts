@@ -31,45 +31,12 @@ export class ProductService {
     return this.http.get(api).pipe(catchError(this.errorMgmt));
   }
 
-  // upload(file: File): Observable<HttpEvent<any>> {
-  //   const formData: FormData = new FormData();
-
-  //   formData.append('file', file);
-
-  //   const req = new HttpRequest('POST', `${this.endpoint}/upload`, formData, {
-  //     reportProgress: true,
-  //     responseType: 'json',
-  //   });
-
-  //   return this.http.request(req);
-  // }
 
   addProduct(data: any): Observable<any> {
     let api = `${this.endpoint}/add`;
     return this.http.post(api, data).pipe(catchError(this.errorMgmt));
   }
 
-  //Sends a PATCH request to the back-end API to update a product.
-  // updateProduct(id: any, data: any): Observable<any> {
-  //   let api = `${this.endpoint}/update/${id}`;
-  //   const formData = new FormData();
-  //   //If there are image(s) in the data object, append them to the formData object.
-  //   //Otherwise, append the data object to the formData object.
-  //   Object.keys(data).forEach((key) => {
-  //     if (key === 'images' && Array.isArray(data[key])) {
-  //       // Handle multiple images
-  //       data[key].forEach((image: File) => {
-  //         formData.append('images', image, image.name);
-  //       });
-  //     } else {
-  //       formData.append(key, data[key]);
-  //     }
-  //   });
-  //   return this.http
-  //     .patch(api, formData, { headers: this.headers })
-  //     .pipe(catchError(this.errorMgmt));
-  //   // return this.http.patch(api, data, { headers: this.headers });
-  // }
 
   // ProductService
   updateProduct(id: any, data: FormData): Observable<any> {
