@@ -32,10 +32,54 @@ export class OrderService {
 
   // Create
   createOrder(data): Observable<any> {
-    let API_URL = `${this.endpoint}/create`;
-    return this.http.post(API_URL, data)
+    let api = `${this.endpoint}/create`;
+    return this.http.post(api, data)
       .pipe(
         catchError(this.errorMgmt)
       )
   }
+
+  getOrders(): Observable<any> {
+    let api = `${this.endpoint}/`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+  getOrderById(id): Observable<any> {
+    let api = `${this.endpoint}/orderId/${id}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  getOrderByUserId(id): Observable<any> {
+    console.log("getOrderByUserId: ", id);
+    let api = `${this.endpoint}/user/${id}`;
+    console.log("API_URL: ", api);
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  getOrderByMerchantId(id): Observable<any> {
+    console.log("getOrderByMerchantId: ", id);
+    let api = `${this.endpoint}/merchant/${id}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  
 }

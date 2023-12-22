@@ -59,9 +59,9 @@ export const createOrder = async (req, res) => {
 export const getOrders = async (req, res) => {  
     try {
         const orders = await Order.find();
-        return res.status(200).json(CreateSuccess(orders));
+        return res.status(200).json(CreateSuccess(200, "success", orders));
     } catch (error) {
-        return res.status(500).json(CreateError(error));
+        return res.status(500).json(CreateError(500,"Cannot get order", error));
     }
 };
 
@@ -69,13 +69,15 @@ export const getOrderById = async (req, res) => {
     const { orderId } = req.params;
     try {
         const order = await Order.findById(orderId);
-        return res.status(200).json(CreateSuccess(order));
+        return res.status(200).json(CreateSuccess(200, "success", order));
     } catch (error) {
-        return res.status(500).json(CreateError(error));
+        return res.status(500).json(CreateError(error(500, "Cannot get order", error)));
     }
 };
 
 export const getOrderbyUserId = async (req, res) => {
+    console.log("masuk get order by user id");
+    console.log("user id: ", req.params);
     const { userId } = req.params;
     try {
         const order = await Order.find({userId: userId});
@@ -86,11 +88,13 @@ export const getOrderbyUserId = async (req, res) => {
 };
 
 export const getOrderByMerchantId = async (req, res) => {
+    console.log("masuk get order by merchant id");
+    console.log("merchant id: ", req.params);
     const { merchantId } = req.params;
     try {
         const order = await Order.find({merchantId: merchantId});
-        return res.status(200).json(CreateSuccess(order));
+        return res.status(200).json(CreateSuccess(200, "success",order));
     } catch (error) {
-        return res.status(500).json(CreateError(error));
+        return res.status(500).json(CreateError(500, "Cannot get order",error));
     }
 }
