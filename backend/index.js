@@ -29,6 +29,10 @@ app.use('/api/auth', authRoutes);
 import productRoutes from "./routes/product.js";
 app.use('/api/product', productRoutes);
 
+//Import order routes.
+import orderRoutes from "./routes/order.js";
+app.use('/api/order', orderRoutes);
+
 // Response Handling.
 app.use((obj, req, res, next) => {
     const statusCode = obj.status || 500;

@@ -14,7 +14,8 @@ import {
   providedIn: 'root',
 })
 export class ProductService {
-  endpoint: string = 'http://localhost:3000/api/product';
+  // endpoint: string = 'http://localhost:3000/api/product';
+  endpoint: string = environment.productUrl;
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) {}
 
