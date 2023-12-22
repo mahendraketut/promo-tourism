@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
+import { firstValueFrom } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/token.service';
@@ -15,19 +16,15 @@ import { environment } from 'src/app/environment';
   selector: 'app-detail-product',
   templateUrl: './detail-product.component.html',
   styleUrls: ['./detail-product.component.css'],
-  // template: '<gallery [items]="images"></gallery>',
-  // standalone: true,
-  // imports: [GalleryModule],
 })
 export class DetailProductComponent implements OnInit {
 
   //TODO:PRODUCT ID DISINI TUT
-  productId: string = "6585bccb7fcaf73f2a7ff672"
+  productId: string = "6585d86d83bfc96285eba371"
   product: any = {};
   paypalResponse: any = {};
+
   paymentStatus: string = "";
-
-
   image: any = '';
   images: GalleryItem[] = [];
   title: string = 'Tour to Kuala Lumpur City Center (KLCC)';
@@ -37,7 +34,7 @@ export class DetailProductComponent implements OnInit {
   discount: number = 250;
   description: any =
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ipsam, excepturi eveniet iure dolore iusto temporibus necessitatibus quisquam aspernatur beatae id, et expedita unde qui consectetur voluptatum mollitia aperiam! Excepturi.';
-  stock: number = 3;
+  stock: number = 0;
   logoMerchant: any = 'assets/img/avatar.png';
   public payPalConfig?: IPayPalConfig;
 
@@ -47,7 +44,6 @@ export class DetailProductComponent implements OnInit {
 
 
   constructor(
-    private authService: AuthService,
     private tokenService: TokenService,
     private router: Router,
     private productService: ProductService,
@@ -66,6 +62,14 @@ export class DetailProductComponent implements OnInit {
           this.images.push(new ImageItem({ src: this.productService.getImageUrl(this.product.imagesPath[i]), thumb: this.productService.getImageUrl(this.product.imagesPath[i]) }));
         }
         console.log("abis ditambah",this.images);
+        this.stock = this.product.quantity;
+        this.title = this.product.name;
+        // this.rating = this.product.rating;
+        this.purchases = this.product.sold;
+        this.price = this.product.price;
+        // this.discount = this.product.discount;
+        this.description = this.product.description;
+
 
       },
       error: (error) => {
@@ -86,6 +90,18 @@ export class DetailProductComponent implements OnInit {
     }
   }
 
+
+  async checkStock(): Promise<boolean> {
+    try {
+      const result = await firstValueFrom(this.productService.getProduct(this.productId));
+      this.product = result.data;
+      this.stock = this.product.quantity;
+      return this.stock >= this.quantity;
+    } catch (error) {
+      console.error(error);
+      return false; // Assume false if there's an error
+    }
+  }
 
   isAvailable() {
     if (this.quantity == this.stock) this.isFull = true;
@@ -180,8 +196,26 @@ export class DetailProductComponent implements OnInit {
           text: 'Something went wrong!',
         });
       },
-      onClick: (data, actions) => {
-        console.log('onClick', data, actions);
+      onClick: async (data, actions) => {
+        try {
+          const hasSufficientStock = await this.checkStock();
+          if (!hasSufficientStock) {
+            // Here you can either show an error or use Swal as you have been doing.
+            Swal.fire({
+              icon: 'error',
+              title: 'Out of Stock',
+              text: 'There is not enough stock to complete your purchase.'
+            });
+      
+            // Then you throw an error to trigger the onError callback.
+            throw new Error('Out of stock');
+          }
+        } catch (error) {
+          // The error thrown will be caught here, which you can then use to trigger onError.
+          // This might be redundant if throwing the error above already triggers onError.
+          console.error('Error during onClick:', error);
+          return actions.reject();
+        }
       },
     };
   }

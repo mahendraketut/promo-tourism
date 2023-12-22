@@ -33,6 +33,10 @@ const ProductSchema = mongoose.Schema({
     owner:{
         type: String,
     },
+    sold:{
+        type: Number,
+        default: 0,
+    }
 });
 
 export default mongoose.model("Product", ProductSchema);

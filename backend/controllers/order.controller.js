@@ -26,6 +26,7 @@ export const createOrder = async (req, res) => {
     //Ganti sesuai dengan paypalnya
     const paymentStatus = req.body.paymentStatus;
     console.log("payment status", paymentStatus);
+    if(product.quantity < req.body.quantity) return res.status(404).json(CreateError(200, 'Product quantity is not enough', product.quantity));
 
     console.log("masuk new order");
     const newOrder = new Order({
@@ -41,6 +42,7 @@ export const createOrder = async (req, res) => {
     console.log("quantity lama", product.quantity);
     product.quantity = product.quantity - req.body.quantity;
     console.log("qwantity: ", product.quantity);    
+    product.sold = product.sold + req.body.quantity;
     try {
         console.log("masuk trycatch");
         const savedOrder = await newOrder.save();
