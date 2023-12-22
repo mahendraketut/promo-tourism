@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const OrderSchema = mongoose.Schema({
     userId:{
         type: String,
         required: true,
     },
-    productsId:{
+    productId:{
         type: String,
         required: true,
     },
@@ -25,12 +25,14 @@ const OrderSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    paypalInfo:[{
+    paypalInfo:{
         type: Object,
-    }],
+    },
     merchantId:{
         type: String,
         required: true,
     },
     
 });
+
+export default mongoose.model('Order', OrderSchema);

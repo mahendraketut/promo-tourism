@@ -1,5 +1,6 @@
 import express from 'express';
 import { createOrder,getOrders, getOrderById, getOrderByMerchantId, getOrderbyUserId } from '../controllers/order.controller.js';
+import bodyParser from 'body-parser';
 
 
 const router = express.Router();
