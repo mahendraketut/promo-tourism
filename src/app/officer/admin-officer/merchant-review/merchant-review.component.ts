@@ -14,8 +14,8 @@ export class MerchantReviewComponent implements OnInit {
   dtOptions: any = {};
   merchants: any[] = [];
 
-  @ViewChild(DataTableDirective, {static: false})
-  datatableElement: DataTableDirective
+  @ViewChild(DataTableDirective, { static: false })
+  datatableElement: DataTableDirective;
 
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -24,9 +24,12 @@ export class MerchantReviewComponent implements OnInit {
   ngOnInit(): void {
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 10,
+      pageLength: 15,
       processing: true,
-      lengthMenu: [5, 15, 5, 5, 5, 10, 10],
+      lengthMenu: [
+        [10, 25, 50, -1],
+        [10, 25, 50, 'All'],
+      ],
       responsive: true,
       dom: 'Bfrtip',
       buttons: ['copy', 'print', 'excel', 'pdf'],
@@ -87,7 +90,7 @@ export class MerchantReviewComponent implements OnInit {
           // Reload the page
           window.location.reload();
         });
-      }
+      },
     });
   }
 
@@ -113,8 +116,7 @@ export class MerchantReviewComponent implements OnInit {
           // Reload the page
           window.location.reload();
         });
-      }
+      },
     });
   }
 }
-
