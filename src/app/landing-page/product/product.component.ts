@@ -1,8 +1,8 @@
 import { ProductService } from 'src/app/services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// TODO changes by hendra can be deleted in assignment 2
-import { TempProductService } from 'src/app/services/temp-product.service';
+import { environment } from 'src/app/environment';
+import { NavigationExtras, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -11,14 +11,14 @@ import { TempProductService } from 'src/app/services/temp-product.service';
 })
 export class ProductComponent implements OnInit {
   products: any = [];
+  coverImage: { url: string; fileName: string }[] = [];
   //A form to contain products
   fileName = '';
   productForm: FormGroup;
   constructor(
-    // TODO changes by hendra can be deleted in assignment 2
-    private dataProduct: TempProductService,
     private formBuilder: FormBuilder,
-    private productService: ProductService
+    private productService: ProductService,
+    private router: Router
   ) {
     this.readProduct();
     //form builder
@@ -34,12 +34,18 @@ export class ProductComponent implements OnInit {
   }
   ngOnInit() {}
   //Gets all products from the product service.
+
   readProduct() {
     this.productService.getProducts().subscribe((data) => {
       this.products = data;
       console.log('data: ', data);
     });
   }
+
+  readCoverImageURL(coverImagePath: string): string {
+    return environment.productImgUrl + '/' + coverImagePath;
+  }
+
   //Deletes a product using the product service.
   deleteProduct(product, index) {
     if (window.confirm('Are you sure?')) {
@@ -48,103 +54,4 @@ export class ProductComponent implements OnInit {
       });
     }
   }
-
-  onSubmit() {}
-  // onSubmit() {
-  //   const formData = new FormData();
-  //   const imagesInput = this.productForm.get('images');
-
-  //   if (imagesInput && imagesInput.value) {
-  //     const files: File[] = Array.from(imagesInput.value);
-  //     if (files) {
-  //       for (let i = 0; i < files.length; i++) {
-  //         formData.append('images', files[i]);
-  //       }
-  //     }
-  //   }
-
-  //   // Append other form values to FormData
-  //   Object.keys(this.productForm.value).forEach(key => {
-  //     if (key !== 'images') {
-  //       formData.append(key, this.productForm.get(key).value);
-  //     }
-  //   });
-  //   console.log("sampe bawah");
-  //   console.log("fd:",formData);
-  //   this.productService.createProduct(formData).subscribe({
-  //     next: (response) => {
-  //       console.log('Product created successfully!', response);
-  //       // Handle success, reset the form, etc.
-  //       this.productForm.reset();
-  //     },
-  //     error: (error) => {
-  //       console.error('Error creating product:', error);
-  //       // Handle error
-  //     }
-  //   });
-  // }
-
-  //v3
-  // onSubmit() {
-  //   const formData = new FormData();
-  //   const file:File[] = event.target.files;
-  //   const imagesInput = this.productForm.get('images');
-
-  //   if (imagesInput && imagesInput.value) {
-  //     const files: File[] = Array.from(imagesInput.value);
-  //     if (files) {
-  //       for (let i = 0; i < files.length; i++) {
-  //         formData.append('images', files[i]);
-  //       }
-  //     }
-  //   }
-
-  //   this.productService.createProduct(formData, imagesInput).subscribe({
-  //     next: (response) => {
-  //       console.log('Product created successfully!', response);
-  //       // Handle success, reset the form, etc.
-  //       this.productForm.reset();
-  //     },
-  //     error: (error) => {
-  //       console.error('Error creating product:', error);
-  //       // Handle error
-  //     }
-  //   });
-  // }
-
-  // onSubmit() {
-  //   const formData = new FormData();
-  //   const imagesInput = this.productForm.get('images');
-
-  //   if (imagesInput && imagesInput.value) {
-  //     const files: File[] = imagesInput.value;
-  //     if (files) {
-  //       for (let i = 0; i < files.length; i++) {
-  //         formData.append('images', files[i]);
-  //       }
-  //     }
-  //   }
-
-  //   // Append other form values to FormData
-  //   Object.keys(this.productForm.value).forEach(key => {
-  //     if (key !== 'images') {
-  //       formData.append(key, this.productForm.get(key).value);
-  //     }
-  //   });
-
-  //   this.productService.createProduct(formData).subscribe({
-  //     next: (response) => {
-  //       console.log('Product created successfully!', response);
-  //       // Handle success, reset the form, etc.
-  //       this.productForm.reset();
-  //     },
-  //     error: (error) => {
-  //       console.error('Error creating product:', error);
-  //       // Handle error
-  //     }
-  //   });
-  // }
-
-  // TODO changes by hendra can be deleted in assignment 2
-  product = this.dataProduct.product;
 }

@@ -12,6 +12,8 @@ import { environment } from 'src/app/environment';
   // imports: [GalleryModule],
 })
 export class DetailProductComponent implements OnInit {
+  productID: any;
+  productData: any;
   image: any = 'assets/img/imagecover.jpg';
   images: GalleryItem[];
   title: string = 'Tour to Kuala Lumpur City Center (KLCC)';

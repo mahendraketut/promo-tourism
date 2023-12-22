@@ -93,11 +93,11 @@
   </div>
   <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full mt-8">
     <app-product-card
-      *ngFor="let i of product"
-      route="/detailproduct"
-      [image]="i.image"
+      *ngFor="let i of products"
+      [route]="'/detailproduct/' + i._id"
+      [image]="readCoverImageURL(i.coverImagePath)"
       [title]="i.name"
-      [rating]="i.rating"
+      [rating]="4"
       [price]="i.price"
     ></app-product-card>
   </div>
