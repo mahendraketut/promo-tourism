@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
+
+import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/token.service';
+import { Router } from '@angular/router';
+import { ProductService } from 'src/app/services/product.service';
+import { OrderService } from 'src/app/order.service';
+import Swal from 'sweetalert2';
 import { environment } from 'src/app/environment';
+
 
 @Component({
   selector: 'app-detail-product',
@@ -12,10 +20,16 @@ import { environment } from 'src/app/environment';
   // imports: [GalleryModule],
 })
 export class DetailProductComponent implements OnInit {
-  productID: any;
-  productData: any;
-  image: any = 'assets/img/imagecover.jpg';
-  images: GalleryItem[];
+
+  //TODO:PRODUCT ID DISINI TUT
+  productId: string = "6585bccb7fcaf73f2a7ff672"
+  product: any = {};
+  paypalResponse: any = {};
+  paymentStatus: string = "";
+
+
+  image: any = '';
+  images: GalleryItem[] = [];
   title: string = 'Tour to Kuala Lumpur City Center (KLCC)';
   rating: number = 5;
   purchases: number = 999;
@@ -31,12 +45,47 @@ export class DetailProductComponent implements OnInit {
   quantity: number = 0;
   isFull: boolean = false;
 
+
+  constructor(
+    private authService: AuthService,
+    private tokenService: TokenService,
+    private router: Router,
+    private productService: ProductService,
+    private orderService: OrderService
+  ) { }
+
+  getProduct(){
+    this.product = this.productService.getProduct(this.productId).subscribe({
+      next: (result) => {
+        this.product = result.data;
+        console.log("PROOODAK:",this.product);
+        console.log(this.product.coverImagePath);
+        this.images.push(new ImageItem({ src: this.productService.getImageUrl(this.product.coverImagePath), thumb: this.productService.getImageUrl(this.product.coverImagePath) }));
+        console.log("abis ditambah",this.images);
+        for(let i = 0; i < this.product.imagesPath.length; i++){
+          this.images.push(new ImageItem({ src: this.productService.getImageUrl(this.product.imagesPath[i]), thumb: this.productService.getImageUrl(this.product.imagesPath[i]) }));
+        }
+        console.log("abis ditambah",this.images);
+
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  ngOnInit(): void {
+    this.initConfig();
+    this.getProduct();
+  }
+
   //function increment()
   increment() {
     if (this.quantity < this.stock) {
       this.quantity++;
     }
   }
+
 
   isAvailable() {
     if (this.quantity == this.stock) this.isFull = true;
@@ -50,13 +99,6 @@ export class DetailProductComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.initConfig();
-    //set item array
-    this.images = [
-      new ImageItem({ src: 'IMAGE_SRC_URL', thumb: 'IMAGE_THUMBNAIL_URL' }),
-    ];
-  }
 
   private initConfig(): void {
     this.payPalConfig = {
@@ -102,13 +144,13 @@ export class DetailProductComponent implements OnInit {
       },
       onApprove: (data, actions) => {
         console.log(
-          'onApprove - transaction was approved, but not authorized',
+          'onApprove1 - transaction was approved, but not authorized',
           data,
           actions
         );
         actions.order.get().then((details) => {
           console.log(
-            'onApprove - you can get full order details inside onApprove: ',
+            'onApprove2 - you can get full order details inside onApprove: ',
             details
           );
         });
@@ -118,16 +160,76 @@ export class DetailProductComponent implements OnInit {
           'onClientAuthorization - you should probably inform your server about completed transaction at this point',
           data
         );
+        this.paypalResponse = data;
+        this.paymentStatus = data.status;
+        this.createOrder();
       },
       onCancel: (data, actions) => {
         console.log('onCancel', data, actions);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Payment canceled!',
+        });
       },
       onError: (err) => {
         console.log('OnError', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
       },
       onClick: (data, actions) => {
         console.log('onClick', data, actions);
       },
     };
   }
+
+  createOrder(): void {
+    console.log("creating order");
+    const userId = this.tokenService.getUserId();
+    const productId = this.productId;
+    const quantity = this.quantity;
+    const merchantId = this.product.owner;
+    const total = 1000;
+    const invoice = "INV-1234";
+    const paypalInfo = this.paypalResponse;
+    const paymentStatus = this.paymentStatus;
+
+    const data = {
+      userId,
+      productId,
+      quantity,
+      merchantId,
+      total,
+      invoice,
+      paypalInfo,
+      paymentStatus
+    };
+
+    if(userId){
+      this.orderService.createOrder(data).subscribe({
+        next: (result) => {
+          console.log(result);
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Payment success!',
+          });
+          this.router.navigate(['/order']);
+        },
+        error: (error) => {
+          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Payment failed!',
+          });
+        },
+      });
+    }
+  }
+
+
 }

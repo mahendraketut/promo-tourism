@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../environment';
 import {
   HttpClient,
   HttpHeaders,
@@ -12,7 +13,8 @@ import {
 })
 export class AuthService {
 
-  endpoint: string = "http://127.0.0.1:3000/api/auth";
+  // endpoint: string = "http://127.0.0.1:3000/api/auth";
+  endpoint: string = environment.authUrl;
   constructor(private http:HttpClient) {
   }
 
