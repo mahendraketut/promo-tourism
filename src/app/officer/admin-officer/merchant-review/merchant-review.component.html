@@ -48,14 +48,6 @@
               >
                 <thead class="border-y">
                   <tr>
-                    <!-- TODO delete this part nanti -->
-                    <!-- <th class="px-4 py-2">No</th>
-                    <th class="px-4 py-2">MerchantID</th>
-                    <th class="px-4 py-2">Merchant Name</th>
-                    <th class="px-4 py-2">Merchant Email</th>
-                    <th class="px-4 py-2">Merchant Contact</th>
-                    <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2">Action</th> -->
                     <th class="px-4 py-2">No</th>
                     <th class="px-4 py-2">Merchant Name</th>
                     <th class="px-4 py-2">Merchant Email</th>
@@ -65,48 +57,7 @@
                     <th class="px-4 py-2">Action</th>
                   </tr>
                 </thead>
-                <!-- TODO delete this part nanti -->
-                <!--
-                <tbody>
-                  <tr *ngFor="let merchant of merchants; let i = index">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ merchant.id }}</td>
-                    <td>{{ merchant.name }}</td>
-                    <td>{{ merchant.email }}</td>
-                    <td>{{ merchant.contact }}</td>
-                    <td>
-                      <span
-                        *ngIf="merchant.status == 'pending'"
-                        class="bg-yellow-400 text-white px-2 py-1 rounded-full"
-                        >Pending</span
-                      >
-                      <span
-                        *ngIf="merchant.status == 'approved'"
-                        class="bg-green-400 text-white px-2 py-1 rounded-full"
-                        >Approved</span
-                      >
-                    </td>
-                    <td>
 
-                      <button
-                        class="bg-blue-500 hover:bg-blue-700 text-white w-8 h-8 me-1 text-sm rounded-full"
-                      >
-                        <i class="fa-solid fa-eye"></i>
-                      </button>
-
-                      <button
-                        class="bg-green-500 hover:bg-green-700 text-white w-8 h-8 me-1 text-sm rounded-full"
-                      >
-                        <i class="fa-solid fa-check"></i>
-                      </button>
-                      <button
-                        class="bg-red-500 hover:bg-red-700 text-white w-8 h-8 text-sm rounded-full"
-                      >
-                        <i class="fa-solid fa-times"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody> -->
                 <tbody>
                   <tr *ngFor="let merchant of merchants; let i = index">
                     <td>{{ i + 1 }}</td>
