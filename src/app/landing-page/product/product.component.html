@@ -1,7 +1,7 @@
 <div class="h-full">
   <div class="md:flex md:justify-between">
     <!-- searchbar: start -->
-    <div class="w-full mb-4 md:mb-0 md:w-3/4">
+    <div class="w-full mb-4 md:mb-0 md:w-3/5">
       <form class="w-full">
         <label
           for="default-search"
@@ -28,26 +28,35 @@
               />
             </svg>
           </div>
-          <input
+          <!-- <input
             type="search"
             id="default-search"
             class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search travel package, hotels, or travels..."
             required
+          /> -->
+          <input
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            [ngModelOptions]="{ standalone: true }"
+            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            type="search"
+            placeholder="Search travel package, hotels, or travels..."
+            required
           />
-          <button
+          <!-- <button
             type="submit"
             class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2"
           >
             Search
-          </button>
+          </button> -->
         </div>
       </form>
     </div>
     <!-- searchbar: end -->
     <!-- filter and sort: start -->
-    <div class="w-full md:w-1/4 md:ms-2">
-      <div class="grid grid-cols-2 h-full">
+    <div class="w-full md:w-2/5 md:ms-2">
+      <div class="grid grid-cols-3 h-full">
         <div class="relative">
           <div
             class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
@@ -57,14 +66,19 @@
           <select
             id="sort"
             name="sort"
+            [(ngModel)]="selectedSortOption"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="sortProducts()"
             class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-s-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="default">Sort by</option>
-            <option value="price">Price</option>
-            <option value="rating">Rating</option>
-            <option value="duration">Duration</option>
-            <option value="name A-Z">Name: A-Z</option>
-            <option value="name Z-A">Name: Z-A</option>
+            <option value="default" class="hidden">Sort by</option>
+            <option value="default">Default</option>
+            <option value="price-asc">Price: Lowest</option>
+            <option value="price-desc">Price: Highest</option>
+            <option value="rating-asc">Rating: Lowest</option>
+            <option value="rating-desc">Rating: Highest</option>
+            <option value="name-asc">Name: A-Z</option>
+            <option value="name-desc">Name: Z-A</option>
           </select>
         </div>
 
@@ -78,22 +92,46 @@
           <select
             id="filter"
             name="filter"
+            [(ngModel)]="selectedFilterOption"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="filterProducts()"
             class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-e-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="default">Filter by</option>
+            <option value="default" class="hidden">Filter by</option>
             <option value="all">All</option>
-            <option value="travel">Travel</option>
-            <option value="hotel">Hotel</option>
-            <option value="travel-package">Travel Package</option>
+            <option value="tour">Tour</option>
+            <option value="food">Food</option>
+            <option value="rental">Rental</option>
+            <option value="packages">Packages</option>
+            <option value="shopping">Shopping</option>
           </select>
         </div>
+        <!-- <div class="relative">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
+
+            <i class="uil uil-filter text-gray-500"></i>
+          </div>
+          <select
+            [(ngModel)]="itemsPerPage"
+            (change)="changeItemsPerPage(itemsPerPage)"
+            class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+          </select>
+        </div> -->
       </div>
     </div>
+
     <!-- filter and sort: end -->
   </div>
   <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full mt-8">
     <app-product-card
-      *ngFor="let i of products"
+      *ngFor="let i of filteredProducts"
       [route]="'/detailproduct/' + i._id"
       [image]="readCoverImageURL(i.coverImagePath)"
       [title]="i.name"
@@ -101,8 +139,15 @@
       [price]="i.price"
     ></app-product-card>
   </div>
-  <div class="flex justify-center mt-5">
-    <nav aria-label="Page navigation example">
+
+  <div *ngIf="filteredProducts.length === 0">
+    <div class="flex flex-col items-center justify-center mt-10 h-96">
+      <h1 class="text-4xl font-semibold mt-5">No Product Found</h1>
+      <p class="text-gray-500 mt-2 text-2xl">Please try another keyword</p>
+    </div>
+  </div>
+  <div *ngIf="filteredProducts.length !== 0" class="flex justify-center mt-5">
+    <!-- <nav aria-label="Page navigation example">
       <ul class="inline-flex -space-x-px text-base h-10">
         <li>
           <a
@@ -155,6 +200,14 @@
           >
         </li>
       </ul>
-    </nav>
+    </nav> -->
+    <!-- Pagination controls -->
+    <!-- <pagination-controls
+      (pageChange)="onPageChange($event)"
+      (currentPage)="(currentPage)"
+      (totalItems)="(totalItems)"
+      (itemsPerPage)="(itemsPerPage)"
+    >
+    </pagination-controls> -->
   </div>
 </div>

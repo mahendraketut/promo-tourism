@@ -14,6 +14,7 @@ import { ImageModule } from 'primeng/image';
 import { AppRoutingModule } from './app-routing.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DatePipe } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // import component
 import { AppComponent } from './app.component';
@@ -118,6 +119,7 @@ import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-
     HttpClientModule,
     CommonModule,
     FormsModule,
+    NgxPaginationModule,
   ],
   providers: [
     DatePipe,
