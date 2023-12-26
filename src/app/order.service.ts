@@ -49,7 +49,8 @@ export class OrderService {
     );
   }
   getOrderById(id): Observable<any> {
-    let api = `${this.endpoint}/orderId/${id}`;
+    console.log("Getting order by ID: ",id );
+    let api = `${this.endpoint}/${id}`;
     return this.http.get(api).pipe(
       map((response: any) => {
         return response;
@@ -73,6 +74,16 @@ export class OrderService {
   getOrderByMerchantId(id): Observable<any> {
     console.log("getOrderByMerchantId: ", id);
     let api = `${this.endpoint}/merchant/${id}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  hasReviewed(id): Observable<any> {
+    let api = `${this.endpoint}/hasReviewed/${id}`;
     return this.http.get(api).pipe(
       map((response: any) => {
         return response;

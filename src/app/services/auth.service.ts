@@ -18,20 +18,8 @@ export class AuthService {
   constructor(private http:HttpClient) {
   }
 
-
-
-  //Used to check if email is available or not when registering a user.
-  // checkEmailAvailability(email: string) {
-  //   return this.http.post(`${this.endpoint}/check`, { email }).pipe(
-  //     map((response: any) => {
-  //       // Handle the response accordingly
-  //       return response;
-  //     }),
-  //     catchError((error) => {
-  //       return error;
-  //     })
-  //   );
-  // }
+  //Checks if an email adress is available.
+  //Request forwarded to the checkEmail method in auth controller.
   checkEmailAvailability(email: string) {
     return this.http.post(`${this.endpoint}/check`, { email }).pipe(
       map((response: any) => {
@@ -46,23 +34,21 @@ export class AuthService {
 
 
   //Registers a user.
+  //request forwarded to register method in the auth controller.
   registerUser(data:any): Observable<any> {
     let api = `${this.endpoint}/register`;
     return this.http.post(api, data).pipe(catchError(this.errorMgmt));
   }
 
 
-
-  // loginUser(data:any): Observable<any> {
-  //   let api = `${this.endpoint}/login`;
-  //   return this.http.post(api, data).pipe(catchError(this.errorMgmt));
-  // }
+  //Logs in a user.
   loginUser(email: string, password: string): Observable<any> {
     let api = `${this.endpoint}/login`;
     return this.http.post(api, { email, password }).pipe(catchError(this.errorMgmt));
   }
 
 
+  //General error management to intercept errors from the backend.
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -76,7 +62,9 @@ export class AuthService {
     return throwError(() => error); // Return the actual error object
   }
   
-  //filters with account status
+  //Retreives merchants, but it also sorts the merchants based on accountStatus.
+  //returns merchant with accountStatus pending first, then approved, then rejected.
+  //Sorting is done here rather than the back-end.
   getMerchants(): Observable<any[]> {
     let api = `${this.endpoint}/merchants`;
     return this.http.get<any[]>(api).pipe(
@@ -92,7 +80,7 @@ export class AuthService {
           const sortedMerchants = pendingMerchants.concat(approvedMerchants, rejectedMerchants);
   
           //Removes password from the response.
-          //We did remove this in the back-end, but just to be safe, i removed it again.
+          //We did remove this in the back-end, but just to be safe, i removed it again (redundancy).
           const merchantsWithoutPasswords = sortedMerchants.map((merchant: any) => {
             const { password, ...rest } = merchant;
             return rest;
@@ -107,6 +95,8 @@ export class AuthService {
       catchError(this.errorMgmt)
     );
   }
+
+  //Retreive a specific merchant according to their ID.
   getMerchantById(merchantId: string): Observable<any> {
     let api = `${this.endpoint}/merchant/${merchantId}`;
     return this.http.get(api).pipe(
@@ -117,6 +107,7 @@ export class AuthService {
     );
   }
   
+  //Accepts a merchant registration request according to their ID.
   acceptMerchant(merchantId: string): Observable<any> {
     let api = `${this.endpoint}/accept?id=${merchantId}`;
     return this.http.post(api, {}).pipe(
@@ -127,6 +118,7 @@ export class AuthService {
     );
   }
   
+  //Rejects a merchant registration request according to their ID.
   rejectMerchant(merchantId: string): Observable<any> {
     let api = `${this.endpoint}/reject?id=${merchantId}`; 
     return this.http.post(api, {}).pipe(
@@ -137,32 +129,29 @@ export class AuthService {
     );
   }
 
+  //Logs a user out by removing the user's token from local storage.
   logoutUser(): void {
     localStorage.removeItem('token'); // Remove the token from local storage
-    this.logoutBackend();
-
-    // You might want to add any additional cleanup steps here
   }
 
-  // Call the API endpoint for logging out on the backend
-  logoutBackend(): Observable<any> {
-    // Adjust the endpoint to your backend logout API
-    const logoutApi = `${this.endpoint}/logout`;
-    return this.http.get(logoutApi); // Assuming a GET request is used for logout in your backend
-  }
 
+  //Used by merchants to change their password, forwards the user ID, new pass and old pass to the back-end.
   changePassword(currentPassword: string, newPassword: string, userId: string): Observable<any> {
-    console.log("masuk service changepass");
     let api = `${this.endpoint}/changepassword`;
     return this.http.patch(api, {currentPassword, newPassword, userId}).pipe(catchError(this.errorMgmt));
   }
 
+  //First step of the forget password process.
+  //Forwards the user's email to the back-end.
+  //The back-end will then send a verification code to the user's email.
   forgetPasswordFirst(email: string): Observable<any> {
     console.log("masuk service forgetpass");
     console.log("masuk service forgetpass");
     let api = `${this.endpoint}/forgetpassword`;
     return this.http.post(api, {email}).pipe(catchError(this.errorMgmt));
   }
+  //Seocond step of the forgot password process.
+  //User needs to input new password along with the right verification and their email to proceed.
   forgetPasswordSecond(newPassword: string, verificationCode: string, email: string): Observable<any> {
     console.log("masuk service forgetpass");
     let api = `${this.endpoint}/val`;

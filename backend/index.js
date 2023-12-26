@@ -17,7 +17,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
-// Serve static files from the 'productimg' and 'merchant_uploads directory
+//Use static routes to get images and files.
 app.use('/productimg', express.static(path.join(__dirname, 'productimg')));
 app.use('/merchantup', express.static(path.join(__dirname, 'merchant_uploads')));
 
@@ -32,6 +32,10 @@ app.use('/api/product', productRoutes);
 //Import order routes.
 import orderRoutes from "./routes/order.js";
 app.use('/api/order', orderRoutes);
+
+//import review routes.
+import reviewRoutes from "./routes/review.js";
+app.use('/api/review', reviewRoutes);
 
 // Response Handling.
 app.use((obj, req, res, next) => {

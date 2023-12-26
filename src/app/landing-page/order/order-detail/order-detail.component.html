@@ -228,7 +228,7 @@
             </div>
             <!-- notes: end -->
             <!-- review: start -->
-            <div *ngIf="isReviewed" class="mt-5">
+            <div *ngIf="hasReviewed" class="mt-5">
               <h1 class="text-base font-bold">Review</h1>
               <hr class="" />
 
@@ -356,6 +356,7 @@
         <!-- input comment: end -->
         <!-- submit button: start -->
         <button
+        (click)="submitReview()"
           class="w-full bg-blue-600 rounded-full text-center p-3 text-white font-bold hover:bg-blue-700 mt-5"
         >
           Submit
