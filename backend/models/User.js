@@ -1,4 +1,4 @@
-//This is the model for User.
+//This is the backend model for User.
 
 import mongoose, {Schema} from "mongoose";
 

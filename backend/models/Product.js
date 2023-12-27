@@ -1,4 +1,4 @@
-//This is the mdoel for Product.
+//This is the backend mdoel for Product.
 
 import mongoose from "mongoose";
 

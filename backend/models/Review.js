@@ -1,6 +1,5 @@
 //This is the model for Review.
 
-
 import mongoose from 'mongoose';
 
 export const reviewSchema = mongoose.Schema({
