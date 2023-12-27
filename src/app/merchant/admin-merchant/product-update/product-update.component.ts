@@ -25,6 +25,7 @@ export class ProductUpdateComponent {
   productUpdateForm: FormGroup;
   productImages: File[] = [];
   coverImage: File | null = null;
+  changeImages: boolean = false;
 
   //constructor
   constructor(
@@ -166,7 +167,8 @@ export class ProductUpdateComponent {
     const files = input.files;
     if (input.files) {
       this.productImages = Array.from(input.files);
-      this.imagePreviews = []; // Clear existing previews
+      this.imagePreviews = []; 
+      this.changeImages = true;
 
       for (let i = 0; i < files.length; i++) {
         const selectedFile = files[i];
@@ -226,6 +228,7 @@ export class ProductUpdateComponent {
     formData.append('quantity', this.productUpdateForm.get('quantity')?.value);
     formData.append('category', this.productUpdateForm.get('category')?.value);
 
+    formData.append('changeImages', this.changeImages.toString());
     // Append the cover image if it exists
     if (this.coverImage) {
       formData.append('cover', this.coverImage);
@@ -237,6 +240,7 @@ export class ProductUpdateComponent {
     });
 
     formData.append('owner', this.tokenService.getUserId());
+    console.log("Formdata: ", formData);
 
     this.productService.updateProduct(this.productId, formData).subscribe({
       next: (data) => {

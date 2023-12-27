@@ -1,37 +1,35 @@
-//TODO: check AUTH mw ini semua
+// TODO: HEN - CHECK INI DIPERLUIN APA KAGA (udah di auth controller)
+// import jwt from 'jsonwebtoken';
+// import { CreateError } from '../utils/error.js';
+// import User from '../models/User.js';
 
+// export const authenticateToken = async (req, res, next) => {
+//     try {
+//         const token = req.headers.authorization;
 
-import jwt from 'jsonwebtoken';
-import { CreateError } from '../utils/error.js';
-import User from '../models/User.js';
+//         if (!token) {
+//             return next(CreateError(401, 'Access denied, No Token!'));
+//         }
 
-export const authenticateToken = async (req, res, next) => {
-    try {
-        const token = req.headers.authorization;
+//         const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
-        if (!token) {
-            return next(CreateError(401, 'Access denied, No Token!'));
-        }
+//         req.user = decoded; // Assign the decoded user to the request object for further use
 
-        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+//         // You can fetch additional user information from the database if needed
+//         // For example, fetch the user details based on the ID stored in the token
+//         const user = await User.findById(decoded.id);
 
-        req.user = decoded; // Assign the decoded user to the request object for further use
+//         if (!user) {
+//             return next(CreateError(404, 'User not found'));
+//         }
 
-        // You can fetch additional user information from the database if needed
-        // For example, fetch the user details based on the ID stored in the token
-        const user = await User.findById(decoded.id);
+//         // Optionally, you can attach the user object to the request
+//         req.currentUser = user;
 
-        if (!user) {
-            return next(CreateError(404, 'User not found'));
-        }
+//         // If everything is fine, proceed to the next middleware or route handler
+//         next();
 
-        // Optionally, you can attach the user object to the request
-        req.currentUser = user;
-
-        // If everything is fine, proceed to the next middleware or route handler
-        next();
-
-    } catch (error) {
-        return next(CreateError(403, 'Invalid or expired token'));
-    }
-};
+//     } catch (error) {
+//         return next(CreateError(403, 'Invalid or expired token'));
+//     }
+// };

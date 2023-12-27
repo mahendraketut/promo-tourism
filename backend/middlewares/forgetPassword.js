@@ -20,12 +20,11 @@ const transporter = nodemailer.createTransport({
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+//Reads the email template from the back-end
 const readEmailTemplate = (userData, verificationCode, callback) => {
-    console.log("reademail method");
     const emailTemplatePath = join(__dirname, '../templates/forgetPassword.html')
     fs.readFile(emailTemplatePath, 'utf8', (err, html) => {
         if (err) {
-            console.log("error di readfile: ", err);
             callback(err);
         } else {
             html = html.replace('{{name}}', userData.name);
@@ -34,12 +33,10 @@ const readEmailTemplate = (userData, verificationCode, callback) => {
         }
     });
 }
-
+//Send the verification email.
 export const sendVerificationEmail = (userData, verificationCode) => {
-    console.log("createforgetemail method");
     readEmailTemplate(userData, verificationCode, (err, replacedHtmlEmail) => {
         if (err) {
-            console.log('Error reading email template:', err);
             return response.CreateError(500, "Error reading email template");
         } else {
             transporter.sendMail({

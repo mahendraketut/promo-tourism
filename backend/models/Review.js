@@ -1,5 +1,4 @@
-
-
+//This is the model for Review.
 
 import mongoose from 'mongoose';
 

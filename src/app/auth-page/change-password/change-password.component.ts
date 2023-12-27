@@ -23,10 +23,10 @@ export class ChangePasswordComponent {
     this.logo = '/assets/img/logo-landscape.png';
   }
 
+  //Custom validator to check that both password fields matches.
   passwordMatchValidator(formGroup: FormGroup) {
     const newPassword = formGroup.get('newPassword').value;
     const confirmPassword = formGroup.get('confirmPassword').value;
-
     //check if both old Password and New Password are match.
     if (newPassword === confirmPassword) {
       return null;
@@ -36,6 +36,7 @@ export class ChangePasswordComponent {
     }
   }
 
+  //Change Password Form
   changePasswordForm = new FormGroup(
     {
       oldPassword: new FormControl('', [Validators.required]),
@@ -50,16 +51,16 @@ export class ChangePasswordComponent {
     }
   );
 
-
+//Submit Change Password Form.
+//If form is valid then call changePassword() method of AuthService.
+//If changePassword() method returns 200 (success) then show success message and logout user.
 onSubmit() {
   if (this.changePasswordForm.valid) {
     const tokenData = this.tokenService.decodeToken();
-    console.log(tokenData);
     const oldPassword = this.changePasswordForm.get('oldPassword').value;
     const newPassword = this.changePasswordForm.get('newPassword').value;
     this.authService.changePassword(oldPassword, newPassword, tokenData.id).subscribe({
       next: (response) => {
-        console.log(response);
         if (response.status === 200) {
           Swal.fire({
             icon: 'success',
@@ -91,7 +92,7 @@ onSubmit() {
         }
       },
       error: (error) => {
-        console.log(error);
+        console.error('There was an error!', error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -101,7 +102,6 @@ onSubmit() {
         });
       },
       complete: () => {
-        console.log('complete');
       },
     });
   }
@@ -117,6 +117,3 @@ onSubmit() {
 
 }
 }
-
-// TODO: gabisa tut-- Hendry tolong nanti di email change password nya kasi redirect ke link changePass
-// localhost:4200/auth/change_password

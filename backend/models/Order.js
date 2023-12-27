@@ -1,4 +1,6 @@
-import mongoose, { mongo } from "mongoose";
+//This is the backend model for Order.
+
+import mongoose from "mongoose";
 
 const OrderSchema = mongoose.Schema({
     userId:{

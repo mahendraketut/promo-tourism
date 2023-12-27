@@ -1,3 +1,4 @@
+//Custom error handler function.
 export const CreateError = ( status, message, data) => {
     const error = new Error(message);
     error.status = status;

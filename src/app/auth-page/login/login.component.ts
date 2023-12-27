@@ -11,9 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  //
   logo: any;
-
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -22,34 +20,37 @@ export class LoginComponent {
     this.logo = '/assets/img/logo-landscape.png';
   }
 
+  //Login form
   userLoginForm = new FormGroup({
     userEmail: new FormControl('', [Validators.required, Validators.email]),
     userPass: new FormControl('', [Validators.required]),
   });
-
+  //A counter to check if user has clicked the login button.
+  //Useful to trigger the validation warnings.
   loginClicked = false;
 
+  //Submit login form.
+  //If form is valid then call loginUser() method of AuthService.
+  //This sends the user's username and password to the backend.
+  //If login is successful then save the token in local storage and--
+  //--redirect user to their appropriate pages according to their role.
   onSubmit() {
     this.loginClicked = true;
-    console.log('kena click');
     if (this.userLoginForm.valid) {
       const email = this.userLoginForm.get('userEmail').value;
       const password = this.userLoginForm.get('userPass').value;
 
       this.authService.loginUser(email, password).subscribe({
         next: (res) => {
-          console.log('response atas: ', res);
           if (res.status === 200) {
             localStorage.setItem('token', res.token);
             if (this.tokenService.decodeToken().roles == 'user') {
               this.router.navigate(['/']);
-              console.log('MASUK BRO');
             } else if (
               this.tokenService.decodeToken().roles == 'merchant' &&
               this.tokenService.decodeToken().hasResetPassword == false
             ) {
               this.router.navigate(['/auth/change_password']);
-              console.log('MASUK CHANGE PASS BRO');
             } else if (
               this.tokenService.decodeToken().roles == 'merchant' &&
               this.tokenService.decodeToken().hasResetPassword == true
@@ -69,7 +70,6 @@ export class LoginComponent {
           }
         },
         error: (err) => {
-          console.log('error bawah: ', err);
           if (err.status === 400) {
             Swal.fire({
               icon: 'error',

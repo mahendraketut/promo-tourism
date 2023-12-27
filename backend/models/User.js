@@ -1,3 +1,5 @@
+//This is the backend model for User.
+
 import mongoose, {Schema} from "mongoose";
 
 const UserSchema = mongoose.Schema({

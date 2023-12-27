@@ -61,11 +61,11 @@ export class RegisterComponent {
     }
   );
 
+  //Custom asynchronous validator to check if email is taken or not.
+  //Pings the backend if the email is taken or not.
   checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
     const email = control.value;
-  
     return new Promise((resolve, reject) => {
-     
       this.authService.checkEmailAvailability(email).subscribe({
         next: (response: any) => {
           if (response.status === 200 && response.message === 'Email Taken') {
@@ -84,9 +84,13 @@ export class RegisterComponent {
     });
   }
   
-
+  //A counter to check if user has clicked the submit button.
+  //Useful to trigger the validation warnings.
   submittedClicked = false;
 
+  //Submit user data form.
+  //If form is valid then construct FormData object and send it to backend.
+  //If register is successful then show success message and redirect user to login page.
   onSubmit() {
     this.submittedClicked = true;
     if (this.userDataForm.get('agreeTOS').value) {
