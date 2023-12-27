@@ -1,3 +1,4 @@
+//Custom success handler function.
 export const CreateSuccess = ( statusCode, successMessage, data) => {
     const successObj = {
         status: statusCode,
