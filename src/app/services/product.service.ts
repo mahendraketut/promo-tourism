@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../environment';
 import {
@@ -32,21 +32,17 @@ export class ProductService {
     return this.http.get(api).pipe(catchError(this.errorMgmt));
   }
 
-
   addProduct(data: any): Observable<any> {
     let api = `${this.endpoint}/add`;
     return this.http.post(api, data).pipe(catchError(this.errorMgmt));
   }
 
-
   // ProductService
   updateProduct(id: any, data: FormData): Observable<any> {
     let api = `${environment.productUrl}/update/${id}`;
     // No need to set 'Content-Type': 'multipart/form-data' as Angular does it automatically with FormData
-    return this.http.patch(api, data)
-      .pipe(catchError(this.errorMgmt));
+    return this.http.patch(api, data).pipe(catchError(this.errorMgmt));
   }
-
 
   //Sends a DELETE request to the back-end API to delete a product.
   deleteProduct(id: any): Observable<any> {
@@ -91,13 +87,32 @@ export class ProductService {
       catchError(this.errorMgmt)
     );
   }
-  
 
   getImageUrl(relativePath: string): string {
     return `${environment.apiUrl}/productimg/${relativePath}`;
   }
 
+  convertMYRtoUSD(amount: number): Observable<number> {
+    return this.http.get(environment.currencyExchangeAPI).pipe(
+      map((data: any) => {
+        const exchangeRate = data.rates.USD;
+        return amount * exchangeRate; // Return the converted amount
+      }),
+      catchError((error) => {
+        // Handle any errors here
+        console.error('Error in currency conversion:', error);
+        return of(0); // Return 0 or some default value in case of error
+      })
+    );
+  }
 
-
-
+  generateInvoice(): string {
+    var result = 'INV';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < 10; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
 }

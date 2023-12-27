@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { NgChartsModule } from 'ng2-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
-import { NgModule } from '@angular/core';
+// import { GALLERY_CONFIG, GalleryConfig, GalleryModule } from 'ng-gallery';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
@@ -15,6 +15,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DatePipe } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { Lightbox, LightboxModule } from 'ngx-lightbox';
+import { register } from 'swiper/element/bundle';
+register();
 
 // import component
 import { AppComponent } from './app.component';
@@ -120,18 +123,34 @@ import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-
     CommonModule,
     FormsModule,
     NgxPaginationModule,
+    LightboxModule,
+    // GalleryModule,
+    // LightboxModule.withConfig({
+    //   panelClass: 'custom-lightbox-panel',
+    //   keyboardShortcuts: true,
+    //   hasBackdrop: true,
+    //   backdropClass: 'custom-backdrop-class',
+    // }),
   ],
   providers: [
     DatePipe,
     PdfService,
-    {
-      provide: GALLERY_CONFIG,
-      useValue: {
-        autoHeight: true,
-        imageSize: 'cover',
-      } as GalleryConfig,
-    },
+    // {
+    //   provide: GALLERY_CONFIG,
+    //   useValue: {
+    //     autoHeight: true,
+    //     imageSize: 'cover',
+    //   } as GalleryConfig,
+    // },
+    // {
+    //   provide: LIGHTBOX_CONFIG,
+    //   useValue: {
+    //     keyboardShortcuts: false,
+    //     exitAnimationTime: 1000,
+    //   } as LightboxConfig,
+    // },
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

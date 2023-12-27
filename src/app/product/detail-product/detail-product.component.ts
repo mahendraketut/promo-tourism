@@ -1,37 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
+// import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
-import { firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom, tap } from 'rxjs';
+// import { GalleryItem, ImageItem } from '@ngx-gallery/core';
+// import { Lightbox } from '@ngx-gallery/lightbox';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/token.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { OrderService } from 'src/app/order.service';
 import Swal from 'sweetalert2';
 import { environment } from 'src/app/environment';
-
-
+import { data, error } from 'jquery';
+import { Lightbox } from 'ngx-lightbox';
 @Component({
   selector: 'app-detail-product',
   templateUrl: './detail-product.component.html',
   styleUrls: ['./detail-product.component.css'],
 })
 export class DetailProductComponent implements OnInit {
-
-  //TODO:PRODUCT ID DISINI TUT
-  productId: string = "6585d86d83bfc96285eba371"
-  product: any = {};
+  productId: string;
+  productData;
   paypalResponse: any = {};
-
-  paymentStatus: string = "";
-  image: any = '';
-  images: GalleryItem[] = [];
+  userId: any = this.tokenService.getUserId();
+  paymentStatus: string = '';
+  productImages: any[] = [];
+  private lightboxImages: any[] = [];
+  // images: GalleryItem[] = [];
   title: string = 'Tour to Kuala Lumpur City Center (KLCC)';
   rating: number = 5;
   purchases: number = 999;
-  price: number = 1000;
-  discount: number = 250;
+  price: number;
+  // discount: number = 250;
   description: any =
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ipsam, excepturi eveniet iure dolore iusto temporibus necessitatibus quisquam aspernatur beatae id, et expedita unde qui consectetur voluptatum mollitia aperiam! Excepturi.';
   stock: number = 0;
@@ -41,61 +42,129 @@ export class DetailProductComponent implements OnInit {
   //purchasing data
   quantity: number = 0;
   isFull: boolean = false;
+  category: any;
+  owner: any;
+  priceInUSD: any;
+  total: any = 0;
 
+  swiperConfig = {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    navigation: true,
+    pagination: { clickable: true },
+    // other configurations
+  };
 
   constructor(
     private tokenService: TokenService,
     private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService,
     private productService: ProductService,
-    private orderService: OrderService
-  ) { }
-
-  getProduct(){
-    this.product = this.productService.getProduct(this.productId).subscribe({
-      next: (result) => {
-        this.product = result.data;
-        console.log("PROOODAK:",this.product);
-        console.log(this.product.coverImagePath);
-        this.images.push(new ImageItem({ src: this.productService.getImageUrl(this.product.coverImagePath), thumb: this.productService.getImageUrl(this.product.coverImagePath) }));
-        console.log("abis ditambah",this.images);
-        for(let i = 0; i < this.product.imagesPath.length; i++){
-          this.images.push(new ImageItem({ src: this.productService.getImageUrl(this.product.imagesPath[i]), thumb: this.productService.getImageUrl(this.product.imagesPath[i]) }));
-        }
-        console.log("abis ditambah",this.images);
-        this.stock = this.product.quantity;
-        this.title = this.product.name;
-        // this.rating = this.product.rating;
-        this.purchases = this.product.sold;
-        this.price = this.product.price;
-        // this.discount = this.product.discount;
-        this.description = this.product.description;
-
-
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-  }
+    private orderService: OrderService,
+    private lightbox: Lightbox
+  ) {}
 
   ngOnInit(): void {
     this.initConfig();
     this.getProduct();
+
+    // this.currencyExchange(this.price);
+    // console.log(this.priceInUSD);
   }
 
-  //function increment()
-  increment() {
-    if (this.quantity < this.stock) {
-      this.quantity++;
-    }
+  // openLightbox(index: number) {
+  //   this.lightbox.open(index);
+  // }
+
+  getProduct() {
+    // Request to get the id from params and save it into productId
+    this.productId = this.route.snapshot.paramMap.get('id');
+    // TODO below is console log that can be deleted if dev.process already done
+    console.log('ID:' + this.productId);
+    this.productService.getProduct(this.productId).subscribe({
+      next: (data) => {
+        // Put the data into product data
+        this.productData = data.data;
+        // TODO show the data in console.log. Remove it when dev step done
+        console.log('Product data: ', this.productData);
+        //put the data
+        this.title = this.productData?.name;
+        this.description = this.productData?.description;
+        this.price = this.productData?.price;
+        // this.priceInUSD = this.currencyExchange(this.price);
+        this.stock = this.productData?.quantity;
+        this.category = this.productData?.category;
+        this.owner = this.productData?.owner;
+        // Put the cover image data to imageProduct array
+        if (this.productData?.coverImagePath) {
+          this.productImages.push(
+            environment.productImgUrl + '/' + this.productData?.coverImagePath
+          );
+          // const url =
+          //   environment.productImgUrl + '/' + this.productData?.coverImagePath;
+          // this.images.push(new ImageItem({ src: url, thumb: 'product' }));
+        }
+        // Put the image data to imageProduct array
+        if (this.productData?.imagesPath) {
+          this.productData?.imagesPath.map((imgPath: string) => {
+            this.productImages.push(environment.productImgUrl + '/' + imgPath);
+          });
+          // this.productData?.imagesPath.map((imgPath: string) => {
+          //   const url = environment.productImgUrl + '/' + imgPath;
+          //   this.images.push(new ImageItem({ src: url, thumb: 'product' }));
+          // });
+        }
+
+        this.productImages.forEach((src) => {
+          const album = {
+            src: src,
+          };
+          this.lightboxImages.push(album);
+        });
+
+        console.log('Product images URL:', this.productImages);
+        console.log('Lightbox images:', this.lightboxImages);
+        this.currencyExchange(this.productData?.price);
+        // console.log(this.priceInUSD);
+      },
+      error: (error) => {
+        // TODO show error message in console when the fetching process is Error
+        console.error('Error fetching product:', error);
+      },
+      complete: () => {
+        // TODO show message in console when the fetching process is complete
+        console.log('Product data retrieval complete.');
+      },
+    });
   }
 
+  openLightBox(index: number) {
+    this.lightbox.open(this.lightboxImages, index);
+  }
+
+  closeLightBox(): void {
+    this.lightbox.close();
+  }
+
+  currencyExchange(amountMYR: number): void {
+    // Log the input amount for debugging
+    console.log('Converting amount:', amountMYR);
+
+    this.productService.convertMYRtoUSD(amountMYR).subscribe((amountInUSD) => {
+      const converted = amountInUSD.toFixed(2);
+      this.priceInUSD = converted;
+
+      // Log the converted amount for debugging
+      console.log('Converted amount in USD:', this.priceInUSD);
+
+      // Additional logic that uses this.priceInUSD
+    });
+  }
 
   async checkStock(): Promise<boolean> {
     try {
-      const result = await firstValueFrom(this.productService.getProduct(this.productId));
-      this.product = result.data;
-      this.stock = this.product.quantity;
+      this.stock = this.productData.quantity;
       return this.stock >= this.quantity;
     } catch (error) {
       console.error(error);
@@ -103,18 +172,42 @@ export class DetailProductComponent implements OnInit {
     }
   }
 
+  // async checkStock(): Promise<boolean> {
+  //   try {
+  //     const result = await firstValueFrom(
+  //       this.productService.getProduct(this.productId)
+  //     );
+  //     this.productData = result.data;
+  //     this.stock = this.productData.quantity;
+  //     return this.stock >= this.quantity;
+  //   } catch (error) {
+  //     console.error(error);
+  //     return false; // Assume false if there's an error
+  //   }
+  // }
+
   isAvailable() {
-    if (this.quantity == this.stock) this.isFull = true;
+    if (this.productData.quantity == this.stock) this.isFull = true;
     else this.isFull = false;
+  }
+
+  //function increment()
+  increment() {
+    if (this.quantity < this.productData.quantity) {
+      this.quantity++;
+      this.total = this.price * this.quantity;
+    }
   }
 
   //function decrement()
   decrement() {
     if (this.quantity > 0) {
       this.quantity--;
+      this.total = this.price * this.quantity;
     }
   }
 
+  //method to generate Invoice number
 
   private initConfig(): void {
     this.payPalConfig = {
@@ -127,11 +220,11 @@ export class DetailProductComponent implements OnInit {
             {
               amount: {
                 currency_code: 'USD',
-                value: (this.price * this.quantity).toString(),
+                value: (this.priceInUSD * this.quantity).toString(),
                 breakdown: {
                   item_total: {
                     currency_code: 'USD',
-                    value: (this.price * this.quantity).toString(),
+                    value: (this.priceInUSD * this.quantity).toString(),
                   },
                 },
               },
@@ -142,7 +235,7 @@ export class DetailProductComponent implements OnInit {
                   category: 'DIGITAL_GOODS',
                   unit_amount: {
                     currency_code: 'USD',
-                    value: this.price.toString(),
+                    value: this.priceInUSD.toString(),
                   },
                 },
               ],
@@ -198,21 +291,28 @@ export class DetailProductComponent implements OnInit {
       },
       onClick: async (data, actions) => {
         try {
+          // Check if the user is authenticated
+          const authToken = this.tokenService.getToken; // Assuming getToken() is a method to retrieve the token
+          if (!authToken) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Unauthorized',
+              text: 'You must be logged in to make a payment.',
+            });
+            return actions.reject(); // Reject the transaction
+          }
+
+          // Check if there is sufficient stock
           const hasSufficientStock = await this.checkStock();
           if (!hasSufficientStock) {
-            // Here you can either show an error or use Swal as you have been doing.
             Swal.fire({
               icon: 'error',
               title: 'Out of Stock',
-              text: 'There is not enough stock to complete your purchase.'
+              text: 'There is not enough stock to complete your purchase.',
             });
-      
-            // Then you throw an error to trigger the onError callback.
             throw new Error('Out of stock');
           }
         } catch (error) {
-          // The error thrown will be caught here, which you can then use to trigger onError.
-          // This might be redundant if throwing the error above already triggers onError.
           console.error('Error during onClick:', error);
           return actions.reject();
         }
@@ -221,13 +321,13 @@ export class DetailProductComponent implements OnInit {
   }
 
   createOrder(): void {
-    console.log("creating order");
+    console.log('creating order');
     const userId = this.tokenService.getUserId();
     const productId = this.productId;
     const quantity = this.quantity;
-    const merchantId = this.product.owner;
-    const total = 1000;
-    const invoice = "INV-1234";
+    const merchantId = this.productData?.owner;
+    const total = this.total;
+    const invoice = this.productService.generateInvoice();
     const paypalInfo = this.paypalResponse;
     const paymentStatus = this.paymentStatus;
 
@@ -239,10 +339,10 @@ export class DetailProductComponent implements OnInit {
       total,
       invoice,
       paypalInfo,
-      paymentStatus
+      paymentStatus,
     };
 
-    if(userId){
+    if (userId) {
       this.orderService.createOrder(data).subscribe({
         next: (result) => {
           console.log(result);
@@ -262,8 +362,12 @@ export class DetailProductComponent implements OnInit {
           });
         },
       });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please login first!',
+      });
     }
   }
-
-
 }
