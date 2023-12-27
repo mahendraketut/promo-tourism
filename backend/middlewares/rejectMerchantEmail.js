@@ -20,22 +20,21 @@ const transporter = nodemailer.createTransport({
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-//Reads the email template
+//Reads the merchant rejection template
 const readEmailTemplate = (userData,currentPassword, callback) => {
-    const emailTemplatePath = join(__dirname, '../templates/merchantEmail.html')
+    const emailTemplatePath = join(__dirname, '../templates/merchantRejected.html')
     fs.readFile(emailTemplatePath, 'utf8', (err, html) => {
         if (err) {
             callback(err);
         } else {
             html = html.replace('{{name}}', userData.name);
-            html = html.replace('{{password}}', currentPassword);
             callback(null, html);
         }
     });
 }
 
-//Sends the merchant acceptance email.
-export const createEmail = (userData, currentPassword) => {
+//Sends the rejection email.
+export const rejectEmail = (userData, currentPassword) => {
     readEmailTemplate(userData, currentPassword, (err, replacedHtmlEmail) => {
         if (err) {
             return response.CreateError(500, "Error reading email template");
@@ -43,7 +42,7 @@ export const createEmail = (userData, currentPassword) => {
             transporter.sendMail({
                 from: process.env.EMAIL_SENDER,
                 to: userData.email,
-                subject: "Welcome to PRS Tours",
+                subject: "Application Update from PRS Tours",
                 html: replacedHtmlEmail,
             }).catch((err) => {
                 return response.CreateError(500, "Error sending email", err);
@@ -52,4 +51,4 @@ export const createEmail = (userData, currentPassword) => {
     });
 };
 
-export default createEmail;
+export default rejectEmail;

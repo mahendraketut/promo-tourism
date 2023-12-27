@@ -1,3 +1,5 @@
+//This is the model for Order.
+
 import mongoose, { mongo } from "mongoose";
 
 const OrderSchema = mongoose.Schema({

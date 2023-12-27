@@ -1,3 +1,5 @@
+//This is the mdoel for Product.
+
 import mongoose from "mongoose";
 
 const ProductSchema = mongoose.Schema({

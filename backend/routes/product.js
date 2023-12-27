@@ -1,5 +1,5 @@
+//routes for products
 import express from "express";
-// import upload from '../utils/multerConfig.js';
 import { addProduct, getAllProducts, getProductById, updateProduct, deleteProduct, getProductsByUserId } from "../controllers/product.controller.js";
 
 
