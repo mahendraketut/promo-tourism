@@ -147,6 +147,7 @@ export const updateProduct = async (req, res, next) => {
     });
     //Parses the request body to get the data.
     form.parse(req, async (err, fields, files) => {
+        console.log("fields", fields);
       if (err) {
         console.error("Form parse error:", err);
         return next(CreateError(500, "Could not update product", err));
@@ -161,7 +162,8 @@ export const updateProduct = async (req, res, next) => {
         }
         //Replace images if requested.
         //Remove files from the filesystem first, then clear the imagesPath array.
-        if (fields.replaceImages == 'true') {            
+        if (fields.changeImages == 'true') {      
+            console.log      
             product.imagesPath.forEach(imagePath => {
               const fullPath = path.join(uploadDir, imagePath);
               try {
@@ -177,6 +179,12 @@ export const updateProduct = async (req, res, next) => {
             //Clear the imagesPath array
             product.imagesPath.splice(0, product.imagesPath.length);
             product.markModified('imagesPath'); // Inform Mongoose that the array has changed
+            //Process new images if present
+            //Sends the images to the moveAndRenameFile function to be processed.
+            product.imagesPath = Object.keys(files)
+            .filter(key => key.startsWith('images[')) // Filter keys that start with 'images['
+            .map(key => moveAndRenameFile(files[key], uploadDir)) // Process each image file
+            .filter(Boolean);  
         }
   
         //Process new cover image if present
@@ -187,12 +195,7 @@ export const updateProduct = async (req, res, next) => {
           product.coverImagePath = coverImagePath; // Set new cover image path
         }
   
-        //Process new images if present
-        //Sends the images to the moveAndRenameFile function to be processed.
-        product.imagesPath = Object.keys(files)
-            .filter(key => key.startsWith('images[')) // Filter keys that start with 'images['
-            .map(key => moveAndRenameFile(files[key], uploadDir)) // Process each image file
-            .filter(Boolean);   
+         
         //Update other fields
         product.name = getFieldValue(fields.name) || product.name;
         product.price = parseFloat(getFieldValue(fields.price)) || product.price;
