@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TokenService } from 'src/app/token.service';
+import { TokenService } from 'src/app/services/token.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 
@@ -51,69 +51,66 @@ export class ChangePasswordComponent {
     }
   );
 
-//Submit Change Password Form.
-//If form is valid then call changePassword() method of AuthService.
-//If changePassword() method returns 200 (success) then show success message and logout user.
-onSubmit() {
-  if (this.changePasswordForm.valid) {
-    const tokenData = this.tokenService.decodeToken();
-    const oldPassword = this.changePasswordForm.get('oldPassword').value;
-    const newPassword = this.changePasswordForm.get('newPassword').value;
-    this.authService.changePassword(oldPassword, newPassword, tokenData.id).subscribe({
-      next: (response) => {
-        if (response.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Password changed successfully, please login again!',
-            timer: 3000,
-            showConfirmButton: false,
-          });
-          this.authService.logoutUser();
-          this.router.navigate(['/auth/login']);
-        }
-        else if(response.status === 400){
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Incorrect password!',
-            timer: 3000,
-            showConfirmButton: false,
-          });
-        }
-        else if(response.status === 404){
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'User not found',
-            timer: 3000,
-            showConfirmButton: false,
-          });
-        }
-      },
-      error: (error) => {
-        console.error('There was an error!', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Unable to change password!',
-          timer: 3000,
-          showConfirmButton: false,
+  //Submit Change Password Form.
+  //If form is valid then call changePassword() method of AuthService.
+  //If changePassword() method returns 200 (success) then show success message and logout user.
+  onSubmit() {
+    if (this.changePasswordForm.valid) {
+      const tokenData = this.tokenService.decodeToken();
+      const oldPassword = this.changePasswordForm.get('oldPassword').value;
+      const newPassword = this.changePasswordForm.get('newPassword').value;
+      this.authService
+        .changePassword(oldPassword, newPassword, tokenData.id)
+        .subscribe({
+          next: (response) => {
+            if (response.status === 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Password changed successfully, please login again!',
+                timer: 3000,
+                showConfirmButton: false,
+              });
+              this.authService.logoutUser();
+              this.router.navigate(['/auth/login']);
+            } else if (response.status === 400) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Incorrect password!',
+                timer: 3000,
+                showConfirmButton: false,
+              });
+            } else if (response.status === 404) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'User not found',
+                timer: 3000,
+                showConfirmButton: false,
+              });
+            }
+          },
+          error: (error) => {
+            console.error('There was an error!', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Unable to change password!',
+              timer: 3000,
+              showConfirmButton: false,
+            });
+          },
+          complete: () => {},
         });
-      },
-      complete: () => {
-      },
-    });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please fill all the fields',
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    }
   }
-  else{
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Please fill all the fields',
-      timer: 3000,
-      showConfirmButton: false,
-    });
-  }
-
-}
 }
