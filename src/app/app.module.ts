@@ -16,6 +16,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DatePipe } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Lightbox, LightboxModule } from 'ngx-lightbox';
+import { EditorModule } from '@tinymce/tinymce-angular';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -33,7 +34,7 @@ import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
 import { ProductCardComponent } from './widget/product-card/product-card.component';
 import { HomeComponent } from './landing-page/home/home.component';
-import { DetailProductComponent } from './product/detail-product/detail-product.component';
+import { DetailProductComponent } from './landing-page/product/detail-product/detail-product.component';
 import { OrderComponent } from './landing-page/order/order.component';
 import { MerchantComponent } from './merchant/merchant.component';
 import { JoinUsPageComponent } from './merchant/join-us-page/join-us-page.component';
@@ -64,6 +65,9 @@ import { PdfService } from './services/pdf.service';
 import { ForgotComponent } from './auth-page/forgot/forgot.component';
 import { ProductUpdateComponent } from './merchant/admin-merchant/product-update/product-update.component';
 import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-review-detail/merchant-review-detail.component';
+import { Error403Component } from './errorPage/error403/error403.component';
+import { Error404Component } from './errorPage/error404/error404.component';
+import { Error500Component } from './errorPage/error500/error500.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +112,9 @@ import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-
     ForgotComponent,
     ProductUpdateComponent,
     MerchantReviewDetailComponent,
+    Error403Component,
+    Error404Component,
+    Error500Component,
   ],
   imports: [
     BrowserModule,
@@ -124,6 +131,7 @@ import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-
     FormsModule,
     NgxPaginationModule,
     LightboxModule,
+    EditorModule,
     // GalleryModule,
     // LightboxModule.withConfig({
     //   panelClass: 'custom-lightbox-panel',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TokenService } from 'src/app/token.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-dashboard',

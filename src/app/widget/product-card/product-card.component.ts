@@ -15,4 +15,17 @@ export class ProductCardComponent {
   @Input() route: string = '';
 
   constructor(private router: Router) {}
+
+  navigateToProductDetail(productId: string): void {
+    const baseProductUrl = '/detailproduct/';
+
+    // Update the browser's URL without adding to history
+    window.history.pushState({}, '', baseProductUrl);
+
+    // Navigate to the full path without adding to history
+    this.router.navigate([baseProductUrl + productId], {
+      skipLocationChange: true,
+    });
+    console.log('id', this.id);
+  }
 }

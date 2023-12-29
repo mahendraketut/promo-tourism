@@ -1,0 +1,27 @@
+<div class="flex items-center justify-center h-screen w-full">
+  <div class="">
+    <div class="flex justify-center h-96">
+      <img src="../assets/error/404.svg" />
+    </div>
+    <div class="mx-40">
+      <div
+        class="text-9xl mb-4 text-center font-bold text-gray-800 dark:text-gray-200"
+      >
+        404
+      </div>
+      <p class="text-gray-800 text-2xl text-center dark:text-gray-300">
+        Hey {{ username }}! <br />
+        🌟 Oops, it looks like the page you're trying to reach doesn't exist.
+        Let's navigate back or seek some assistance if you need it. 😊 🚀✨
+      </p>
+    </div>
+    <div class="flex items-center justify-center my-8">
+      <button
+        (click)="goBack()"
+        class="px-4 py-4 mt-4 text-sm rounded-full font-medium text-white uppercase transition-colors duration-200 transform bg-blue-800 hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
+      >
+        Go Back
+      </button>
+    </div>
+  </div>
+</div>

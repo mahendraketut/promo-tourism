@@ -9,7 +9,7 @@ import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
 import { HomeComponent } from './landing-page/home/home.component';
-import { DetailProductComponent } from './product/detail-product/detail-product.component';
+import { DetailProductComponent } from './landing-page/product/detail-product/detail-product.component';
 import { OrderComponent } from './landing-page/order/order.component';
 import { MerchantComponent } from './merchant/merchant.component';
 import { DashboardComponent } from './merchant/admin-merchant/dashboard/dashboard.component';
@@ -29,6 +29,11 @@ import { ChangePasswordComponent } from './auth-page/change-password/change-pass
 import { ForgotComponent } from './auth-page/forgot/forgot.component';
 import { ProductUpdateComponent } from './merchant/admin-merchant/product-update/product-update.component';
 import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-review-detail/merchant-review-detail.component';
+import { AuthService } from './services/auth.service';
+import { Error403Component } from './errorPage/error403/error403.component';
+import { Error404Component } from './errorPage/error404/error404.component';
+import { RoleGuardService } from './services/role-guard.service';
+import { Error500Component } from './errorPage/error500/error500.component';
 
 const routes: Routes = [
   {
@@ -47,6 +52,7 @@ const routes: Routes = [
         path: 'product',
         component: ProductComponent,
       },
+      // TODO delete it if success
       {
         path: 'detailproduct/:id',
         component: DetailProductComponent,
@@ -74,6 +80,8 @@ const routes: Routes = [
   {
     path: 'merchant',
     component: MerchantComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: 'merchant' },
     children: [
       {
         path: '',
@@ -118,6 +126,8 @@ const routes: Routes = [
   {
     path: 'officer',
     component: OfficerComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: 'officer' },
     children: [
       {
         path: '',
@@ -144,6 +154,7 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+        canActivate: [AuthService],
       },
       {
         path: 'register',
@@ -159,6 +170,14 @@ const routes: Routes = [
       },
     ],
   },
+
+  // Handle all other routes
+  { path: 'error/403', component: Error403Component },
+  // handle all other undefined routes
+  { path: 'error/404', component: Error404Component },
+  { path: '**', redirectTo: '/error/404' },
+  //handle server error
+  { path: 'error/500', component: Error500Component },
 ];
 
 @NgModule({

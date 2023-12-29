@@ -10,7 +10,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { environment } from 'src/app/environment';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { TokenService } from 'src/app/token.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-product-update',
@@ -167,7 +167,7 @@ export class ProductUpdateComponent {
     const files = input.files;
     if (input.files) {
       this.productImages = Array.from(input.files);
-      this.imagePreviews = []; 
+      this.imagePreviews = [];
       this.changeImages = true;
 
       for (let i = 0; i < files.length; i++) {
@@ -240,7 +240,7 @@ export class ProductUpdateComponent {
     });
 
     formData.append('owner', this.tokenService.getUserId());
-    console.log("Formdata: ", formData);
+    console.log('Formdata: ', formData);
 
     this.productService.updateProduct(this.productId, formData).subscribe({
       next: (data) => {

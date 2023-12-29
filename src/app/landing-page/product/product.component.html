@@ -132,16 +132,21 @@
   <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full mt-8">
     <app-product-card
       *ngFor="let i of filteredProducts"
-      [route]="'/detailproduct/' + i._id"
       [image]="readCoverImageURL(i.coverImagePath)"
       [title]="i.name"
       [rating]="4"
       [price]="i.price"
+      [id]="i._id"
     ></app-product-card>
   </div>
 
   <div *ngIf="filteredProducts.length === 0">
-    <div class="flex flex-col items-center justify-center mt-10 h-96">
+    <div class="flex flex-col items-center justify-center mt-10 h-fit py-24">
+      <img
+        src="../../../../assets/error/404.svg"
+        alt="No Product Found"
+        class="w-96 h-96"
+      />
       <h1 class="text-4xl font-semibold mt-5">No Product Found</h1>
       <p class="text-gray-500 mt-2 text-2xl">Please try another keyword</p>
     </div>
