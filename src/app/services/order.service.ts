@@ -80,7 +80,7 @@ export class OrderService {
   }
 
   hasReviewed(id): Observable<any> {
-    let api = `${this.endpoint}/hasReviewed/${id}`;
+    let api = `${this.endpoint}/hasreviewed/${id}`;
     return this.http.get(api).pipe(
       map((response: any) => {
         return response;

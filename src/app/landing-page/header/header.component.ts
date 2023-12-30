@@ -24,14 +24,15 @@ export class HeaderComponent {
     this.isShown = false;
   }
 
+  //Redirect to login page using router.
   goToLogin() {
     this.router.navigate(['auth/login']);
   }
-  // function goToRegister that will used to route
+  //Redirect to register page using router.
   goToRegister() {
     this.router.navigate(['auth/register']);
   }
-
+  //Built-in check to toggle the mobile navbar.
   toggleMobileNav() {
     this.isShown = !this.isShown;
   }

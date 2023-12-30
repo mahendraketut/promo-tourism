@@ -51,6 +51,16 @@ export class ReviewService {
     );
   }
 
+  getMerchantAverage(merchantId: string): Observable<any> {
+    const api = `${this.endpoint}/merchant/${merchantId}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
   //General error handling for for the product service.
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';

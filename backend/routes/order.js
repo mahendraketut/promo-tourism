@@ -12,6 +12,6 @@ router.get('/', getOrders);
 router.get('/:orderId', getOrderById);
 router.get('/user/:userId', getOrderbyUserId);
 router.get('/merchant/:merchantId', getOrderByMerchantId);
-router.post('/hasreviewed/:orderId', jsonParser, hasReviewed);
+router.get('/hasreviewed/:orderId', jsonParser, hasReviewed);
 
 export default router;
