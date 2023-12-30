@@ -101,10 +101,7 @@ export const hasReviewed = async (req, res) => {
     const { orderId } = req.params;
     try {
         const order = await Order.findById(orderId);
-        if (order.hasReviewed == true ){
-            return res.status(200).json(CreateSuccess(200, "success", order.hasReview));
-        }
-        return res.status(200).json(CreateSuccess(404, "false", order.hasReview));
+        return res.status(200).json(CreateSuccess(404, "Retreived Order Status", order.hasReview));
     } catch (error) {
         return res.status(500).json(CreateError(500, "Cannot get order", error));
     }

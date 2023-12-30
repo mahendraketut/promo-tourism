@@ -32,8 +32,9 @@ export class OrderDetailComponent {
   invoiceName: string = '';
   //TODO: Tut, input user comment dari front-end
   //TODO: Tut, input order id dari front-end
-  userComment: string = 'Ini komen buat ngetest';
-  orderId: string = '658a995f9ab604a16c1868e9';
+  //TODO: Tut, tolong di disable orang comment kalau hasReviewed = true. (udah review)
+  userComment: string = 'Tolong biar ini ngambil dari front-endnya tut!';
+  orderId: string = '659019ff735f73b8c8bcecd4';
   productId: string = '';
 
   constructor(
@@ -47,13 +48,29 @@ export class OrderDetailComponent {
     //Retireve data from order service
     // this.isReviewed = orderService.hasReviewed(this.orderId);
     console.log('REVIEW status: ', orderService.hasReviewed(this.orderId));
+    
+    this.getReviewedStatus();
+    console.log("stat bawah hasreview: ", this.hasReviewed);
+    this.reviewService.getMerchantAverage("657c6d585e0bf763f2f542ff").subscribe((data: any) => {
+      console.log("Merchant average: ", data);
+  });
     this.getOrderDetails();
   }
+
+  //Retreive data if the user has reviewed the order previously.
+  getReviewedStatus() {
+    this.orderService.hasReviewed(this.orderId).subscribe((data: any) => {
+      console.log('data review status: ', data);
+      this.hasReviewed = data.data;
+    }
+    );
+  }
+
+
 
   //TODO: tut, order detailnya tolong di transplantasi kak
   getOrderDetails() {
     this.orderService.getOrderById(this.orderId).subscribe((data: any) => {
-      console.log('getOrderById: ', data);
       this.dateOrder = data.data.createdAt;
       this.invoiceName = data.data.invoiceNumber;
       this.hasReviewed = data.data.hasReviewed;

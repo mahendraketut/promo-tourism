@@ -24,7 +24,12 @@ export const reviewSchema = mongoose.Schema({
     },
     comment: {
         type: String,
-    }
+    },
+    merchantId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Merchant',
+    },
 }, {
     timestamps: true,
 });
