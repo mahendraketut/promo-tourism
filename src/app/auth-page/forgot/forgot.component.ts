@@ -169,7 +169,8 @@ export class ForgotComponent {
             }
           }
         });
-
+      //Catches any errors that might occur.
+      //If it encounters any errors then show error message and redirect user to forgot password page.
       } catch (error) {
         Swal.fire({
           icon: 'error',

@@ -11,6 +11,7 @@ export class HeroComponent {
   backgroundImg: any;
   currentIndex: number = 0;
 
+  //Set the video, carousel, and background image.
   constructor() {
     this.video = '/assets/video/Sequence 01.webm';
     this.backgroundImg = '/assets/img/imagecover3.jpg';
@@ -34,9 +35,9 @@ export class HeroComponent {
   }
 
   ngOnInit(): void {
-    // Automatically change the active image in the carousel
+    //Automatically change carousel image every 3 seconds.
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.carousel.length;
-    }, 3000); // Change image every 3 seconds (3000 milliseconds)
+    }, 3000);
   }
 }
