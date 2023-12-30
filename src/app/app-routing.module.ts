@@ -170,6 +170,10 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'register-merchant',
+    component: RegisterMerchantComponent,
+  },
 
   // Handle all other routes
   { path: 'error/403', component: Error403Component },
