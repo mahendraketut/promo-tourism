@@ -181,16 +181,17 @@
           <img [src]="logoMerchant" alt="merchant" />
         </div>
         <div class="ms-2 w-5/6 h-fit items-center">
-          <p class="text-lg font-semibold">{{ merchantData.name }}</p>
+          <p class="text-lg font-semibold">{{ merchantData?.name }}</p>
           <p
-            *ngIf="merchantData.accountStatus === 'approved'"
+            *ngIf="merchantData?.accountStatus === 'approved'"
             class="ml-auto text-xs"
           >
             <i class="fas fa-check-circle text-green-400"></i> Verified |
-            <i class="fas fa-star text-yellow-400"></i> 4.5 (rating)
+            <i class="fas fa-star text-yellow-400"></i>
+            {{ averageMerchantRate?.toFixed(1) }} (rating)
           </p>
-          <a href="mailto:{{ merchantData.email }}" class="ml-auto text-xs">
-            <i class="fa-regular fa-envelope"></i> {{ merchantData.email }}
+          <a href="mailto:{{ merchantData?.email }}" class="ml-auto text-xs">
+            <i class="fa-regular fa-envelope"></i> {{ merchantData?.email }}
           </a>
         </div>
       </div>
@@ -244,7 +245,10 @@
 
         <!-- ngx paypal: start -->
         <ngx-paypal
-          [ngClass]="{ 'disabled-paypal': quantity < 1 || !userId }"
+          [ngClass]="{
+            'disabled-paypal':
+              quantity < 1 || !userId || userData.roles !== 'user'
+          }"
           [config]="payPalConfig"
         ></ngx-paypal>
         <!-- ngx paypal: end -->

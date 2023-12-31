@@ -10,11 +10,13 @@ import { FormGroup } from '@angular/forms';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReviewService } from 'src/app/services/review.service';
 import { OrderService } from 'src/app/services/order.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 import Swal from 'sweetalert2';
 import { TokenService } from 'src/app/services/token.service';
+import { environment } from 'src/app/environment';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -33,9 +35,18 @@ export class OrderDetailComponent {
   //TODO: Tut, input user comment dari front-end
   //TODO: Tut, input order id dari front-end
   //TODO: Tut, tolong di disable orang comment kalau hasReviewed = true. (udah review)
-  userComment: string = 'Tolong biar ini ngambil dari front-endnya tut!';
-  orderId: string = '659019ff735f73b8c8bcecd4';
+  userComment: string = '';
+  orderId: string = '';
+  orderData: any;
   productId: string = '';
+  productData: any;
+  buyerId: string = '';
+  buyerData: any;
+  merchantId: string = '';
+  merchantData: any;
+  reviewData: any;
+  productImage: any;
+  rating: any;
 
   constructor(
     private pdfService: PdfService,
@@ -43,44 +54,125 @@ export class OrderDetailComponent {
     private orderService: OrderService,
     private authService: AuthService,
     private router: Router,
-    private tokenService: TokenService
+    private route: ActivatedRoute,
+    private tokenService: TokenService,
+    private productService: ProductService
   ) {
     //Retireve data from order service
     // this.isReviewed = orderService.hasReviewed(this.orderId);
     console.log('REVIEW status: ', orderService.hasReviewed(this.orderId));
-    
-    this.getReviewedStatus();
-    console.log("stat bawah hasreview: ", this.hasReviewed);
-    this.reviewService.getMerchantAverage("657c6d585e0bf763f2f542ff").subscribe((data: any) => {
-      console.log("Merchant average: ", data);
-  });
+
+    // this.getReviewedStatus();
+    console.log('stat bawah hasreview: ', this.hasReviewed);
+    // this.reviewService
+    //   .getMerchantAverage('657c6d585e0bf763f2f542ff')
+    //   .subscribe((data: any) => {
+    //     console.log('Merchant average: ', data);
+    //   });
     this.getOrderDetails();
   }
 
   //Retreive data if the user has reviewed the order previously.
-  getReviewedStatus() {
-    this.orderService.hasReviewed(this.orderId).subscribe((data: any) => {
-      console.log('data review status: ', data);
-      this.hasReviewed = data.data;
-    }
-    );
-  }
-
-
+  // getReviewedStatus() {
+  //   this.orderService.hasReviewed(this.orderId).subscribe((data: any) => {
+  //     console.log('data review status: ', data);
+  //     this.hasReviewed = data.data;
+  //   });
+  // }
 
   //TODO: tut, order detailnya tolong di transplantasi kak
   getOrderDetails() {
-    this.orderService.getOrderById(this.orderId).subscribe((data: any) => {
-      this.dateOrder = data.data.createdAt;
-      this.invoiceName = data.data.invoiceNumber;
-      this.hasReviewed = data.data.hasReviewed;
-      this.productId = data.data.productId;
-      console.log('hasReviewed: ', this.hasReviewed);
-      console.log('productId: ', this.productId);
-      console.log('dateOrder: ', this.dateOrder);
-      console.log('invoiceName: ', this.invoiceName);
+    this.orderId = this.route.snapshot.paramMap.get('id');
+    console.log('order id: ', this.orderId);
+    this.orderService.getOrderById(this.orderId).subscribe({
+      next: (response) => {
+        console.log('Response: ', response);
+        this.orderData = response.data;
+        this.productId = response.data.productId;
+        this.buyerId = response.data.userId;
+        this.merchantId = response.data.merchantId;
+        this.hasReviewed = response.data.hasReviewed;
+        console.log('Order data: ', this.orderData);
+        this.getBuyerDetails(response.data.userId);
+        this.getMerchantDetail(response.data.merchantId);
+        this.getProductDetail(response.data.productId);
+        this.getReviewData(response.data._id);
+        this.getReviewRating(response.data._id);
+        // this.getReviewedStatus();
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
+
+  // get buyer details
+  getBuyerDetails(id: string) {
+    // TODO need method getUserById
+
+    this.authService.getUserDataById(id).subscribe({
+      next: (response) => {
+        this.buyerData = response.merchant;
+        console.log('Buyer data: ', this.buyerData);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  // get merchant detail
+  getMerchantDetail(id: string) {
+    this.authService.getUserDataById(id).subscribe({
+      next: (response) => {
+        this.merchantData = response.merchant;
+        console.log('Merchant data: ', this.merchantData);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  // get product detail
+  getProductDetail(id: string) {
+    this.productService.getProduct(id).subscribe({
+      next: (response) => {
+        this.productData = response.data;
+        console.log('Product data: ', this.productData);
+        this.productImage = `${environment.productImgUrl}/${this.productData.coverImagePath}`;
+        console.log('Product image: ', this.productImage);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  getReviewData(id: string) {
+    this.reviewService.getReviewByOrder(id).subscribe({
+      next: (response) => {
+        this.reviewData = response.data;
+        console.log('Review data: ', this.reviewData);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  getReviewRating(id: string) {
+    this.reviewService.getReviewByOrder(id).subscribe({
+      next: (response) => {
+        this.rating = response.data.rating;
+        console.log('Review rating: ', this.rating);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
   exportToPdf() {
     const getElementById = 'invoice';
     const fileName = this.invoiceName;
@@ -97,6 +189,11 @@ export class OrderDetailComponent {
     this.value = rating;
     this.valueChange.emit(this.value);
     console.log('current rating given: ' + this.value);
+  }
+
+  onCommentChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.userComment = target.value;
   }
 
   // submit review

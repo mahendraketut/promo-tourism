@@ -24,8 +24,8 @@
 <!-- breadcrumb: end -->
 <!-- order lists: start -->
 <h1 class="font-bold text-2xl my-3">All Transaction</h1>
-<div class="mx-auto rounded-2xl border border-gray-50 p-5">
-  <div class="flex items-center w-full mb-5">
+<!-- <div class="mx-auto rounded-2xl border border-gray-50 p-5"> -->
+<!-- <div class="flex items-center w-full mb-5">
     <h2 class="font-bold me-5">Status</h2>
     <div class="relative overflow-x-auto scrollbar-hide">
       <div class="pt-2 grid grid-rows-1 grid-flow-col gap-1 mx">
@@ -41,58 +41,17 @@
         </button>
       </div>
     </div>
-  </div>
-  <div class="w-full rounded-2xl border border-gray-50 my-2 p-2">
-    <div class="flex justify-between items-center">
-      <p class="text-sm">
-        {{ dateOrder | date : "dd MMMM yyyy" }} | INV202311202
-      </p>
-      <p class="hidden text-sm p-2 bg-green-100 rounded-2xl font-bold md:block">
-        Completed
-      </p>
-      <p
-        class="flex items-center justify-center text-sm w-8 h-8 bg-green-100 rounded-full font-bold md:hidden"
-      >
-        <i class="fa-solid fa-check"></i>
-      </p>
-    </div>
-    <div class="w-full flex justify-between my-5">
-      <div class="w-5/6">
-        <div class="flex items-center my-1">
-          <img
-            class="w-20 h-20 object-cover object-center border-gray-200 rounded-2xl"
-            [src]="image"
-          />
-          <div class="ms-5">
-            <h1 class="font-bold text-xl">Cara Bok</h1>
-            <p class="text-sm">1 Item x MYR1,000</p>
-            <p class="text-sm">Description: none</p>
-          </div>
-        </div>
-      </div>
-      <div class="hidden items-center justify-end w-1/6 md:flex">
-        <p class="text-xl text-right font-semibold">Total: MYR1,000</p>
-      </div>
-    </div>
-    <div class="hidden md:block">
-      <div class="flex items-center justify-end w-full">
-        <button
-          routerLink="/order/detail"
-          class="bg-blue-700 text-white px-8 p-2 border rounded-full hover:bg-blue-600"
-        >
-          View detail
-        </button>
-      </div>
-    </div>
+  </div> -->
+<app-order-card
+  *ngFor="let i of orders"
+  [dateOrder]="i.createdAt"
+  [description]=""
+  [invoiceId]="i.invoiceNumber"
+  [link]="i._id"
+  [quantity]="i.paypalInfo.purchase_units[0].items[0].quantity"
+  [productId]="i.productId"
+  [total]="i.total"
+  [status]="i.status"
+></app-order-card>
 
-    <div class="flex items-center justify-between w-full md:hidden">
-      <p class="text-sm font-semibold">Total: Rp. 1.000.000</p>
-      <button
-        routerLink="/order/detail"
-        class="bg-blue-700 text-white p-1 px-4 rounded-2xl"
-      >
-        View
-      </button>
-    </div>
-  </div>
-</div>
+<!-- </div> -->

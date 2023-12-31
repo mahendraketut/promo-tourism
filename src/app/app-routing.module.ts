@@ -66,7 +66,7 @@ const routes: Routes = [
             component: OrderCustomerListComponent,
           },
           {
-            path: 'detail',
+            path: 'detail_order/:id',
             component: OrderDetailComponent,
           },
         ],
@@ -108,7 +108,7 @@ const routes: Routes = [
         component: OrderListComponent,
         children: [
           {
-            path: 'detail',
+            path: 'detail/:id',
             component: DetailProductComponent,
           },
         ],
