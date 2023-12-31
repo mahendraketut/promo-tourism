@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import { TokenService } from 'src/app/services/token.service';
 import { environment } from 'src/app/environment';
 import { ProductService } from 'src/app/services/product.service';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -56,8 +57,18 @@ export class OrderDetailComponent {
     private router: Router,
     private route: ActivatedRoute,
     private tokenService: TokenService,
-    private productService: ProductService
+    private productService: ProductService,
+    private analyticsService: AnalyticsService
   ) {
+
+    console.log("analytics ALL:", this.analyticsService.getAllAnalytics(2023).subscribe((data: any) => {
+      console.log("analytics all: ", data);
+    }
+    ));
+    console.log("analytics by id: ", this.analyticsService.getMerchantAnalytics("657c6d585e0bf763f2f542ff", 2023).subscribe((data: any) => {
+      console.log("analytics by id: ", data);
+    }
+    ));
     //Retireve data from order service
     // this.isReviewed = orderService.hasReviewed(this.orderId);
     console.log('REVIEW status: ', orderService.hasReviewed(this.orderId));

@@ -1,5 +1,6 @@
 //This is the backend model for Order.
 
+import { numberAttribute } from "@angular/core";
 import mongoose from "mongoose";
 
 const OrderSchema = mongoose.Schema({
@@ -10,6 +11,9 @@ const OrderSchema = mongoose.Schema({
     productId:{
         type: String,
         required: true,
+    },
+    quantity:{
+        type: Number,
     },
     total:{
         type: Number,
