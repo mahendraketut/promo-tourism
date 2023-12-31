@@ -1,12 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.css'],
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit {
   @Input() image: string = '';
   @Input() title: string = '';
   @Input() rating: number = 0;
@@ -14,7 +15,12 @@ export class ProductCardComponent {
   @Input() id: string = '';
   @Input() route: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private reviewService: ReviewService) {}
+
+  ngOnInit(): void {
+    console.log('rating', this.rating);
+    this.getRating();
+  }
 
   navigateToProductDetail(productId: string): void {
     const baseProductUrl = '/detailproduct/';
@@ -27,5 +33,20 @@ export class ProductCardComponent {
       skipLocationChange: false,
     });
     console.log('id', this.id);
+  }
+
+  getRating() {
+    this.reviewService.getReviewAverage(this.id).subscribe({
+      next: (data) => {
+        console.log('Ini data review', data);
+        // this.rating = data.data;
+        if (!data.data) {
+          this.rating = 0;
+        } else {
+          this.rating = Math.round(data.data);
+        }
+      },
+      error: (error) => console.error('There was an error!', error),
+    });
   }
 }

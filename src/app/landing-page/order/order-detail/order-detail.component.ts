@@ -48,7 +48,7 @@ export class OrderDetailComponent {
   merchantData: any;
   reviewData: any;
   productImage: any;
-  rating: any;
+  rating: number = 5;
 
   constructor(
     private pdfService: PdfService,
@@ -109,8 +109,6 @@ export class OrderDetailComponent {
         this.getMerchantDetail(response.data.merchantId);
         this.getProductDetail(response.data.productId);
         this.getReviewData(response.data._id);
-        this.getReviewRating(response.data._id);
-        // this.getReviewedStatus();
       },
       error: (error) => {
         console.log(error);
@@ -165,18 +163,8 @@ export class OrderDetailComponent {
     this.reviewService.getReviewByOrder(id).subscribe({
       next: (response) => {
         this.reviewData = response.data;
-        console.log('Review data: ', this.reviewData);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-  }
-
-  getReviewRating(id: string) {
-    this.reviewService.getReviewByOrder(id).subscribe({
-      next: (response) => {
         this.rating = response.data.rating;
+        console.log('Review data: ', this.reviewData);
         console.log('Review rating: ', this.rating);
       },
       error: (error) => {
@@ -187,7 +175,7 @@ export class OrderDetailComponent {
 
   exportToPdf() {
     const getElementById = 'invoice';
-    const fileName = this.invoiceName;
+    const fileName = this.orderData.invoiceNumber;
     this.pdfService.exportToPdf(getElementById, fileName);
   }
 

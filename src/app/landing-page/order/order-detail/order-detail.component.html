@@ -43,8 +43,32 @@
     <div class="w-full md:w-3/4">
       <div class="border-2 border-gray-200 rounded-3xl p-5">
         <div id="invoice" class="p-10">
-          <div>
+          <div class="flex justify-between">
             <img src="/assets/img/logo-landscape.png" class="w-32" alt="" />
+            <div class="hidden md:block text-right">
+              <h1 class="text-2xl font-bold">Invoice</h1>
+              <ngx-barcode6
+                class="h-5"
+                [bc-format]="'CODE128'"
+                [bc-value]="orderData?.invoiceNumber"
+                [bc-display-value]="false"
+                [bc-height]="20"
+                [bc-margin]="0"
+              >
+              </ngx-barcode6>
+            </div>
+          </div>
+          <div class="block text-left md:hidden">
+            <h1 class="text-2xl font-bold">Invoice</h1>
+            <ngx-barcode6
+              class="h-5"
+              [bc-format]="'CODE128'"
+              [bc-value]="orderData?.invoiceNumber"
+              [bc-display-value]="false"
+              [bc-height]="20"
+              [bc-margin]="0"
+            >
+            </ngx-barcode6>
           </div>
           <h1 class="text-lg font-bold">Transaction Detail</h1>
           <hr class="" />
@@ -52,7 +76,7 @@
             <div class="flex justify-between my-2">
               <p class="text-sm">Purchasing Date</p>
               <p class="text-sm font-bold">
-                {{ orderData?.createdAt | date : "dd MMMM yyyy" }}
+                {{ orderData?.createdAt | date : "dd MMMM yyyy - hh:mm:ss" }}
               </p>
             </div>
             <div class="flex justify-between my-2">
@@ -121,10 +145,8 @@
                   </p>
                 </div>
                 <div class="flex justify-between my-2">
-                  <p class="text-sm w-1/3">Merchant Email</p>
-                  <p class="text-sm font-bold text-right">
-                    {{ merchantData?.email }}
-                  </p>
+                  <p class="text-sm">Merchant Address</p>
+                  <p class="text-sm font-bold text-right">-</p>
                 </div>
               </div>
               <!-- merchant identity: end -->
@@ -296,7 +318,7 @@
               <div class="flex justify-between my-2">
                 <p class="text-sm">Review Date</p>
                 <p class="text-sm font-bold">
-                  {{ dateOrder | date : "dd MMMM yyyy" }}
+                  {{ reviewData?.createdAt | date : "dd MMMM yyyy - hh:mm:ss" }}
                 </p>
               </div>
               <div class="flex justify-between my-2">
@@ -304,24 +326,22 @@
                 <!-- five star rating with 4 yellow and one gray -->
                 <div class="flex gap-x-3 text-xs">
                   <!-- rating: {{ rating }} -->
-                  <span
-                    *ngFor="let _ of rating; let i = index"
-                    span
-                    class="text-yellow-400"
+                  <span *ngIf="rating > 0" class="text-yellow-400"
                     ><i class="fa-solid fa-star"></i
                   ></span>
-                  <!-- <span class="text-yellow-400"
+                  <span *ngIf="rating > 1" class="text-yellow-400"
                     ><i class="fa-solid fa-star"></i
                   ></span>
-                  <span class="text-yellow-400"
+                  <span *ngIf="rating > 2" class="text-yellow-400"
                     ><i class="fa-solid fa-star"></i
                   ></span>
-                  <span class="text-yellow-400"
+                  <span *ngIf="rating > 3" class="text-yellow-400"
                     ><i class="fa-solid fa-star"></i
                   ></span>
-                  <span class="text-gray-400"
+                  <span *ngIf="rating > 4" class="text-yellow-400"
                     ><i class="fa-solid fa-star"></i
-                  ></span> -->
+                  ></span>
+                  <span class="font-bold"> ( {{ rating }} ) </span>
                 </div>
               </div>
               <div class="flex justify-between my-2">
@@ -431,14 +451,6 @@
     </div>
     <div class="w-full mt-5 md:mt-0 md:w-1/4">
       <div class="border-2 border-gray-200 rounded-3xl p-5">
-        <!-- pay button: start -->
-        <button
-          class="w-full bg-blue-600 rounded-full text-center p-3 text-white font-bold hover:bg-blue-700"
-        >
-          Pay
-        </button>
-
-        <!-- pay button: end -->
         <!-- review button: start -->
         <button
           (click)="smoothScroll('givingReview')"
