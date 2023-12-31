@@ -135,6 +135,41 @@ export class AuthService {
     );
   }
 
+  //Retreives merchants that have been accepted into the system.
+  //returns merchant with accountStatus approved.
+  //Used for analytics.
+  getAcceptedMerchants(): Observable<any[]> {
+    let api = `${this.endpoint}/merchants`;
+    return this.http.get<any[]>(api).pipe(
+      map((response: any) => {
+        const merchantsResponse = response.merchants;
+
+        if (Array.isArray(merchantsResponse)) {
+          //Filters merchants according to their account status
+          const approvedMerchants = merchantsResponse.filter(
+            (merchant: any) => merchant.accountStatus === 'approved'
+          );
+
+          //Removes password from the response.
+          //We did remove this in the back-end, but just to be safe, i removed it again (redundancy).
+          const merchantsWithoutPasswords = approvedMerchants.map(
+            (merchant: any) => {
+              const { password, ...rest } = merchant;
+              return rest;
+            }
+          );
+
+          return merchantsWithoutPasswords;
+        } else {
+          console.log('bukan array');
+          return [];
+        }
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+
   //Retreive a specific merchant according to their ID.
   getMerchantById(merchantId: string): Observable<any> {
     let api = `${this.endpoint}/merchant/${merchantId}`;
