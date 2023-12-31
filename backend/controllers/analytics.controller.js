@@ -39,6 +39,8 @@ export const getAllMerchantAnalytics = async (req, res) => {
 }
 
 //Retreives and compiles analytics for all sales for all merchants for a given year.
+//Also ranks the sales by quantity and revenue.
+//Used by admin to view all sales for all merchants for a given year.
 export const getAllMerchantsSalesByMonth = async (req, res) => {
     console.log("getAllMerchantsSalesByMonth");
     try {
@@ -48,7 +50,7 @@ export const getAllMerchantsSalesByMonth = async (req, res) => {
         // MongoDB aggregation pipeline
         const pipeline = [
             {
-                //Sorts the orders by date and filters by year.
+                //Finds all orders for the given year.
                 $match: {
                     status: 'COMPLETED',
                     createdAt: {
@@ -65,93 +67,88 @@ export const getAllMerchantsSalesByMonth = async (req, res) => {
                         productId: '$productId'
                     },
                     totalSales: { $sum: '$total' },
-                    quantity: { $sum: '$quantity' },
-                    revenue: { 
-                        $sum: {
-                            $multiply: ['$quantity', { $divide: ['$total', '$quantity'] }] 
-                        } 
-                    }
+                    quantity: { $sum: '$quantity' }
                 }
             },
             {
-                //Sorts the orders by revenue.
-                $sort: { 'revenue': -1 } 
-            },
-            {
-                //Re-groups the orders by month.
+                //Groups the orders by month.
                 $group: {
                     _id: '$_id.month',
-                    totalSales: { $sum: '$totalSales' },
-                    count: { $sum: 1 },
-                    totalProductsSold: { $sum: '$quantity' },
-                    salesRanking: {
+                    details: {
                         $push: {
                             productId: '$_id.productId',
+                            totalSales: '$totalSales',
                             quantity: '$quantity'
-                        }
-                    },
-                    revenueRanking: {
-                        $push: {
-                            productId: '$_id.productId',
-                            revenue: '$revenue'
                         }
                     }
                 }
             },
             {
-                //Sorts the orders by month.
-                $sort: { _id: 1 }
+                //Sorts the orders by month (jan first).
+                $sort: { '_id': 1 }
             }
         ];
 
-        const monthlySales = await Order.aggregate(pipeline);
-        console.log("monthlySales", monthlySales);
+        let monthlySales = await Order.aggregate(pipeline);
 
-        // Initialize all months with default values
-        let salesByMonth = [];
-        for (let i = 1; i <= 12; i++) {
-            salesByMonth.push({
-                month: i,
-                totalSales: 0,
-                count: 0,
-                totalProductsSold: 0,
-                salesRanking: [],
-                revenueRanking: []
+        //Sorts the orders by revenue and also number sold.
+        monthlySales = monthlySales.reduce((acc, curr) => {
+            //This simply do regular sorting by comparing which one has the higher quantity.
+            const salesRanking = [...curr.details].sort((a, b) => b.quantity - a.quantity);
+            //This simply do regular sorting by comparing which one has the higher revenue (total sales).
+            const revenueRanking = [...curr.details].sort((a, b) => b.totalSales - a.totalSales);
+            //This is the final array that will be returned.
+            acc.push({
+                month: curr._id,
+                totalSales: curr.details.reduce((a, b) => a + b.totalSales, 0),
+                count: curr.details.length,
+                totalProductsSold: curr.details.reduce((a, b) => a + b.quantity, 0),
+                salesRanking,
+                revenueRanking
             });
+
+            return acc;
+        }, []);
+
+        //Initialize the months if they are missing (no sales for that month).
+        //Enters them with 0 on the fields, but we require them to be there for the frontend.
+        for (let i = 1; i <= 12; i++) {
+            if (!monthlySales.find(ms => ms.month === i)) {
+                monthlySales.push({
+                    month: i,
+                    totalSales: 0,
+                    count: 0,
+                    totalProductsSold: 0,
+                    salesRanking: [],
+                    revenueRanking: []
+                });
+            }
         }
 
-        // Merge the sales data with the initialized months
-        monthlySales.forEach((sale) => {
-            const monthIndex = sale._id - 1;
-            salesByMonth[monthIndex].totalSales = sale.totalSales;
-            salesByMonth[monthIndex].count = sale.count;
-            salesByMonth[monthIndex].totalProductsSold = sale.totalProductsSold;
-            salesByMonth[monthIndex].salesRanking = sale.salesRanking;
-            salesByMonth[monthIndex].revenueRanking = sale.revenueRanking;
-        });
-        console.log("monthlysales2", monthlySales);
-        console.log("salesByMonth", salesByMonth);
+        //Sorts the final array by month
+        monthlySales.sort((a, b) => a.month - b.month);
 
-        return res
-            .status(200)
-            .json(CreateSuccess(200, "Sales by month for all merchants", salesByMonth));
+        return res.status(200).json(CreateSuccess(200, "Sales by month for all merchants", monthlySales));
     } catch (error) {
-        return res
-            .status(500)
-            .json(CreateError(500, "Cannot get sales by month for all merchants", error));
+        console.error(error); // It's a good idea to log the error for debugging purposes.
+        return res.status(500).json(CreateError(500, "Cannot get sales by month for all merchants", error));
     }
 };
 
 
-
+//Retreives and compiles analytics for all sales for a given year for a given merchant.
+//Also ranks the sales by quantity and revenue.
+//Used by admin and merchant themselves to view all sales for a given year for a given merchant.
 export const getMerchantSalesByMonth = async (req, res) => {
     console.log("getMerchantSalesByMonth");
     try {
         const year = parseInt(req.query.year);
         const merchantId = req.params.id;
-        //Mongodb aggregation pipeline
+
+        // MongoDB aggregation pipeline
         const pipeline = [
             {
+                //Finds all orders for the given merchant for the given year.
                 $match: {
                     merchantId: merchantId,
                     status: 'COMPLETED',
@@ -162,81 +159,80 @@ export const getMerchantSalesByMonth = async (req, res) => {
                 }
             },
             {
+                //Groups the orders by month and product.
                 $group: {
                     _id: {
                         month: { $month: '$createdAt' },
                         productId: '$productId'
                     },
                     totalSales: { $sum: '$total' },
-                    quantity: { $sum: '$quantity' },
-                    revenue: { 
-                        $sum: {
-                            $multiply: ['$quantity', { $divide: ['$total', '$quantity'] }] 
-                        } 
-                    } // Calculate revenue as quantity * (total / quantity)
+                    quantity: { $sum: '$quantity' }
                 }
             },
             {
-                $sort: { 'revenue': -1 } // Sort by revenue within each month
-            },
-            {
+                //Groups the orders by month.
                 $group: {
                     _id: '$_id.month',
-                    totalSales: { $sum: '$totalSales' },
-                    count: { $sum: 1 },
-                    totalProductsSold: { $sum: '$quantity' },
-                    salesRanking: {
+                    details: {
                         $push: {
                             productId: '$_id.productId',
+                            totalSales: '$totalSales',
                             quantity: '$quantity'
-                        }
-                    },
-                    revenueRanking: {
-                        $push: {
-                            productId: '$_id.productId',
-                            revenue: '$revenue'
                         }
                     }
                 }
             },
             {
-                $sort: { _id: 1 } // Sort by month (ascending)
+                //Sorts the orders by month (jan first).
+                $sort: { '_id': 1 }
             }
         ];
 
-        const monthlySales = await Order.aggregate(pipeline);
+        let monthlySales = await Order.aggregate(pipeline);
 
-        // Initialize all months with default values
-        let salesByMonth = [];
-        for (let i = 1; i <= 12; i++) {
-            salesByMonth.push({
-                month: i,
-                totalSales: 0,
-                count: 0,
-                totalProductsSold: 0,
-                salesRanking: [],
-                revenueRanking: []
+        //Sorts the orders by revenue and also number sold.
+        monthlySales = monthlySales.reduce((acc, curr) => {
+            //This simply do regular sorting by comparing which one has the higher quantity.
+            const salesRanking = [...curr.details].sort((a, b) => b.quantity - a.quantity);
+            //This simply do regular sorting by comparing which one has the higher revenue (total sales).
+            const revenueRanking = [...curr.details].sort((a, b) => b.totalSales - a.totalSales);
+            //This is the final array that will be returned.
+            acc.push({
+                month: curr._id,
+                totalSales: curr.details.reduce((a, b) => a + b.totalSales, 0),
+                count: curr.details.length,
+                totalProductsSold: curr.details.reduce((a, b) => a + b.quantity, 0),
+                salesRanking,
+                revenueRanking
             });
+
+            return acc;
+        }, []);
+
+        //Initialize the months if they are missing (no sales for that month).
+        //Enters them with 0 on the fields, but we require them to be there for the frontend.
+        for (let i = 1; i <= 12; i++) {
+            if (!monthlySales.find(ms => ms.month === i)) {
+                monthlySales.push({
+                    month: i,
+                    totalSales: 0,
+                    count: 0,
+                    totalProductsSold: 0,
+                    salesRanking: [],
+                    revenueRanking: []
+                });
+            }
         }
 
-        // Merge the sales data with the initialized months
-        monthlySales.forEach((sale) => {
-            const monthIndex = sale._id - 1;
-            salesByMonth[monthIndex].totalSales = sale.totalSales;
-            salesByMonth[monthIndex].count = sale.count;
-            salesByMonth[monthIndex].totalProductsSold = sale.totalProductsSold;
-            salesByMonth[monthIndex].salesRanking = sale.salesRanking;
-            salesByMonth[monthIndex].revenueRanking = sale.revenueRanking;
-        });
+        //Sorts the final array by month
+        monthlySales.sort((a, b) => a.month - b.month);
 
-        return res
-            .status(200)
-            .json(CreateSuccess(200, "Sales by month", salesByMonth));
+        return res.status(200).json(CreateSuccess(200, "Sales by month", monthlySales));
     } catch (error) {
-        return res
-            .status(500)
-            .json(CreateError(500, "Cannot get sales for a merchant by month", error));
+        return res.status(500).json(CreateError(500, "Cannot get sales for a merchant by month", error));
     }
 };
+
+
 
 
