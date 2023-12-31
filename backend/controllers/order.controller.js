@@ -29,6 +29,7 @@ export const createOrder = async (req, res) => {
         status: paymentStatus,
         invoiceNumber: invoiceNumber,
         paypalInfo: paypalInfo,
+        quantity: req.body.quantity,
     });
     //Updates the product quantity on the database to reflect the purchase.
     product.quantity = product.quantity - req.body.quantity;  

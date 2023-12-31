@@ -37,6 +37,10 @@ app.use('/api/order', orderRoutes);
 import reviewRoutes from "./routes/review.js";
 app.use('/api/review', reviewRoutes);
 
+//import analytics routes.
+import analyticsRoutes from "./routes/analytics.js";
+app.use('/api/analytics', analyticsRoutes);
+
 // Response Handling.
 app.use((obj, req, res, next) => {
     const statusCode = obj.status || 500;
