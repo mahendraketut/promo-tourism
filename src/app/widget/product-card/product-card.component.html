@@ -20,6 +20,12 @@
             >
               <i class="fas fa-star"></i>
             </span>
+            <span
+              *ngFor="let _ of [].constructor(5 - rating); let i = index"
+              class="text-gray-400"
+            >
+              <i class="fas fa-star"></i>
+            </span>
 
             <span class="text-gray-400 ms-2">({{ rating }})</span>
           </div>

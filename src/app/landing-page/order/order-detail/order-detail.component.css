@@ -22,3 +22,8 @@
 .star-rating input:checked ~ label:not(:last-child) {
   color: #facc15;
 }
+
+ngx-barcode6 .barcode {
+  padding: 0 !important;
+  margin: 0 !important;
+}
