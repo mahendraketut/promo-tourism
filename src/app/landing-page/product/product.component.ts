@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/app/environment';
 import { NavigationExtras, Route, Router } from '@angular/router';
+import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
   selector: 'app-product',
@@ -27,7 +28,8 @@ export class ProductComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private router: Router // private searchSubject: Subject<string> = new Subject()
+    private router: Router, // private searchSubject: Subject<string> = new Subject()
+    private reviewService: ReviewService
   ) {
     this.readProduct();
     //form builder
@@ -62,6 +64,18 @@ export class ProductComponent implements OnInit {
       console.log(this.filteredProducts);
     });
   }
+
+  //Get the rating of a product
+  // getRating(productId: string) {
+  //   let review = 0;
+  //   this.reviewService.getReviewAverage(productId).subscribe({
+  //     next: (data) => {
+  //       console.log('Ini data review', data);
+  //     },
+  //     error: (error) => console.error('There was an error!', error),
+  //   });
+  //   return review;
+  // }
 
   readCoverImageURL(coverImagePath: string): string {
     return environment.productImgUrl + '/' + coverImagePath;

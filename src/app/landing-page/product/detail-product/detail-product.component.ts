@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
-import { Observable, firstValueFrom, tap } from 'rxjs';
+
 // import { GalleryItem, ImageItem } from '@ngx-gallery/core';
 // import { Lightbox } from '@ngx-gallery/lightbox';
 
@@ -37,6 +37,7 @@ export class DetailProductComponent implements OnInit {
   // discount: number = 250;
   description: any = '';
   stock: number = 0;
+  reviewsData: any[] = [];
   logoMerchant: any = 'assets/img/avatar.png';
   public payPalConfig?: IPayPalConfig;
 
@@ -105,7 +106,10 @@ export class DetailProductComponent implements OnInit {
         this.getMerchant(this.owner);
         // this.getAverageMerchantRate(this.merchantData._id);
         // this.getUser();
+        this.getReviews(this.productId);
         console.log('merchant', this.owner);
+
+        // this.getReviewsPerProduct(this.productData?._id);
         // Put the cover image data to imageProduct array
         if (this.productData?.coverImagePath) {
           this.productImages.push(
@@ -197,7 +201,7 @@ export class DetailProductComponent implements OnInit {
           this.rating = 0;
           console.log('rating:', this.rating);
         } else {
-          this.rating = data.data;
+          this.rating = Math.round(data.data);
           console.log('rating:', this.rating);
         }
       },
@@ -210,9 +214,20 @@ export class DetailProductComponent implements OnInit {
     });
   }
 
-  // getMerchantAverageReview(merchantId: string) {
-  //   //TODO Hendry, need average merchant review
-  // }
+  getReviews(id: string) {
+    this.reviewService.getReviews(id).subscribe({
+      next: (data) => {
+        this.reviewsData = data.data;
+        console.log('reviews', this.reviewsData);
+      },
+      error: (error) => {
+        console.error('Error fetching product:', error);
+      },
+      complete: () => {
+        console.log('Reviews data retrieval complete.');
+      },
+    });
+  }
 
   openLightBox(index: number) {
     this.lightbox.open(this.lightboxImages, index);

@@ -1,10 +1,14 @@
+//Token service.
+//Used primarily for decoding the token and checking if it is expired.
+//This can also be used to remove the token from local storage.
+//And extract user ID from the token.
 import { Injectable } from '@angular/core';
 import { jwtDecode } from "jwt-decode";
 @Injectable({
   providedIn: 'root',
 })
 export class TokenService {
-  //Gets a token from the local storage
+  //Retreives token from the browser's localstorage
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -46,6 +50,7 @@ export class TokenService {
     return null;
   }
 
+  //Extracts the user ID from the token.
   getUserId(): string | null {
     const decodedToken = this.decodeToken();
     if (decodedToken) {

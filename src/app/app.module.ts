@@ -69,6 +69,8 @@ import { Error403Component } from './errorPage/error403/error403.component';
 import { Error404Component } from './errorPage/error404/error404.component';
 import { Error500Component } from './errorPage/error500/error500.component';
 import { OrderCardComponent } from './widget/order-card/order-card.component';
+import { NgxBarcode6Module } from 'ngx-barcode6';
+import { ReviewCardComponent } from './widget/review-card/review-card.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,7 @@ import { OrderCardComponent } from './widget/order-card/order-card.component';
     Error404Component,
     Error500Component,
     OrderCardComponent,
+    ReviewCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -134,6 +137,7 @@ import { OrderCardComponent } from './widget/order-card/order-card.component';
     NgxPaginationModule,
     LightboxModule,
     EditorModule,
+    NgxBarcode6Module,
     // GalleryModule,
     // LightboxModule.withConfig({
     //   panelClass: 'custom-lightbox-panel',
