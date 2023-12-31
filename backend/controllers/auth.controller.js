@@ -151,7 +151,7 @@ export const register = async (req, res, next) => {
             
     }
     //Register user if the user's role is an admin or a user. 
-    else if (roleType === 'admin' || roleType === 'user') {
+    else if (roleType === 'officer' || roleType === 'user') {
         newUser = new User({
           name: getFieldValue(fields.name),
           email: getFieldValue(fields.email),
