@@ -1,0 +1,69 @@
+<div class="w-full rounded-2xl border border-gray-200 my-2 p-2">
+  <div class="flex justify-between items-center">
+    <p class="text-sm">
+      {{ dateOrder | date : "dd MMMM yyyy" }} | {{ invoiceId }}
+    </p>
+    <p
+      *ngIf="status === 'COMPLETED'"
+      class="hidden text-sm p-2 bg-green-100 rounded-2xl font-bold md:block"
+    >
+      Completed
+    </p>
+    <p
+      *ngIf="status === 'COMPLETED'"
+      class="flex items-center justify-center text-sm w-8 h-8 bg-green-100 rounded-full font-bold md:hidden"
+    >
+      <i class="fa-solid fa-check"></i>
+    </p>
+  </div>
+  <div class="w-full flex justify-between my-5">
+    <div class="w-5/6">
+      <div class="flex items-center my-1">
+        <img
+          class="w-20 h-20 object-cover object-center border-gray-200 rounded-2xl"
+          [src]="imagePath"
+        />
+        <div class="ms-5">
+          <h1 class="font-bold text-xl">
+            {{ title }}
+          </h1>
+          <p class="text-sm">
+            {{ quantity }} Item x
+            {{ price | currency : "MYR" }}
+          </p>
+          <p *ngIf="description" class="text-sm">
+            Description: {{ description }}
+          </p>
+          <p *ngIf="!description" class="text-sm">
+            Description: {{ defaultDescription }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="hidden items-center justify-end w-1/6 md:flex">
+      <p class="text-xl text-right font-semibold">
+        Total: {{ total | currency : "MYR" }}
+      </p>
+    </div>
+  </div>
+  <div class="hidden md:block">
+    <div class="flex items-center justify-end w-full">
+      <button
+        (click)="navigateToOrderDetail(link)"
+        class="bg-blue-700 text-white px-8 p-2 border rounded-full hover:bg-blue-600"
+      >
+        View detail
+      </button>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between w-full md:hidden">
+    <p class="text-sm font-semibold">Total: {{ total | currency : "MYR" }}</p>
+    <button
+      (click)="navigateToOrderDetail(link)"
+      class="bg-blue-700 text-white p-1 px-4 rounded-2xl"
+    >
+      View
+    </button>
+  </div>
+</div>

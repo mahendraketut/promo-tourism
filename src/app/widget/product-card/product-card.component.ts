@@ -24,7 +24,7 @@ export class ProductCardComponent {
 
     // Navigate to the full path without adding to history
     this.router.navigate([baseProductUrl + productId], {
-      skipLocationChange: true,
+      skipLocationChange: false,
     });
     console.log('id', this.id);
   }

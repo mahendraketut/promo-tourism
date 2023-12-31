@@ -68,6 +68,7 @@ import { MerchantReviewDetailComponent } from './officer/admin-officer/merchant-
 import { Error403Component } from './errorPage/error403/error403.component';
 import { Error404Component } from './errorPage/error404/error404.component';
 import { Error500Component } from './errorPage/error500/error500.component';
+import { OrderCardComponent } from './widget/order-card/order-card.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { Error500Component } from './errorPage/error500/error500.component';
     Error403Component,
     Error404Component,
     Error500Component,
+    OrderCardComponent,
   ],
   imports: [
     BrowserModule,

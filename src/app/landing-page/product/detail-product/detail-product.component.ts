@@ -48,6 +48,8 @@ export class DetailProductComponent implements OnInit {
   priceInUSD: any;
   total: any = 0;
   merchantData: any;
+  averageMerchantRate: any;
+  userData: any;
 
   swiperConfig = {
     slidesPerView: 1,
@@ -70,11 +72,10 @@ export class DetailProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.initConfig();
+    this.getUserData();
     this.getProduct();
     this.getAverageReview(this.productId);
-
-    // this.currencyExchange(this.price);
-    // console.log(this.priceInUSD);
+    // this.getAverageMerchantRate(this.merchantData._id);
   }
 
   // openLightbox(index: number) {
@@ -102,6 +103,8 @@ export class DetailProductComponent implements OnInit {
         this.owner = this.productData?.owner;
         this.purchases = this.productData?.sold;
         this.getMerchant(this.owner);
+        // this.getAverageMerchantRate(this.merchantData._id);
+        // this.getUser();
         console.log('merchant', this.owner);
         // Put the cover image data to imageProduct array
         if (this.productData?.coverImagePath) {
@@ -151,6 +154,7 @@ export class DetailProductComponent implements OnInit {
       next: (data) => {
         this.merchantData = data.merchant;
         console.log('Merchant:', this.merchantData);
+        this.getAverageMerchantRate(merchantId);
       },
       error: (error) => {
         console.error('Error fetching product:', error);
@@ -159,6 +163,30 @@ export class DetailProductComponent implements OnInit {
         console.log('Product data retrieval complete.');
       },
     });
+  }
+
+  getAverageMerchantRate(merchantId: string) {
+    this.reviewService.getMerchantAverage(merchantId).subscribe({
+      next: (data) => {
+        if (!data.data) {
+          this.averageMerchantRate = 0;
+          console.log('Merchant rating:', this.averageMerchantRate);
+        } else {
+          this.averageMerchantRate = data.data;
+          console.log('Merchant rating:', this.averageMerchantRate);
+        }
+      },
+    });
+  }
+
+  getUserData() {
+    const decodedToken = this.tokenService.decodeToken();
+    if (decodedToken) {
+      console.log(decodedToken); // Log the decoded token
+      this.userData = decodedToken;
+    } else {
+      console.log('Token is not valid or not present');
+    }
   }
 
   getAverageReview(productId: string) {
@@ -182,9 +210,9 @@ export class DetailProductComponent implements OnInit {
     });
   }
 
-  getMerchantAverageReview(merchantId: string) {
-    //TODO Hendry, need average merchant review
-  }
+  // getMerchantAverageReview(merchantId: string) {
+  //   //TODO Hendry, need average merchant review
+  // }
 
   openLightBox(index: number) {
     this.lightbox.open(this.lightboxImages, index);

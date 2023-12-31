@@ -52,16 +52,18 @@
             <div class="flex justify-between my-2">
               <p class="text-sm">Purchasing Date</p>
               <p class="text-sm font-bold">
-                {{ dateOrder | date : "dd MMMM yyyy" }}
+                {{ orderData?.createdAt | date : "dd MMMM yyyy" }}
               </p>
             </div>
             <div class="flex justify-between my-2">
               <p class="text-sm">Invoice</p>
-              <p class="text-sm font-bold">INV202311202</p>
+              <p class="text-sm font-bold">{{ orderData?.invoiceNumber }}</p>
             </div>
             <div class="flex justify-between my-2">
               <p class="text-sm">Status</p>
-              <p class="text-sm font-bold">Completed</p>
+              <p class="text-sm font-bold">
+                {{ orderData?.status }}
+              </p>
             </div>
 
             <!-- identity: start -->
@@ -72,20 +74,26 @@
                 <hr class="" />
                 <div class="flex justify-between my-2">
                   <p class="text-sm">Customer Name</p>
-                  <p class="text-sm font-bold text-right">John Doe</p>
+                  <p class="text-sm font-bold text-right">
+                    {{ buyerData?.name }}
+                  </p>
                 </div>
                 <div class="flex justify-between my-2">
                   <p class="text-sm">Customer Email</p>
-                  <p class="text-sm font-bold text-right">john@gmail.com</p>
+                  <p class="text-sm font-bold text-right">
+                    {{ buyerData?.email }}
+                  </p>
                 </div>
                 <div class="flex justify-between my-2">
                   <p class="text-sm">Customer Phone</p>
-                  <p class="text-sm font-bold text-right">+608123456789</p>
+                  <p class="text-sm font-bold text-right">
+                    {{ buyerData?.phoneNo }}
+                  </p>
                 </div>
                 <div class="flex justify-between my-2">
                   <p class="text-sm">Customer Address</p>
                   <p class="text-sm font-bold text-right">
-                    Petaling Steet No. 21 Kuala Lumpur, Malaysia
+                    {{ buyerData?.address }}
                   </p>
                 </div>
               </div>
@@ -96,23 +104,26 @@
                 <hr class="" />
                 <div class="flex justify-between my-2">
                   <p class="text-sm">Merchant Name</p>
-                  <p class="text-sm font-bold text-right">HELP Sdn. Bhd.</p>
+                  <p class="text-sm font-bold text-right">
+                    {{ merchantData?.name }}
+                  </p>
                 </div>
                 <div class="flex justify-between my-2">
                   <p class="text-sm">Merchant Email</p>
                   <p class="text-sm font-bold text-right">
-                    help@tourism-promo.my
+                    {{ merchantData?.email }}
                   </p>
                 </div>
                 <div class="flex justify-between my-2">
                   <p class="text-sm">Merchant Phone</p>
-                  <p class="text-sm font-bold text-right">+60123456789</p>
+                  <p class="text-sm font-bold text-right">
+                    {{ merchantData?.phoneNo }}
+                  </p>
                 </div>
                 <div class="flex justify-between my-2">
-                  <p class="text-sm w-1/3">Merchant Address</p>
+                  <p class="text-sm w-1/3">Merchant Email</p>
                   <p class="text-sm font-bold text-right">
-                    Malaysia Tourism Centre (Matic, 109, Jalan Ampang, Kuala
-                    Lumpur, 50450, Malaysia)
+                    {{ merchantData?.email }}
                   </p>
                 </div>
               </div>
@@ -125,23 +136,31 @@
               <hr class="" />
               <div class="flex justify-between my-2">
                 <p class="text-sm">Product Name</p>
-                <p class="text-sm font-bold">Cara Bok</p>
+                <p class="text-sm font-bold">{{ productData?.name }}</p>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Product Price</p>
-                <p class="text-sm font-bold">MYR1,000</p>
+                <p class="text-sm font-bold">
+                  {{ productData?.price | currency : "MYR" }}
+                </p>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Product Quantity</p>
-                <p class="text-sm font-bold">1</p>
+                <p class="text-sm font-bold">
+                  {{
+                    orderData?.paypalInfo?.purchase_units[0]?.items[0]?.quantity
+                  }}
+                </p>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Product Description</p>
-                <p class="text-sm font-bold">none</p>
+                <p class="text-sm font-bold">{{ productData?.category }}</p>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Total</p>
-                <p class="text-sm font-bold">MYR1,000</p>
+                <p class="text-sm font-bold">
+                  {{ orderData?.total | currency : "MYR" }}
+                </p>
               </div>
             </div>
             <!-- order detail mobile: end -->
@@ -155,13 +174,21 @@
                     <div class="w-fixed">
                       <img
                         class="w-20 h-20 object-cover object-center border-gray-200 rounded-2xl"
-                        src="/assets/img/imagecover.jpg"
+                        [src]="productImage"
                       />
                     </div>
                     <div class="w-fixed">
-                      <h1 class="font-bold text-xl">Cara Bok</h1>
-                      <p class="text-sm">1 Item x MYR1,000</p>
-                      <p class="text-sm">Description: none</p>
+                      <h1 class="font-bold text-xl">{{ productData?.name }}</h1>
+                      <p class="text-sm">
+                        {{
+                          orderData?.paypalInfo?.purchase_units[0]?.items[0]
+                            ?.quantity
+                        }}
+                        Item(s) x {{ productData?.price | currency : "MYR" }}
+                      </p>
+                      <p class="text-sm">
+                        Description: {{ productData?.category }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -169,7 +196,7 @@
                   <div class="flex items-center justify-end h-full">
                     <div>
                       <p class="text-xl text-right font-semibold">
-                        Total: MYR1,000
+                        Total: {{ orderData?.total | currency : "MYR" }}
                       </p>
                     </div>
                   </div>
@@ -183,50 +210,84 @@
               <hr class="" />
               <div class="flex justify-between my-2">
                 <p class="text-sm">Payment Method</p>
-                <p class="text-sm font-bold">Credit Card - PayPal</p>
+                <p class="text-sm font-bold">
+                  PayPal -
+                  {{
+                    orderData?.paypalInfo?.purchase_units[0]?.amount
+                      ?.currency_code
+                  }}
+                </p>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Payment Date</p>
                 <p class="text-sm font-bold">
-                  {{ dateOrder | date : "dd MMMM yyyy" }}
+                  {{
+                    orderData?.paypalInfo?.create_time
+                      | date : "dd MMMM yyyy - hh:mm:ss"
+                  }}
                 </p>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Payment Status</p>
-                <p class="text-sm font-bold">Completed</p>
+                <p class="text-sm font-bold">
+                  {{ orderData?.paypalInfo?.status }}
+                </p>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Payment Reference</p>
-                <p class="text-sm font-bold">none</p>
+                <p class="text-sm font-bold">{{ orderData?.paypalInfo?.id }}</p>
               </div>
             </div>
             <!-- payment detail: end -->
-            <!-- notes: start -->
+            <!-- terms and conditions: start -->
             <div class="mt-5">
-              <h1 class="text-base font-bold">Notes</h1>
+              <h1 class="text-base font-bold">
+                Terms and Conditions for Ticket and or Accommodation
+              </h1>
               <hr class="" />
               <ul>
                 <li class="flex items-start my-1">
                   <p class="text-sm me-2">
                     <i class="fa-solid fa-circle-chevron-right"></i>
                   </p>
-                  <p class="text-sm">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Voluptatum, quibusdam.
+                  <p class="text-sm text-justify">
+                    All bookings and purchases are non-transferable and can only
+                    be used by the person who made the purchase.
                   </p>
                 </li>
                 <li class="flex items-start my-1">
                   <p class="text-sm me-2">
                     <i class="fa-solid fa-circle-chevron-right"></i>
                   </p>
-                  <p class="text-sm">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Voluptatum, quibusdam.
+                  <p class="text-sm text-justify">
+                    Check-ins are available from 8 AM on the day of the arrival
+                    and check out is required by 11 AM on the day of departure.
+                  </p>
+                </li>
+                <li class="flex items-start my-1">
+                  <p class="text-sm me-2">
+                    <i class="fa-solid fa-circle-chevron-right"></i>
+                  </p>
+                  <p class="text-sm text-justify">
+                    The Promo Tourism Sdn. Bhd. team are NOT responsible for any
+                    personal belongings being lost or damaged and for any bodily
+                    harm that the user might encounter.
+                  </p>
+                </li>
+                <li class="flex items-start my-1">
+                  <p class="text-sm me-2">
+                    <i class="fa-solid fa-circle-chevron-right"></i>
+                  </p>
+                  <p class="text-sm text-justify">
+                    By completing this booking, the purchaser has agreed to
+                    adhere to local laws and regulations of the destination,
+                    including but not limited to health and safety protocols.
                   </p>
                 </li>
               </ul>
             </div>
-            <!-- notes: end -->
+            <!-- terms and conditions: end -->
+
             <!-- review: start -->
             <div *ngIf="hasReviewed" class="mt-5">
               <h1 class="text-base font-bold">Review</h1>
@@ -242,10 +303,14 @@
                 <p class="text-sm">Review Rating</p>
                 <!-- five star rating with 4 yellow and one gray -->
                 <div class="flex gap-x-3 text-xs">
-                  <span class="text-yellow-400"
+                  <!-- rating: {{ rating }} -->
+                  <span
+                    *ngFor="let _ of rating; let i = index"
+                    span
+                    class="text-yellow-400"
                     ><i class="fa-solid fa-star"></i
                   ></span>
-                  <span class="text-yellow-400"
+                  <!-- <span class="text-yellow-400"
                     ><i class="fa-solid fa-star"></i
                   ></span>
                   <span class="text-yellow-400"
@@ -256,14 +321,13 @@
                   ></span>
                   <span class="text-gray-400"
                     ><i class="fa-solid fa-star"></i
-                  ></span>
+                  ></span> -->
                 </div>
               </div>
               <div class="flex justify-between my-2">
                 <p class="text-sm">Review Comment</p>
                 <p class="text-sm font-bold text-right">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Voluptatum, quibusdam.
+                  {{ reviewData?.comment }}
                 </p>
               </div>
             </div>
@@ -271,6 +335,7 @@
         </div>
       </div>
       <div
+        *ngIf="!hasReviewed"
         id="givingReview"
         class="border-2 border-gray-200 rounded-3xl p-5 mt-5"
       >
@@ -351,12 +416,13 @@
             class="w-full border border-gray-200 rounded-2xl p-5"
             rows="5"
             placeholder="Write your comment here..."
+            (input)="onCommentChange($event)"
           ></textarea>
         </div>
         <!-- input comment: end -->
         <!-- submit button: start -->
         <button
-        (click)="submitReview()"
+          (click)="submitReview()"
           class="w-full bg-blue-600 rounded-full text-center p-3 text-white font-bold hover:bg-blue-700 mt-5"
         >
           Submit

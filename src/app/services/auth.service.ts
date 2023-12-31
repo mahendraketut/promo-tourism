@@ -52,6 +52,17 @@ export class AuthService {
     return token;
   }
 
+  //method to get userdata based on id
+  getUserDataById(id: string): Observable<any> {
+    let api = `${this.endpoint}/merchant/${id}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
   //method to check user can activate login page
   canActivate(): boolean {
     const token = localStorage.getItem('token');
@@ -161,6 +172,7 @@ export class AuthService {
   logoutUser(): void {
     localStorage.removeItem('token'); // Remove the token from local storage
     //     this.logoutBackend();
+    localStorage.removeItem('__paypal_storage__');
   }
 
   // //Only clears the cookie, this is redundant since we dont store the data in the front-
