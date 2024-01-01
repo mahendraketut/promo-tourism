@@ -23,7 +23,7 @@
         </ol>
       </nav>
     </div>
-    <div class="hidden lg:block">
+    <div class="">
       <div
         class="absolute left-0 right-0 px-10 z-10"
         style="
@@ -39,20 +39,68 @@
               <h1 class="font-semibold text-2xl">Order List</h1>
             </div>
             <div class="mt-5">
-              <table datatable [dtOptions]="dtOptions" class="row-border hover">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="row-border hover"
+              >
                 <thead class="border-y">
                   <tr>
                     <th class="px-4 py-2">No</th>
-                    <th class="px-4 py-2">OrderID</th>
+                    <th class="px-4 py-2">Order</th>
                     <th class="px-4 py-2">Purchasing Date</th>
                     <th class="px-4 py-2">Customer</th>
                     <th class="px-4 py-2">Order Item</th>
                     <th class="px-4 py-2">Total</th>
                     <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2">Action</th>
                   </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                  <tr *ngFor="let order of orders; let i = index">
+                    <td class="border px-4 py-2">{{ i + 1 }}</td>
+                    <td class="border px-4 py-2">
+                      <span class="font-bold text-gray-700">{{
+                        order?._id
+                      }}</span
+                      ><br /><span class="text-sm font-normal text-gray-700"
+                        >Invoice: {{ order?.invoiceNumber }}</span
+                      >
+                    </td>
+                    <td class="border px-4 py-2">
+                      {{ order?.createdAt | date : "dd MMMM yyyy - HH:mm:ss" }}
+                    </td>
+                    <td class="border px-4 py-2">
+                      <span class="font-bold text-gray-700">{{
+                        order?.userData?.name
+                      }}</span
+                      ><br /><span class="text-sm font-normal text-gray-700">{{
+                        order?.userData?.email
+                      }}</span>
+                    </td>
+                    <td class="border px-4 py-2">
+                      <span class="font-bold text-gray-700">{{
+                        order?.productData?.name
+                      }}</span
+                      ><br /><span class="text-sm font-normal text-gray-700">{{
+                        order?.productData?.category
+                      }}</span>
+                    </td>
+                    <td class="border px-4 py-2">
+                      <span class="font-bold text-gray-700">{{
+                        order?.total | currency : "MYR"
+                      }}</span
+                      ><br /><span class="text-sm font-normal text-gray-700"
+                        >{{ order?.productData?.price | currency : "MYR" }} x
+                        {{
+                          order?.paypalInfo?.purchase_units[0]?.items[0]
+                            ?.quantity
+                        }}
+                      </span>
+                    </td>
+                    <td class="border px-4 py-2">{{ order?.status }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>

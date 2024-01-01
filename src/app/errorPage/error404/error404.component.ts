@@ -19,7 +19,6 @@ export class Error404Component {
   ngOnInit() {
     const decodedToken = this.tokenService.decodeToken();
     if (decodedToken) {
-      console.log(decodedToken); // Log the decoded token
       this.username = decodedToken.name;
     } else {
       console.log('Token is not valid or not present');

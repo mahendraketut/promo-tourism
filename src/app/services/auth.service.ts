@@ -169,7 +169,6 @@ export class AuthService {
     );
   }
 
-
   //Retreive a specific merchant according to their ID.
   getMerchantById(merchantId: string): Observable<any> {
     let api = `${this.endpoint}/merchant/${merchantId}`;
@@ -208,6 +207,7 @@ export class AuthService {
     localStorage.removeItem('token'); // Remove the token from local storage
     //     this.logoutBackend();
     localStorage.removeItem('__paypal_storage__');
+    //clean cookies from this session
   }
 
   // //Only clears the cookie, this is redundant since we dont store the data in the front-

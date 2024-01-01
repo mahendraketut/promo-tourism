@@ -38,7 +38,6 @@ export class HeaderComponent implements OnInit {
   getUserData() {
     const decodedToken = this.tokenService.decodeToken();
     if (decodedToken) {
-      console.log(decodedToken); // Log the decoded token
       this.userData = decodedToken;
     } else {
       console.log('Token is not valid or not present');
@@ -53,7 +52,6 @@ export class HeaderComponent implements OnInit {
   goToRegister() {
     this.router.navigate(['auth/register']);
   }
-
 
   onLogout() {
     try {
@@ -71,7 +69,6 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
-
 
   //Built-in check to toggle the mobile navbar.
 

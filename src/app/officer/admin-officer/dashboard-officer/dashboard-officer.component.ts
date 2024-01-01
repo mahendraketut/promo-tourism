@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { ProductService } from 'src/app/services/product.service';
 import { TokenService } from 'src/app/services/token.service';
 
 @Component({
@@ -9,8 +11,15 @@ import { TokenService } from 'src/app/services/token.service';
 export class DashboardOfficerComponent {
   today: number = Date.now();
   name: string = 'John Doe';
+  user: number = 0;
+  merchant: number = 0;
+  product: number = 0;
 
-  constructor(private tokenService: TokenService) {}
+  constructor(
+    private tokenService: TokenService,
+    private authService: AuthService,
+    private productService: ProductService
+  ) {}
 
   ngOnInit() {
     const decodedToken = this.tokenService.decodeToken();

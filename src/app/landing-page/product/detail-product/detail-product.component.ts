@@ -69,31 +69,23 @@ export class DetailProductComponent implements OnInit {
     private orderService: OrderService,
     private lightbox: Lightbox,
     private reviewService: ReviewService
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.initConfig();
     this.getUserData();
     this.getProduct();
     this.getAverageReview(this.productId);
-    // this.getAverageMerchantRate(this.merchantData._id);
   }
 
-  // openLightbox(index: number) {
-  //   this.lightbox.open(index);
-  // }
+  ngOnInit(): void {}
 
   getProduct() {
     // Request to get the id from params and save it into productId
     this.productId = this.route.snapshot.paramMap.get('id');
-    // TODO below is console log that can be deleted if dev.process already done
-    console.log('ID:' + this.productId);
+
     this.productService.getProduct(this.productId).subscribe({
       next: (data) => {
         // Put the data into product data
         this.productData = data.data;
-        // TODO show the data in console.log. Remove it when dev step done
-        console.log('Product data: ', this.productData);
         //put the data
         this.title = this.productData?.name;
         this.description = this.productData?.description;
@@ -107,7 +99,6 @@ export class DetailProductComponent implements OnInit {
         // this.getAverageMerchantRate(this.merchantData._id);
         // this.getUser();
         this.getReviews(this.productId);
-        console.log('merchant', this.owner);
 
         // this.getReviewsPerProduct(this.productData?._id);
         // Put the cover image data to imageProduct array
@@ -137,17 +128,12 @@ export class DetailProductComponent implements OnInit {
           this.lightboxImages.push(album);
         });
 
-        console.log('Product images URL:', this.productImages);
-        console.log('Lightbox images:', this.lightboxImages);
         this.currencyExchange(this.productData?.price);
-        // console.log(this.priceInUSD);
       },
       error: (error) => {
-        // TODO show error message in console when the fetching process is Error
         console.error('Error fetching product:', error);
       },
       complete: () => {
-        // TODO show message in console when the fetching process is complete
         console.log('Product data retrieval complete.');
       },
     });
@@ -157,7 +143,6 @@ export class DetailProductComponent implements OnInit {
     this.authService.getMerchantById(merchantId).subscribe({
       next: (data) => {
         this.merchantData = data.merchant;
-        console.log('Merchant:', this.merchantData);
         this.getAverageMerchantRate(merchantId);
       },
       error: (error) => {
@@ -174,10 +159,8 @@ export class DetailProductComponent implements OnInit {
       next: (data) => {
         if (!data.data) {
           this.averageMerchantRate = 0;
-          console.log('Merchant rating:', this.averageMerchantRate);
         } else {
-          this.averageMerchantRate = data.data;
-          console.log('Merchant rating:', this.averageMerchantRate);
+          this.averageMerchantRate = this.rating = Math.round(data.data);
         }
       },
     });
@@ -186,7 +169,6 @@ export class DetailProductComponent implements OnInit {
   getUserData() {
     const decodedToken = this.tokenService.decodeToken();
     if (decodedToken) {
-      console.log(decodedToken); // Log the decoded token
       this.userData = decodedToken;
     } else {
       console.log('Token is not valid or not present');
@@ -199,10 +181,8 @@ export class DetailProductComponent implements OnInit {
       next: (data) => {
         if (!data.data) {
           this.rating = 0;
-          console.log('rating:', this.rating);
         } else {
           this.rating = Math.round(data.data);
-          console.log('rating:', this.rating);
         }
       },
       error: (error) => {
@@ -217,8 +197,13 @@ export class DetailProductComponent implements OnInit {
   getReviews(id: string) {
     this.reviewService.getReviews(id).subscribe({
       next: (data) => {
-        this.reviewsData = data.data;
-        console.log('reviews', this.reviewsData);
+        // Check if data.data is an array before assigning
+        if (Array.isArray(data.data)) {
+          this.reviewsData = data.data;
+        } else {
+          // Handle case where data.data is not what you expect
+          console.error('Expected an array of reviews, but got:', data.data);
+        }
       },
       error: (error) => {
         console.error('Error fetching product:', error);
@@ -238,17 +223,9 @@ export class DetailProductComponent implements OnInit {
   }
 
   currencyExchange(amountMYR: number): void {
-    // Log the input amount for debugging
-    console.log('Converting amount:', amountMYR);
-
     this.productService.convertMYRtoUSD(amountMYR).subscribe((amountInUSD) => {
       const converted = amountInUSD.toFixed(2);
       this.priceInUSD = converted;
-
-      // Log the converted amount for debugging
-      console.log('Converted amount in USD:', this.priceInUSD);
-
-      // Additional logic that uses this.priceInUSD
     });
   }
 
@@ -261,20 +238,6 @@ export class DetailProductComponent implements OnInit {
       return false; // Assume false if there's an error
     }
   }
-
-  // async checkStock(): Promise<boolean> {
-  //   try {
-  //     const result = await firstValueFrom(
-  //       this.productService.getProduct(this.productId)
-  //     );
-  //     this.productData = result.data;
-  //     this.stock = this.productData.quantity;
-  //     return this.stock >= this.quantity;
-  //   } catch (error) {
-  //     console.error(error);
-  //     return false; // Assume false if there's an error
-  //   }
-  // }
 
   isAvailable() {
     if (this.productData.quantity == this.stock) this.isFull = true;
@@ -296,8 +259,6 @@ export class DetailProductComponent implements OnInit {
       this.total = this.price * this.quantity;
     }
   }
-
-  //method to generate Invoice number
 
   private initConfig(): void {
     this.payPalConfig = {
@@ -343,28 +304,24 @@ export class DetailProductComponent implements OnInit {
       },
       onApprove: (data, actions) => {
         console.log(
-          'onApprove1 - transaction was approved, but not authorized',
-          data,
-          actions
+          'onApprove1 - transaction was approved, but not authorized'
         );
         actions.order.get().then((details) => {
           console.log(
-            'onApprove2 - you can get full order details inside onApprove: ',
-            details
+            'onApprove2 - you can get full order details inside onApprove: '
           );
         });
       },
       onClientAuthorization: (data) => {
         console.log(
-          'onClientAuthorization - you should probably inform your server about completed transaction at this point',
-          data
+          'onClientAuthorization - you should probably inform your server about completed transaction at this point'
         );
         this.paypalResponse = data;
         this.paymentStatus = data.status;
         this.createOrder();
       },
       onCancel: (data, actions) => {
-        console.log('onCancel', data, actions);
+        console.log('onCancel');
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -411,7 +368,6 @@ export class DetailProductComponent implements OnInit {
   }
 
   createOrder(): void {
-    console.log('creating order');
     const userId = this.tokenService.getUserId();
     const productId = this.productId;
     const quantity = this.quantity;
@@ -435,7 +391,6 @@ export class DetailProductComponent implements OnInit {
     if (userId) {
       this.orderService.createOrder(data).subscribe({
         next: (result) => {
-          console.log(result);
           Swal.fire({
             icon: 'success',
             title: 'Success',

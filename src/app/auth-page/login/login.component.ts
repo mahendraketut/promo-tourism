@@ -44,22 +44,25 @@ export class LoginComponent {
         next: (res) => {
           if (res.status === 200) {
             localStorage.setItem('token', res.token);
-            if (this.tokenService.decodeToken().roles == 'user') {
-              this.router.navigate(['/']);
-            } else if (
-              this.tokenService.decodeToken().roles == 'merchant' &&
-              this.tokenService.decodeToken().hasResetPassword == false
-            ) {
-              this.router.navigate(['/auth/change_password']);
-            } else if (
-              this.tokenService.decodeToken().roles == 'merchant' &&
-              this.tokenService.decodeToken().hasResetPassword == true
-            ) {
-              this.router.navigate(['/merchant']);
-            } else if (this.tokenService.decodeToken().roles == 'officer') {
-              this.router.navigate(['/officer']);
-            } else {
-              this.router.navigate(['/']);
+            const decodedToken = this.tokenService.decodeToken(); // Decode once and store the result
+
+            switch (decodedToken.roles) {
+              case 'user':
+                this.router.navigate(['/']);
+                break;
+              case 'merchant':
+                this.router.navigate(
+                  decodedToken.hasResetPassword
+                    ? ['/merchant']
+                    : ['/auth/change_password']
+                );
+                break;
+              case 'officer':
+                this.router.navigate(['/officer']);
+                break;
+              default:
+                this.router.navigate(['/']);
+                break;
             }
           } else {
             Swal.fire({

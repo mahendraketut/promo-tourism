@@ -59,23 +59,8 @@ export class ProductComponent implements OnInit {
     this.productService.getProducts().subscribe((data) => {
       this.products = data;
       this.filteredProducts = this.products;
-      // this.totalItems = this.filterProducts.length;
-      console.log('data: ', data);
-      console.log(this.filteredProducts);
     });
   }
-
-  //Get the rating of a product
-  // getRating(productId: string) {
-  //   let review = 0;
-  //   this.reviewService.getReviewAverage(productId).subscribe({
-  //     next: (data) => {
-  //       console.log('Ini data review', data);
-  //     },
-  //     error: (error) => console.error('There was an error!', error),
-  //   });
-  //   return review;
-  // }
 
   readCoverImageURL(coverImagePath: string): string {
     return environment.productImgUrl + '/' + coverImagePath;

@@ -18,7 +18,6 @@ export class ProductCardComponent implements OnInit {
   constructor(private router: Router, private reviewService: ReviewService) {}
 
   ngOnInit(): void {
-    console.log('rating', this.rating);
     this.getRating();
   }
 
@@ -32,14 +31,11 @@ export class ProductCardComponent implements OnInit {
     this.router.navigate([baseProductUrl + productId], {
       skipLocationChange: false,
     });
-    console.log('id', this.id);
   }
 
   getRating() {
     this.reviewService.getReviewAverage(this.id).subscribe({
       next: (data) => {
-        console.log('Ini data review', data);
-        // this.rating = data.data;
         if (!data.data) {
           this.rating = 0;
         } else {
