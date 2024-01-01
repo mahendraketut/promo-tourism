@@ -30,7 +30,6 @@ export class ReviewCardComponent {
         this.reviewData = response.data;
         this.rating = this.reviewData.rating;
         this.comment = this.reviewData.comment;
-        console.log('Review in card', this.reviewData);
         this.getUser(this.reviewData.userId);
       },
       error: (error) => {
@@ -43,7 +42,6 @@ export class ReviewCardComponent {
     this.authService.getUserDataById(id).subscribe({
       next: (response) => {
         this.userData = response.merchant;
-        console.log('User in card', this.userData);
       },
       error: (error) => {
         console.log(error);

@@ -31,7 +31,7 @@ export class MerchantReviewComponent implements OnInit {
         [10, 25, 50, 'All'],
       ],
       responsive: true,
-      dom: 'Bfrtip',
+      dom: 'Bflrtip',
       buttons: ['copy', 'print', 'excel', 'pdf'],
     };
     this.fetchMerchants();

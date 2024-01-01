@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
 import Swal from 'sweetalert2';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
+import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
   selector: 'app-product-list',
@@ -12,26 +15,30 @@ import Swal from 'sweetalert2';
 export class ProductListComponent implements OnInit {
   dtOptions: any = {};
   products: any = [];
+
+  @ViewChild(DataTableDirective, { static: false })
+  datatableElement: DataTableDirective;
+
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(
     private productService: ProductService,
     private router: Router,
-    private tokenService: TokenService
-  ) {
-    this.products = this.productService.getProductsByMerchantId(
-      this.tokenService.getUserId()
-    );
-    console.log('all prod: ', this.products);
-  }
+    private tokenService: TokenService,
+    private reviewService: ReviewService
+  ) {}
 
   ngOnInit(): void {
-    //the datatable
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 5,
+      pageLength: 15,
       processing: true,
-      lengthMenu: [5, 15, 5, 5, 5, 10, 5],
+      lengthMenu: [
+        [10, 25, 50, -1],
+        [10, 25, 50, 'All'],
+      ],
       responsive: true,
-      dom: 'Bfrtip',
+      dom: 'Blfrtip',
       buttons: [
         'copy',
         'print',
@@ -48,16 +55,12 @@ export class ProductListComponent implements OnInit {
         },
       ],
     };
-    const merchantId = this.tokenService.getUserId();
-    this.productService.getProductsByMerchantId(merchantId).subscribe(
-      (productsArray) => {
-        this.products = productsArray; // This should now be an array
-        console.log('Products for merchant:', this.products);
-      },
-      (error) => {
-        console.error('Error fetching products:', error);
-      }
-    );
+    this.fetchProducts();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
   }
   // onDelete(productId:string){
   //   console.log("masuk ts prod id: ", productId);
@@ -72,6 +75,36 @@ export class ProductListComponent implements OnInit {
   //     }
   //   );
   // }
+
+  fetchProducts() {
+    const merchantId = this.tokenService.getUserId();
+    this.productService.getProductsByMerchantId(merchantId).subscribe(
+      (productsArray) => {
+        this.products = productsArray;
+        //push the average rating of the product based on the productsArray._id inside each index of products array
+        this.products.forEach((data: any) => {
+          this.reviewService.getReviewAverage(data._id).subscribe({
+            next: (averageRating) => {
+              if (averageRating.data)
+                data.averageRating = Math.round(averageRating.data);
+              else data.averageRating = 0;
+            },
+            error: (error) => {
+              console.error('Error fetching average rating:', error);
+            },
+            complete: () => {
+              console.log('Average rating retrieval complete.');
+            },
+          });
+        });
+        console.log('Products for merchant:', this.products);
+        this.dtTrigger.next(undefined); // Trigger the DataTables to update
+      },
+      (error) => {
+        console.error('Error fetching products:', error);
+      }
+    );
+  }
 
   onUpdate(productId: string) {
     this.router.navigate(['/merchant/product/update', productId]);

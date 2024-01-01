@@ -52,8 +52,12 @@
         space-between="10"
         navigation="true"
       >
-        <swiper-slide *ngFor="let image of productImages; let i = index">
+        <swiper-slide
+          *ngFor="let image of productImages; let i = index"
+          lazy="true"
+        >
           <img
+            loading="lazy"
             [src]="image"
             [alt]=""
             (click)="openLightBox(i)"
@@ -74,8 +78,12 @@
         direction="vertical"
         watch-slides-progress="false"
       >
-        <swiper-slide *ngFor="let image of productImages; let i = index">
+        <swiper-slide
+          *ngFor="let image of productImages; let i = index"
+          lazy="true"
+        >
           <img
+            loading="lazy"
             [src]="image"
             [alt]=""
             class="w-full h-full object-cover object-center border-gray-200 rounded-2xl"
@@ -156,7 +164,7 @@
             <div *ngIf="rating > 0" class="w-full">
               <app-review-card
                 *ngFor="let i of reviewsData"
-                [reviewId]="i._id"
+                [reviewId]="i?._id"
               ></app-review-card>
             </div>
           </div>

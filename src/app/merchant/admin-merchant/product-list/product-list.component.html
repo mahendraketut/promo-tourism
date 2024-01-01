@@ -45,7 +45,12 @@
               >
             </div>
             <div class="mt-5">
-              <table datatable [dtOptions]="dtOptions" class="row-border hover">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="row-border hover"
+              >
                 <thead class="border-y">
                   <tr>
                     <th class="px-4 py-2">No</th>
@@ -53,17 +58,25 @@
                     <th class="px-4 py-2">Category</th>
                     <th class="px-4 py-2">Price</th>
                     <th class="px-4 py-2">Stock</th>
+                    <th class="px-4 py-2">Rating</th>
                     <th class="px-4 py-2">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let product of products; let i = index">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.category }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.quantity }}</td>
-                    <td>
+                    <td class="border px-4 py-2">{{ i + 1 }}</td>
+                    <td class="border px-4 py-2">{{ product?.name }}</td>
+                    <td class="border px-4 py-2">{{ product?.category }}</td>
+                    <td class="border px-4 py-2">
+                      {{ product?.price | currency : "MYR" }}
+                    </td>
+                    <td class="border px-4 py-2">
+                      {{ product?.quantity }}
+                    </td>
+                    <td class="border px-4 py-2">
+                      {{ product?.averageRating }}
+                    </td>
+                    <td class="border px-4 py-2 flex justify-center">
                       <!-- action button using dropdown -->
 
                       <button
