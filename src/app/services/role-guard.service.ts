@@ -13,16 +13,21 @@ export class RoleGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
+    console.log('kepanggil buat special user');
+    this.token = this.tokenService.decodeToken();
     const expectedRole = route.data['expectedRole'];
     const userRoles = this.token.roles; // Assuming token.roles is an array of roles
+    console.log('expect: ', expectedRole);
+    console.log('userRole: ', userRoles);
 
     // Check if the user has the expected role
     if (!userRoles || !userRoles.includes(expectedRole)) {
+      alert(`You don't have permission to view this page.`);
       // Navigate to a default route if the user does not have the expected role
       this.router.navigate(['/error/403']);
       return false;
     }
-
+    console.log('special log aman bro');
     return true;
   }
 }

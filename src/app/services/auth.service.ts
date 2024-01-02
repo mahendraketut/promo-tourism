@@ -65,14 +65,17 @@ export class AuthService {
 
   //method to check user can activate login page
   canActivate(): boolean {
+    console.log('canactivate kepanggil.');
     const token = localStorage.getItem('token');
     if (token) {
       // If token exists, show swal
+      console.log('error dari can activate');
       this.router.navigate(['/error/403']);
 
       return false;
     }
     // If no token, allow access to the route
+    console.log('aman di canact');
     return true;
   }
 
@@ -205,21 +208,21 @@ export class AuthService {
   //Logs a user out by removing the user's token from local storage.
   logoutUser(): void {
     localStorage.removeItem('token'); // Remove the token from local storage
-    //     this.logoutBackend();
+    this.logoutBackend();
     localStorage.removeItem('__paypal_storage__');
     //clean cookies from this session
   }
 
   // //Only clears the cookie, this is redundant since we dont store the data in the front-
-  // logoutBackend(): Observable<any> {
-  //   let api = `${this.endpoint}/logout`;
-  //   return this.http.post(api, {}).pipe(
-  //     map((response: any) => {
-  //       return response;
-  //     }),
-  //     catchError(this.errorMgmt)
-  //   );
-  // }
+  logoutBackend(): Observable<any> {
+    let api = `${this.endpoint}/logout`;
+    return this.http.post(api, {}).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
 
   //Used by merchants to change their password, forwards the user ID, new pass and old pass to the back-end.
   changePassword(
