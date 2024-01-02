@@ -16,18 +16,18 @@ import { v4 as uuidv4 } from "uuid";
 //Checks availability of an email address, can be proactively called by the front-end--
 //--to check if an email is available before registering a new user.
 export const checkEmail = async (req, res, next) => {
-    try {
-      const email = req.body.email;
-      const doesEmailExist = await User.findOne({ email: req.body.email });
-      if (doesEmailExist) {
-        return next(CreateSuccess(200, 'Email Taken'));
-      } else {
-        return next(CreateSuccess(200, 'Email Available'));
-      }
-    } catch (error) {
-      return next(CreateError(500, 'Internal Server Error', error));
+  try {
+    const email = req.body.email;
+    const doesEmailExist = await User.findOne({ email: req.body.email });
+    if (doesEmailExist) {
+      return next(CreateSuccess(200, "Email Taken"));
+    } else {
+      return next(CreateSuccess(200, "Email Available"));
     }
-  };
+  } catch (error) {
+    return next(CreateError(500, "Internal Server Error", error));
+  }
+};
 
 //Registers a user into the system according to their roles.
 export const register = async (req, res, next) => {
@@ -101,57 +101,55 @@ export const register = async (req, res, next) => {
         //Then moves it to the upload folder.
         const moveAndRenameFile = (source, originalName, targetDir) => {
           //This also keeps the original file extension.
-            const fileExtension = path.extname(originalName);
-            //This is when the unique file name is generated.
-            const uniquePrefix = uuidv4();
-            const newFileName = uniquePrefix + fileExtension; 
-            const targetPath = path.join(targetDir, newFileName);
-          
-            //This moves the file into the specified upload folder.
-            fs.copyFileSync(source, targetPath); 
-            fs.unlinkSync(source);
-        
-            //Returns the new file name to be saved on the database.
-            return newFileName;
+          const fileExtension = path.extname(originalName);
+          //This is when the unique file name is generated.
+          const uniquePrefix = uuidv4();
+          const newFileName = uniquePrefix + fileExtension;
+          const targetPath = path.join(targetDir, newFileName);
+
+          //This moves the file into the specified upload folder.
+          fs.copyFileSync(source, targetPath);
+          fs.unlinkSync(source);
+
+          //Returns the new file name to be saved on the database.
+          return newFileName;
         };
         try {
           //Calls the move and rename function for license and reviews files.
-            const licenseNewFileName = moveAndRenameFile(
-              files.license[0].filepath,
-              files.license[0].originalFilename, 
-              uploadDir
-            );
-            const reviewsNewFileName = moveAndRenameFile(
-              files.reviews[0].filepath,
-              files.reviews[0].originalFilename,
-              uploadDir
-            );
-            
-            //Saves the user into the db.
-            //The license and reviews path are the new file names, since they are unique.
-            const licensePath = licenseNewFileName;
-            const reviewsPath = reviewsNewFileName;
-            newUser = new User({
-              name: getFieldValue(name),
-              email: getFieldValue(email),
-              password: hashedPassword,
-              roles: 'merchant',
-              phoneNo: getFieldValue(phoneNo),
-              description: getFieldValue(description),
-              licensePath: licensePath,
-              reviewsPath: reviewsPath,
-              accountStatus: 'pending',
-              licenseDescription: getFieldValue(fields.licenseDescription),
-              reviewsDescription: getFieldValue(fields.reviewsDescription),
-            });
+          const licenseNewFileName = moveAndRenameFile(
+            files.license[0].filepath,
+            files.license[0].originalFilename,
+            uploadDir
+          );
+          const reviewsNewFileName = moveAndRenameFile(
+            files.reviews[0].filepath,
+            files.reviews[0].originalFilename,
+            uploadDir
+          );
+
+          //Saves the user into the db.
+          //The license and reviews path are the new file names, since they are unique.
+          const licensePath = licenseNewFileName;
+          const reviewsPath = reviewsNewFileName;
+          newUser = new User({
+            name: getFieldValue(name),
+            email: getFieldValue(email),
+            password: hashedPassword,
+            roles: "merchant",
+            phoneNo: getFieldValue(phoneNo),
+            description: getFieldValue(description),
+            licensePath: licensePath,
+            reviewsPath: reviewsPath,
+            accountStatus: "pending",
+            licenseDescription: getFieldValue(fields.licenseDescription),
+            reviewsDescription: getFieldValue(fields.reviewsDescription),
+          });
         } catch (error) {
-            return next(CreateError(500, 'Error moving files', error));
+          return next(CreateError(500, "Error moving files", error));
         }
-        
-            
-    }
-    //Register user if the user's role is an admin or a user. 
-    else if (roleType === 'officer' || roleType === 'user') {
+      }
+      //Register user if the user's role is an admin or a user.
+      else if (roleType === "officer" || roleType === "user") {
         newUser = new User({
           name: getFieldValue(fields.name),
           email: getFieldValue(fields.email),
@@ -159,23 +157,22 @@ export const register = async (req, res, next) => {
           roles: roleType,
           phoneNo: getFieldValue(fields.phoneNo),
           address: getFieldValue(fields.address),
-          accountStatus: 'approved',
-            
+          accountStatus: "approved",
         });
-    } else {
-        return next(CreateError(400, 'Invalid Role!'));
-    }
+      } else {
+        return next(CreateError(400, "Invalid Role!"));
+      }
 
-    //Saves the user into the db.
-    await newUser.save();
-    return next(
-      CreateSuccess(
-        200,
-        `${
-          roleType.charAt(0).toUpperCase() + roleType.slice(1)
-        } registered successfully!`
-      )
-    );
+      //Saves the user into the db.
+      await newUser.save();
+      return next(
+        CreateSuccess(
+          200,
+          `${
+            roleType.charAt(0).toUpperCase() + roleType.slice(1)
+          } registered successfully!`
+        )
+      );
     } catch (error) {
       return next(CreateError(500, "Error registering user", error));
     }
@@ -211,7 +208,13 @@ export const login = async (req, res, next) => {
 
     //Sign the JWT token with the appropriate user data.
     const token = jwt.sign(
-      { id: user._id, roles: user.roles, name: user.name, email: user.email, hasResetPassword: user.hasResetPassword },
+      {
+        id: user._id,
+        roles: user.roles,
+        name: user.name,
+        email: user.email,
+        hasResetPassword: user.hasResetPassword,
+      },
       process.env.TOKEN_SECRET,
       {
         expiresIn: tokenExpiration,
@@ -251,9 +254,9 @@ export const changePassword = async (req, res, next) => {
     //This hashes the merchant's new password, then saves it to the database.
     const salt = await bcrypt.genSalt(10);
     const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
-      user.password = hashedNewPassword;
-      user.hasResetPassword = true;
-      await user.save();
+    user.password = hashedNewPassword;
+    user.hasResetPassword = true;
+    await user.save();
     return next(CreateSuccess(200, "Password Changed Successfully"));
   } catch (error) {
     return next(CreateError(500, "Internal Server Error", error));
@@ -265,7 +268,6 @@ export const changePassword = async (req, res, next) => {
 //The email has a verification code that the user can use to reset their password.
 export const forgetPassword = async (req, res, next) => {
   try {
-    
     const email = req.body.email;
     const user = await User.findOne({ email });
     if (!user) {
@@ -282,7 +284,7 @@ export const forgetPassword = async (req, res, next) => {
     try {
       await sendVerificationEmail(user, verificationCode);
     } catch (error) {
-      return next(CreateError(500,"Error sending email", error));
+      return next(CreateError(500, "Error sending email", error));
     }
     return next(CreateSuccess(200, "Verification Code Sent Successfully!"));
   } catch (error) {
@@ -326,15 +328,15 @@ export const validateVerificationCode = async (req, res, next) => {
 //TODO: HEN LOGOUT backend kalau diperluin (apus kalau di akhir gakepake).
 // //Logout function.
 // //Clears the cookie from the browser.
-// export const logout = async (req, res, next) => {
-//   try {
-//     res.clearCookie("access_token").status(200).json({
-//       message: "Logged out successfully!",
-//     });
-//   } catch (error) {
-//     return next(CreateError(500, error));
-//   }
-// };
+export const logout = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token").status(200).json({
+      message: "Logged out successfully!",
+    });
+  } catch (error) {
+    return next(CreateError(500, error));
+  }
+};
 
 //Retreives all merchants from the database without any filter.
 export const getMerchants = async (req, res, next) => {
@@ -352,19 +354,16 @@ export const getMerchants = async (req, res, next) => {
   }
 };
 
-
 //Retreive a merchant's data by their ID.
 //Finds the merchant by their ID, then returns the merchant to the front-end.
 export const getMerchantById = async (req, res, next) => {
   try {
-    const merchant = await User.findById(req.params.id).select(
-      "-password"
-    );
+    const merchant = await User.findById(req.params.id).select("-password");
     res.status(200).json({ merchant });
   } catch (error) {
     return next(CreateError(500, "Internal Server Error", error));
   }
-}
+};
 
 //Accept a merchant according to their ID.
 //once accepted, a new temporary password will be created and sent to the merchant's email.
@@ -411,12 +410,12 @@ export const rejectMerchant = async (req, res, next) => {
 
     //Change the account status to rejected.
     merchant.accountStatus = "rejected";
-    
+
     //Saves the merchant to the database.
     try {
       await merchant.save();
     } catch (error) {
-      return next (CreateError(500, "Error Saving Merchant", error));
+      return next(CreateError(500, "Error Saving Merchant", error));
     }
     //Sends rejection email to the merchant.
     try {
