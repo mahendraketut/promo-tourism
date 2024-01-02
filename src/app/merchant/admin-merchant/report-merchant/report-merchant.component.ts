@@ -13,7 +13,7 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./report-merchant.component.css'],
 })
 export class ReportMerchantComponent implements OnInit {
-  title = 'ng2-charts-demo';
+  title = 'Analytics Chart';
   merchantData: any;
   dtOptions: any = {};
   analyticsData: any;
@@ -167,7 +167,7 @@ export class ReportMerchantComponent implements OnInit {
     ],
   };
   public barChartOptions: ChartOptions<'line'> = {
-    responsive: false,
+    responsive: true,
   };
   public barChartLegend = true;
 
@@ -198,7 +198,7 @@ export class ReportMerchantComponent implements OnInit {
     ],
   };
   public lineChartOptions: ChartOptions<'line'> = {
-    responsive: false,
+    responsive: true,
   };
   public lineChartLegend = true;
 
