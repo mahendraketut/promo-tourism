@@ -1,4 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { environment } from 'src/app/environment';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-home',
@@ -6,9 +8,20 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
+  products: any[] = [];
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  constructor() {}
+  constructor(private productService: ProductService) {
+    this.productService.getProducts().subscribe((products) => {
+      this.products = products;
+      console.log(products);
+    });
+  }
+
+  readCoverImageURL(coverImagePath: string): string {
+    return environment.productImgUrl + '/' + coverImagePath;
+  }
+
   //Scrolls left on the carousel.
   scrollLeft() {
     this.scrollContainer.nativeElement.scrollTo({

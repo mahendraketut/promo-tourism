@@ -79,7 +79,7 @@ const routes: Routes = [
         ],
       },
       {
-        path: 'help',
+        path: 'privacypolicy',
         component: HelpComponent,
       },
     ],
