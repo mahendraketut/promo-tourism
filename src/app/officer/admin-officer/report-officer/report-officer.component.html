@@ -35,6 +35,55 @@
           <div class="w-full p-5 md:px-20 md:py-10">
             <div class="flex items-center justify-between my-1">
               <h1 class="font-semibold text-2xl">Officer Statistical Report</h1>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                >
+                  <i class="uil uil-calendar-alt text-gray-500"></i>
+                </div>
+                <select
+                  id="year"
+                  name="year"
+                  [(ngModel)]="year"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="fetchAnalytic()"
+                  class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="2023" class="hidden">Select Year</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                </select>
+              </div>
+            </div>
+            <div class="md:flex md:justify-between items-center gap-8 my-10">
+              <div class="w-full md:w-6/12">
+                <p>Total Sales</p>
+                <canvas
+                  baseChart
+                  [type]="'bar'"
+                  [data]="barChartData"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  class="w-full"
+                >
+                </canvas>
+              </div>
+              <div class="w-full md:w-6/12">
+                <p>Total Product Sold</p>
+                <canvas
+                  baseChart
+                  [type]="'line'"
+                  [data]="lineChartData"
+                  [options]="lineChartOptions"
+                  [legend]="lineChartLegend"
+                  class="w-full"
+                >
+                </canvas>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-10">
+              <h1 class="font-semibold text-2xl">Sales Data {{ year }}</h1>
               <!-- <a
                 routerLink="/merchant/product/add"
                 class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
@@ -42,26 +91,98 @@
                 <i class="fa-solid fa-plus"></i> Add Product</a
               >-->
             </div>
-            <div class="md:flex md:justify-between items-center gap-8">
-              <canvas
-                baseChart
-                [type]="'bar'"
-                [data]="lineChartData"
-                [options]="lineChartOptions"
-                [legend]="lineChartLegend"
-                class="w-full md:w-1/2"
-              >
-              </canvas>
-              <canvas
-                baseChart
-                [type]="'line'"
-                [data]="lineChartData"
-                [options]="lineChartOptions"
-                [legend]="lineChartLegend"
-                class="w-full md:w-1/2"
-              >
-              </canvas>
+            <div class="my-5">
+              <table class="row-border hover w-full">
+                <thead class="border-y">
+                  <tr>
+                    <th class="border px-4 py-2">No</th>
+                    <th class="border px-4 py-2">Month</th>
+                    <th class="border px-4 py-2">Total Products Sold</th>
+                    <th class="border px-4 py-2">Total Sales</th>
+                    <th class="border px-4 py-2">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let report of analyticsData; let i = index">
+                    <td class="border px-4 py-2">{{ i + 1 }}</td>
+                    <td class="border px-4 py-2">{{ getMonth(i + 1) }}</td>
+                    <td class="border px-4 py-2">
+                      {{ report?.totalProductsSold }}
+                    </td>
+                    <td class="border px-4 py-2">
+                      {{ report?.totalSales | currency : "MYR" }}
+                    </td>
+                    <td class="border px-4 py-2 flex justify-center">
+                      <!-- action button using dropdown -->
+
+                      <button
+                        (click)="fetchRevenueAndSalesRanking(i)"
+                        class="bg-gradient-to-tr from-blue-500 via-blue-700 to-blue-800 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full me-2"
+                      >
+                        <i class="fa-solid fa-edit"></i> View Detail
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+            <!-- end of table -->
+            <div class="flex items-center justify-between mt-10">
+              <h1 class="font-semibold text-2xl">
+                Detail Revenue Ranking Month: {{ monthSelected }}
+              </h1>
+              <!-- <a
+                routerLink="/merchant/product/add"
+                class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
+              >
+                <i class="fa-solid fa-plus"></i> Add Product</a
+              >-->
+            </div>
+            <div class="my-5">
+              <table class="row-border hover w-full">
+                <thead class="border-y">
+                  <tr>
+                    <th class="border px-4 py-2">No</th>
+                    <th class="border px-4 py-2">Product ID</th>
+                    <th class="border px-4 py-2">Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let report of detailRevenueRanking; let i = index"
+                  >
+                    <td class="border px-4 py-2">{{ i + 1 }}</td>
+                    <td class="border px-4 py-2">{{ report?.productId }}</td>
+                    <td class="border px-4 py-2">{{ report?.revenue }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- end of table -->
+            <div class="flex items-center justify-between mt-10">
+              <h1 class="font-semibold text-2xl">
+                Detail Sales Ranking Month: {{ monthSelected }}
+              </h1>
+            </div>
+            <div class="my-5">
+              <table class="row-border hover w-full">
+                <thead class="border-y">
+                  <tr>
+                    <th class="border px-4 py-2">No</th>
+                    <th class="border px-4 py-2">Product ID</th>
+                    <th class="border px-4 py-2">Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let report of detailSalesRanking; let i = index">
+                    <td class="border px-4 py-2">{{ i + 1 }}</td>
+                    <td class="border px-4 py-2">{{ report?.productId }}</td>
+                    <td class="border px-4 py-2">{{ report?.quantity }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- end of table -->
           </div>
         </div>
       </div>
