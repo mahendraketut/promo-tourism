@@ -29,7 +29,6 @@ import { FooterComponent } from './landing-page/footer/footer.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
 import { LoginComponent } from './auth-page/login/login.component';
 import { RegisterComponent } from './auth-page/register/register.component';
-import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
 import { ProductCardComponent } from './widget/product-card/product-card.component';
@@ -71,6 +70,7 @@ import { Error500Component } from './errorPage/error500/error500.component';
 import { OrderCardComponent } from './widget/order-card/order-card.component';
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import { ReviewCardComponent } from './widget/review-card/review-card.component';
+import { ProductListCustomerComponent } from './landing-page/product/product-list-customer/product-list-customer.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +82,7 @@ import { ReviewCardComponent } from './widget/review-card/review-card.component'
     AuthPageComponent,
     LoginComponent,
     RegisterComponent,
-    AboutComponent,
+
     ProductComponent,
     HelpComponent,
     ProductCardComponent,
@@ -120,6 +120,7 @@ import { ReviewCardComponent } from './widget/review-card/review-card.component'
     Error500Component,
     OrderCardComponent,
     ReviewCardComponent,
+    ProductListCustomerComponent,
   ],
   imports: [
     BrowserModule,
