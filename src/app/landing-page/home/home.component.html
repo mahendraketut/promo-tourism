@@ -2,7 +2,7 @@
   <app-hero></app-hero>
   <div>
     <div class="mt-10 flex justify-between">
-      <h2 class="text-xl font-bold">Best Package</h2>
+      <h2 class="text-xl font-semibold">Best Package</h2>
       <div>
         <button
           type="button"
@@ -24,54 +24,12 @@
         <!-- class utility below can be modified based on your needed. Follow Tailwind Docs for more detail information about styling -->
         <div class="pt-2 grid grid-rows-1 grid-flow-col gap-4 mx">
           <app-product-card
-            class="w-48"
-            route=""
-            image="/assets/img/imagecover.jpg"
-            title="Lorem ipsum dolor sit amet"
-            [rating]="5"
-            [price]="5000"
-          ></app-product-card>
-          <app-product-card
-            class="w-48"
-            image="/assets/img/imagecover.jpg"
-            title="Lorem ipsum dolor sit amet"
-            [rating]="5"
-            [price]="5000"
-          ></app-product-card>
-          <app-product-card
-            class="w-48"
-            image="/assets/img/imagecover.jpg"
-            title="Lorem ipsum dolor sit amet"
-            [rating]="5"
-            [price]="5000"
-          ></app-product-card>
-          <app-product-card
-            class="w-48"
-            image="/assets/img/imagecover.jpg"
-            title="Lorem ipsum dolor sit amet"
-            [rating]="5"
-            [price]="5000"
-          ></app-product-card>
-          <app-product-card
-            class="w-48"
-            image="/assets/img/imagecover.jpg"
-            title="Lorem ipsum dolor sit amet"
-            [rating]="5"
-            [price]="5000"
-          ></app-product-card>
-          <app-product-card
-            class="w-48"
-            image="/assets/img/imagecover.jpg"
-            title="Lorem ipsum dolor sit amet"
-            [rating]="5"
-            [price]="5000"
-          ></app-product-card>
-          <app-product-card
-            class="w-48"
-            image="/assets/img/imagecover.jpg"
-            title="Lorem ipsum dolor sit amet"
-            [rating]="5"
-            [price]="5000"
+            *ngFor="let i of products"
+            [image]="readCoverImageURL(i.coverImagePath)"
+            [title]="i.name"
+            [rating]=""
+            [price]="i.price"
+            [id]="i._id"
           ></app-product-card>
         </div>
       </div>
@@ -93,57 +51,57 @@
       <!-- below is the right button, you can modify it: end-->
     </div>
   </div>
-  <div class="my-20">
+  <div class="mt-20 mb-10">
     <div class="flex justify-between">
-      <h2 class="text-4xl font-bold w-full text-center mb-10">
+      <h2 class="text-4xl font-semibold w-full text-center">
         We offer the best services
       </h2>
-      <div>
-        <!-- <button
-          type="button"
-          routerLink="auth/login"
-          class="text-white rounded-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-2 text-center mr-3 md:mr-0"
-          tabindex="0"
-          router-link="auth/login"
-        >
-          <i class="fa-solid fa-layer-group me-1" style="text-align: center"></i
-          >See all
-        </button> -->
-      </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full">
-      <!-- you are allowed to modify the style of the card eg. resize width using class. example: <app-product-card class="w-48"> -->
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full">
+    <!-- you are allowed to modify the style of the card eg. resize width using class. example: <app-product-card class="w-48"> -->
+    <div
+      class="relative bg-blue-700 border-gray-200 rounded-2xl w-full flex items-center lg:hover:-translate-y-2 duration-300"
+    >
+      <img
+        src="/assets/img/destination.jpg"
+        class="h-full w-full object-cover rounded-2xl"
+      />
       <div
-        class="bg-white border border-gray-200 rounded-2xl shadow h-full w-full flex items-center p-5 lg:hover:-translate-y-2 duration-300"
+        class="absolute flex items-end bg-blue-700 bg-opacity-50 rounded-2xl p-5 top-0 left-0 right-0 bottom-0 w-full h-full"
       >
-        <div class="w-full">
-          <div class="flex justify-center">
-            <i class="uil uil-map-pin-alt text-8xl"></i>
+        <div class="">
+          <div class="flex items-center justify-start rounded-xl">
+            <i class="uil uil-tag-alt text-8xl text-white"></i>
           </div>
-          <div class="flex justify-center">
-            <h1 class="text-lg font-medium">Best Destination</h1>
-          </div>
-          <div class="flex justify-center">
-            <p class="text-center mt-2">
+          <div class="justify-center">
+            <h1 class="text-lg font-semibold text-white">Best Destination</h1>
+            <p class="text-left mt-2 text-white">
               The beauty of the various destinations that we have is managed
               with good management by our merchants. Every place has its various
-              types of destinations.
+              types of destinations
             </p>
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="relative bg-blue-700 border-gray-200 rounded-2xl w-full flex items-center lg:hover:-translate-y-2 duration-300"
+    >
+      <img
+        src="/assets/img/seller.jpg"
+        class="h-full w-full object-cover rounded-2xl"
+      />
       <div
-        class="bg-white border border-gray-200 rounded-2xl shadow h-full w-full flex items-center p-5 lg:hover:-translate-y-2 duration-300"
+        class="absolute flex items-end bg-blue-700 bg-opacity-50 rounded-2xl p-5 top-0 left-0 right-0 bottom-0 w-full h-full"
       >
-        <div class="w-full">
-          <div class="flex justify-center">
-            <i class="uil uil-shop text-8xl"></i>
+        <div>
+          <div class="flex items-center justify-start rounded-xl">
+            <i class="uil uil-shop text-8xl text-white"></i>
           </div>
-          <div class="flex justify-center">
-            <h1 class="text-lg font-medium">Best Merchant</h1>
-          </div>
-          <div class="flex justify-center">
-            <p class="text-center mt-2">
+          <div class="justify-center">
+            <h1 class="text-lg font-semibold text-white">Best Merchant</h1>
+            <p class="text-left mt-2 text-white">
               With strict selection by a team from the Ministry of Tourism, it
               can be ensured that our merchants are merchant whose credibility
               can be trusted
@@ -151,18 +109,24 @@
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="relative bg-blue-700 border-gray-200 rounded-2xl w-full flex items-center lg:hover:-translate-y-2 duration-300"
+    >
+      <img
+        src="/assets/img/offer.jpg"
+        class="h-full w-full object-cover rounded-2xl"
+      />
       <div
-        class="bg-white border border-gray-200 rounded-2xl shadow h-full w-full flex items-center p-5 lg:hover:-translate-y-2 duration-300"
+        class="absolute flex items-end bg-blue-700 bg-opacity-50 rounded-2xl p-5 top-0 left-0 right-0 bottom-0 w-full h-full"
       >
-        <div class="w-full">
-          <div class="flex justify-center">
-            <i class="uil uil-tag-alt text-8xl"></i>
+        <div>
+          <div class="flex items-center justify-start rounded-xl">
+            <i class="uil uil-tag-alt text-8xl text-white"></i>
           </div>
-          <div class="flex justify-center">
-            <h1 class="text-lg font-medium">Best Offer</h1>
-          </div>
-          <div class="flex justify-center">
-            <p class="text-center mt-2">
+          <div class="justify-center">
+            <h1 class="text-lg font-semibold text-white">Best Offer</h1>
+            <p class="text-left mt-2 text-white">
               We ensure that every product sold by our merchants has a price
               that is by the fair price at which the product is sold to ensure
               market stability and continuity
