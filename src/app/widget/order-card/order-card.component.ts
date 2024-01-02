@@ -43,7 +43,7 @@ export class OrderCardComponent implements OnInit {
   }
 
   navigateToOrderDetail(orderId: string): void {
-    const baseProductUrl = '/order/detail_order/';
+    const baseProductUrl = '/order/';
 
     // Update the browser's URL without adding to history
     window.history.pushState({}, '', baseProductUrl);

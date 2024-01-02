@@ -22,7 +22,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   navigateToProductDetail(productId: string): void {
-    const baseProductUrl = '/detailproduct/';
+    const baseProductUrl = '/product/';
 
     // Update the browser's URL without adding to history
     window.history.pushState({}, '', baseProductUrl);

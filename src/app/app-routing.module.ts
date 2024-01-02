@@ -5,7 +5,6 @@ import { AuthPageComponent } from './auth-page/auth-page.component';
 import { LoginComponent } from './auth-page/login/login.component';
 import { RegisterComponent } from './auth-page/register/register.component';
 import { AppComponent } from './app.component';
-import { AboutComponent } from './landing-page/about/about.component';
 import { ProductComponent } from './landing-page/product/product.component';
 import { HelpComponent } from './landing-page/help/help.component';
 import { HomeComponent } from './landing-page/home/home.component';
@@ -34,6 +33,7 @@ import { Error403Component } from './errorPage/error403/error403.component';
 import { Error404Component } from './errorPage/error404/error404.component';
 import { RoleGuardService } from './services/role-guard.service';
 import { Error500Component } from './errorPage/error500/error500.component';
+import { ProductListCustomerComponent } from './landing-page/product/product-list-customer/product-list-customer.component';
 
 const routes: Routes = [
   {
@@ -44,19 +44,26 @@ const routes: Routes = [
         path: '',
         component: HomeComponent,
       },
-      {
-        path: 'about',
-        component: AboutComponent,
-      },
+
       {
         path: 'product',
         component: ProductComponent,
+        children: [
+          {
+            path: '',
+            component: ProductListCustomerComponent,
+          },
+          {
+            path: ':id',
+            component: DetailProductComponent,
+          },
+        ],
       },
       // TODO delete it if success
-      {
-        path: 'detailproduct/:id',
-        component: DetailProductComponent,
-      },
+      // {
+      //   path: ':id',
+      //   component: DetailProductComponent,
+      // },
       {
         path: 'order',
         component: OrderComponent,
@@ -66,7 +73,7 @@ const routes: Routes = [
             component: OrderCustomerListComponent,
           },
           {
-            path: 'detail_order/:id',
+            path: ':id',
             component: OrderDetailComponent,
           },
         ],
