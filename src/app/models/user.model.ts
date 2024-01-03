@@ -1,35 +1,4 @@
-// export class User {
-//     userEmail: string;
-//     userPhone: string;
-//     userName: string;
-//     userAddress: string;
-//     userPass: string;
-//     userPassConfirm: string;
-//     agreeTOS: string;
-//     roles: string;
-  
-//     constructor(
-//       userEmail: string,
-//       userPhone: string,
-//       userName: string,
-//       userAddress: string,
-//       userPass: string,
-//       userPassConfirm: string,
-//       agreeTOS: string,
-//       roles: string = '',
-//     ) {
-//       this.userEmail = userEmail;
-//       this.userPhone = userPhone;
-//       this.userName = userName;
-//       this.userAddress = userAddress;
-//       this.userPass = userPass;
-//       this.userPassConfirm = userPassConfirm;
-//       this.agreeTOS = agreeTOS;
-//       this.roles = roles;
-//     }
-//   }
-
-
+//Front-end model for user.
 export class User {
   name: string;
   email: string;

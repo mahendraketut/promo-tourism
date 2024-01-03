@@ -56,11 +56,9 @@ export class RegisterMerchantComponent {
       this.authService.checkEmailAvailability(email).subscribe({
         next: (response: any) => {
           if (response.status === 200 && response.message === 'Email Taken') {
-            console.log('Email taken');
             resolve({ emailTaken: true });
           } else {
             resolve(null);
-            console.log('Email available');
           }
         },
         error: (error) => {
@@ -80,8 +78,6 @@ export class RegisterMerchantComponent {
       this.userDataForm.controls.userPhone.valid &&
       this.userDataForm.controls.userName.valid &&
       this.userDataForm.controls.userDescription.valid;
-
-    console.log('isValid:', isValid);
     return isValid;
   }
 
@@ -91,12 +87,7 @@ export class RegisterMerchantComponent {
   isPersonalDataSectionValidatedAndClicked() {
     if (this.isPersonalDataSectionValidated()) {
       this.changeForm();
-
-      console.log('Form Change:' + this.changeForm);
-      console.log('Validasi:' + this.isPersonalDataSectionValidated);
     } else {
-      console.log('Form Change:' + this.changeForm);
-      console.log('Validasi:' + this.isPersonalDataSectionValidated);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -106,7 +97,6 @@ export class RegisterMerchantComponent {
   }
 
   selectedFiles: Record<string, File> = {};
-
   allowDrop(event: DragEvent): void {
     event.preventDefault();
   }
@@ -185,9 +175,7 @@ export class RegisterMerchantComponent {
 
       //Send the form data to the backend.
       this.authService.registerUser(formData).subscribe({
-        next: (response) => {
-          // Handle the response
-          console.log(response);
+        next: () => {
           Swal.fire({
             icon: 'success',
             title: 'Success!',
@@ -199,6 +187,7 @@ export class RegisterMerchantComponent {
             }
           });
         },
+        //If there is an error, display an error message.
         error: (error) => {
           console.log(error);
           Swal.fire({

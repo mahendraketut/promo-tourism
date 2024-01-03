@@ -20,18 +20,8 @@ export class MerchantComponent {
     if (decodedToken) {
       this.userRole = decodedToken.roles;
       this.name = decodedToken.name;
-      console.log(decodedToken); // Log the decoded token
-
-      if (this.userRole === 'merchant') {
-        console.log('merchant boss');
-        this.userRole = 'merchant';
-      } else {
-        console.log('sing merchant ne');
-      }
     } else {
-      console.log('Token is not valid or not present');
-      // Handle the situation when the token is not available or valid
-      // Redirect to login or show error message
+      console.error('Failed to decode token')
     }
   }
 }

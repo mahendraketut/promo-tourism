@@ -33,10 +33,7 @@ export class MerchantReviewDetailComponent {
         this.retreiveMerchantPdf();
       },
       error: (error) => {
-        console.error('Error fetching merchant:', error);
-      },
-      complete: () => {
-        console.log('Merchant data retrieval complete.');
+        console.error('Error getting merchant data:', error);
       },
     });
   }
@@ -55,8 +52,7 @@ export class MerchantReviewDetailComponent {
     console.log('reviews pdf url:', this.reviewsPdfUrl);
   }
 
-  //retrieve file size by getting file from licensePdfUrl and calculate the size. if size < 1 MB return as KB and vice versa
-
+  //Retrieve file size by getting file from licensePdfUrl and calculate the size. if size < 1 MB return as KB and vice versa.
   getFileSize(url: string) {
     let fileSize = 0;
     let xhr = new XMLHttpRequest();
@@ -106,7 +102,7 @@ export class MerchantReviewDetailComponent {
       next: (response) => {
         console.log('Merchant rejected:', response);
       },
-      error: (error) => {
+      error: () => {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -120,7 +116,7 @@ export class MerchantReviewDetailComponent {
           title: 'Merchant rejected!',
           text: 'Merchant has been rejected.',
         }).then(() => {
-          // Reload the page
+          //Reload the page
           window.location.reload();
         });
       },

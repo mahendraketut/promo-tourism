@@ -438,8 +438,8 @@ export const rejectMerchant = async (req, res, next) => {
 //Retreive the number of registered merchants.
 export const getNumberOfMerchants = async (req, res, next) => {
   try {
-    //Finds the number of users with the role of merchant.
-    const merchants = await User.find({ roles: "merchant" });
+    //Finds the number of users with the role of merchant who are approved.
+    const merchants = await User.find({ roles: "merchant", accountStatus: "approved" });
     const numberOfMerchants = merchants.length;
     return next(CreateSuccess(200, "Number of Merchants", numberOfMerchants));
   } catch (error) {
