@@ -19,17 +19,17 @@ export class HeroComponent {
       {
         img: '/assets/img/carousel1.jpg',
         title: 'New Collection 1',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+        description: '',
       },
       {
         img: '/assets/img/imagecover.jpg',
         title: 'New Collection 2',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+        description: '',
       },
       {
         img: '/assets/img/imagecover2.jpg',
         title: 'New Collection 3',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+        description: '',
       },
     ];
   }

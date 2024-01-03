@@ -48,9 +48,10 @@ export class RegisterMerchantComponent {
     licenseDescription: new FormControl('', [Validators.required]),
     reviewsDescription: new FormControl('', [Validators.required]),
   });
+
+  //Custom validator to check if email is taken
   checkEmailTaken(control: AbstractControl): Promise<ValidationErrors | null> {
     const email = control.value;
-
     return new Promise((resolve, reject) => {
       this.authService.checkEmailAvailability(email).subscribe({
         next: (response: any) => {
@@ -110,9 +111,10 @@ export class RegisterMerchantComponent {
     event.preventDefault();
   }
 
+  //Handles file input, both from drag and drop and from file input change event
   handleFileInput(event: Event, fieldName: string): void {
     if (event instanceof DragEvent) {
-      // Handle the drop event
+      //handle drag and drop event
       event.preventDefault();
       const files = event.dataTransfer?.files;
 
@@ -120,7 +122,7 @@ export class RegisterMerchantComponent {
         this.selectedFiles[fieldName] = files[0];
       }
     } else if (event instanceof Event) {
-      // Handle the file input change event
+      //handle file input change event
       const element = event.currentTarget as HTMLInputElement;
       const fileList: FileList | null = element.files;
 
@@ -129,18 +131,8 @@ export class RegisterMerchantComponent {
       }
     }
   }
-  // handleFileInput(event: Event, fieldName: string): void {
-  //   console.log('file masuk: ', fieldName);
-  //   const element = event.currentTarget as HTMLInputElement;
-  //   let fileList: FileList | null = element.files;
-  //   if (fileList) {
-  //     this.selectedFiles[fieldName] = fileList[0];
-  //   }
-  // }
 
-  //method to handle file size converter
-  //to convert file size from bytes to megabytes and return the size in string
-  //if the size still in kb, then return KB
+  //Handles file size conversion from bytes to KB or MB
   handleFileSizeConverter(fileSizeInBytes: number): string {
     let fileSizeInMB = fileSizeInBytes / (1024 * 1024);
     if (fileSizeInMB < 1) {
@@ -152,35 +144,28 @@ export class RegisterMerchantComponent {
 
   //tracks if user submitted the form.
   submittedClicked = false;
-
+//On submit, check if form is valid.
   onSubmit() {
-    console.log('submit ke klik');
     this.submittedClicked = true;
-    console.log('validitas form: ', this.userDataForm.valid);
-    console.log('error form', this.userDataForm.errors);
+    //Check if there are any errors in the form.
     Object.keys(this.userDataForm.controls).forEach((key) => {
       const controlErrors: ValidationErrors = this.userDataForm.get(key).errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach((keyError) => {
-          console.log(
-            'Key control: ' + key + ', keyError: ' + keyError + ', err value: ',
-            controlErrors[keyError]
-          );
+          console.error(keyError, controlErrors[keyError]);
         });
       }
     });
+    //Ensure that the form is valid.
     if (this.userDataForm.valid) {
       const formData = new FormData();
-
-      // Append file inputs to the FormData object from selectedFiles
       if (this.selectedFiles['license']) {
         formData.append('license', this.selectedFiles['license']);
       }
       if (this.selectedFiles['reviews']) {
         formData.append('reviews', this.selectedFiles['reviews']);
       }
-
-      // Append text inputs to the FormData object
+      //Append data from the form to the FormData object
       formData.append('email', this.userDataForm.get('userEmail').value);
       formData.append('roles', this.userDataForm.get('roles').value); // Make sure 'roles' has a value.
       formData.append('phoneNo', this.userDataForm.get('userPhone').value);
@@ -198,7 +183,7 @@ export class RegisterMerchantComponent {
         this.userDataForm.get('reviewsDescription').value
       );
 
-      // Call the service to send the form data to the backend
+      //Send the form data to the backend.
       this.authService.registerUser(formData).subscribe({
         next: (response) => {
           // Handle the response
@@ -215,13 +200,11 @@ export class RegisterMerchantComponent {
           });
         },
         error: (error) => {
-          // Handle the error
           console.log(error);
           Swal.fire({
             icon: 'error',
             title: 'Registration Failed',
             text: 'There was an issue with your registration. Please try again.',
-            // ... other options
           });
         },
       });

@@ -14,10 +14,10 @@ export class HomeComponent {
   constructor(private productService: ProductService) {
     this.productService.getProducts().subscribe((products) => {
       this.products = products;
-      console.log(products);
     });
   }
 
+  //Retreive the cover image URL.
   readCoverImageURL(coverImagePath: string): string {
     return environment.productImgUrl + '/' + coverImagePath;
   }

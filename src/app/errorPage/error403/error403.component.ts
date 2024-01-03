@@ -13,21 +13,20 @@ export class Error403Component {
 
   constructor(
     private location: Location,
-    private authService: AuthService,
     private tokenService: TokenService
   ) {}
 
   ngOnInit() {
+    //Decode token on init to get the user's name.
     const decodedToken = this.tokenService.decodeToken();
     if (decodedToken) {
-      console.log(decodedToken); // Log the decoded token
       this.username = decodedToken.name;
     } else {
-      console.log('Token is not valid or not present');
+      console.error('Error decoding token');
     }
   }
-
+  //Function to go back
   goBack(): void {
-    this.location.back(); // Navigates to the previous URL in the browser's history
+    this.location.back();
   }
 }

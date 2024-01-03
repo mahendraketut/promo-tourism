@@ -17,15 +17,16 @@ export class Error404Component {
     private tokenService: TokenService
   ) {}
   ngOnInit() {
-    const decodedToken = this.tokenService.decodeToken();
-    if (decodedToken) {
-      this.username = decodedToken.name;
-    } else {
-      console.log('Token is not valid or not present');
-    }
+   //Decode token on init to get the user's name.
+   const decodedToken = this.tokenService.decodeToken();
+   if (decodedToken) {
+     this.username = decodedToken.name;
+   } else {
+     console.error('Error decoding token');
+   }
   }
-
+  //Function to go to previous page
   goBack(): void {
-    this.location.back(); // Navigates to the previous URL in the browser's history
+    this.location.back(); 
   }
 }
