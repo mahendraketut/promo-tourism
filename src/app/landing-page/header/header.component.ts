@@ -56,11 +56,9 @@ export class HeaderComponent implements OnInit {
   onLogout() {
     try {
       this.authService.logoutUser();
-      if (this.router.url === '/') {
-        window.location.reload();
-      } else {
-        this.router.navigateByUrl('/');
-      }
+
+      this.router.navigateByUrl('/');
+      window.location.reload();
     } catch (error) {
       Swal.fire({
         icon: 'error',
