@@ -140,7 +140,6 @@ export const getAllMerchantsSalesByMonth = async (req, res) => {
 //Also ranks the sales by quantity and revenue.
 //Used by admin and merchant themselves to view all sales for a given year for a given merchant.
 export const getMerchantSalesByMonth = async (req, res) => {
-    console.log("getMerchantSalesByMonth");
     try {
         const year = parseInt(req.query.year);
         const merchantId = req.params.id;
@@ -233,6 +232,22 @@ export const getMerchantSalesByMonth = async (req, res) => {
     }
 };
 
+//Retreives the total transaction amount for a given merchant.
+export const getTransactionTotalByMerchant = async (req, res) => {
+try {
+//Find all orders for the given merchant.
+    const orders = await Order.find({ merchantId: "req.params.id" });
+    let total = 0;
+    //Add up the total of all orders.
+    orders.forEach((order) => {
+    total += order.total;
+    });
+    return res.status(200).json(CreateSuccess(200, "Get transaction total by merchant", total));
+
+} catch (error) {
+    return res.status(500).json(CreateError(500, "Cannot get transaction total by merchant", error));
+}
+}
 
 
 
