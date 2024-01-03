@@ -4,7 +4,10 @@
   <app-lottie-loader></app-lottie-loader>
 </div>
 
-<div *ngIf="!isLoading">
+<div
+  *ngIf="!isLoading"
+  class="overflow-y-auto animate__animated animate__fadeIn"
+>
   <!-- breadcrummb: start -->
   <nav class="text-black font-bold text-xs my-8" aria-label="Breadcrumb">
     <ol class="list-none p-0 inline-flex">
