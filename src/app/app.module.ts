@@ -71,6 +71,7 @@ import { OrderCardComponent } from './widget/order-card/order-card.component';
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import { ReviewCardComponent } from './widget/review-card/review-card.component';
 import { ProductListCustomerComponent } from './landing-page/product/product-list-customer/product-list-customer.component';
+import { LottieLoaderComponent } from './widget/lottie-loader/lottie-loader.component';
 
 @NgModule({
   declarations: [
@@ -121,6 +122,7 @@ import { ProductListCustomerComponent } from './landing-page/product/product-lis
     OrderCardComponent,
     ReviewCardComponent,
     ProductListCustomerComponent,
+    LottieLoaderComponent,
   ],
   imports: [
     BrowserModule,
