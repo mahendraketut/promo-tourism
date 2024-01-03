@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { createEmail } from "../middlewares/merchantEmail.js";
 import { sendVerificationEmail } from "../middlewares/forgetPassword.js";
 import { rejectEmail } from "../middlewares/rejectMerchantEmail.js";
+import { welcomeMail } from "../middlewares/welcomeEmail.js";
 import Randomstring from "randomstring";
 import { IncomingForm } from "formidable";
 import fs from "fs";
@@ -159,6 +160,11 @@ export const register = async (req, res, next) => {
           address: getFieldValue(fields.address),
           accountStatus: "approved",
         });
+        try {
+          await welcomeMail(newUser);
+        } catch (error) {
+          return next(CreateError(500, "Error sending email", error));
+        }
       } else {
         return next(CreateError(400, "Invalid Role!"));
       }
