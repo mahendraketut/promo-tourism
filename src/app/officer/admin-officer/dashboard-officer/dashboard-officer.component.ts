@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
+import { ReviewService } from 'src/app/services/review.service';
 import { TokenService } from 'src/app/services/token.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class DashboardOfficerComponent {
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
-    private productService: ProductService
+    private productService: ProductService,
+    private reviewService: ReviewService
   ) {}
 
   ngOnInit() {
@@ -28,8 +30,35 @@ export class DashboardOfficerComponent {
       this.name = decodedToken.name;
     } else {
       console.log('Token is not valid or not present');
-      // Handle the situation when the token is not available or valid
-      // Redirect to login or show error message
     }
+    this.getUser();
+    this.getMerchant();
+    this.getProduct();
+  }
+
+  // method to get numbers of user from services
+  getUser() {
+    this.authService.getNumberOfUsers().subscribe((res) => {
+      this.user = res.data;
+    });
+  }
+
+  // method to get numbers of merchant from services
+  getMerchant() {
+    this.authService.getNumberOfMerchants().subscribe((res) => {
+      this.merchant = res.data;
+    });
+  }
+
+  // method to get numbers of product from services
+  getProduct() {
+    this.productService.getProducts().subscribe({
+      next: (res) => {
+        this.product = res.length;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }
