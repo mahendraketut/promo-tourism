@@ -82,37 +82,35 @@
                 </canvas>
               </div>
             </div>
+            <!-- table show the data -->
             <div class="flex items-center justify-between mt-10">
               <h1 class="font-semibold text-2xl">Sales Data {{ year }}</h1>
-              <!-- <a
-                routerLink="/merchant/product/add"
-                class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
-              >
-                <i class="fa-solid fa-plus"></i> Add Product</a
-              >-->
             </div>
             <div class="my-5">
               <table class="row-border hover w-full">
                 <thead class="border-y">
                   <tr>
-                    <th class="border px-4 py-2">No</th>
-                    <th class="border px-4 py-2">Month</th>
-                    <th class="border px-4 py-2">Total Products Sold</th>
-                    <th class="border px-4 py-2">Total Sales</th>
-                    <th class="border px-4 py-2">Action</th>
+                    <th class="px-4 py-2">No</th>
+                    <th class="px-4 py-2">Month</th>
+                    <th class="px-4 py-2">Total Products Sold</th>
+                    <th class="px-4 py-2">Total Sales</th>
+                    <th class="px-4 py-2">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let report of analyticsData; let i = index">
-                    <td class="border px-4 py-2">{{ i + 1 }}</td>
-                    <td class="border px-4 py-2">{{ getMonth(i + 1) }}</td>
-                    <td class="border px-4 py-2">
+                  <tr
+                    *ngFor="let report of analyticsData; let i = index"
+                    class="border-b hover:bg-blue-50"
+                  >
+                    <td class="px-4 py-2 text-center">{{ i + 1 }}</td>
+                    <td class="px-4 py-2 text-center">{{ getMonth(i + 1) }}</td>
+                    <td class="px-4 py-2 text-center">
                       {{ report?.totalProductsSold }}
                     </td>
-                    <td class="border px-4 py-2">
+                    <td class="px-4 py-2 text-center">
                       {{ report?.totalSales | currency : "MYR" }}
                     </td>
-                    <td class="border px-4 py-2 flex justify-center">
+                    <td class="px-4 py-2 flex justify-center">
                       <!-- action button using dropdown -->
 
                       <button
@@ -131,29 +129,42 @@
               <h1 class="font-semibold text-2xl">
                 Detail Revenue Ranking Month: {{ monthSelected }}
               </h1>
-              <!-- <a
-                routerLink="/merchant/product/add"
-                class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 text-sm rounded-full"
-              >
-                <i class="fa-solid fa-plus"></i> Add Product</a
-              >-->
             </div>
             <div class="my-5">
               <table class="row-border hover w-full">
                 <thead class="border-y">
                   <tr>
-                    <th class="border px-4 py-2">No</th>
-                    <th class="border px-4 py-2">Product ID</th>
-                    <th class="border px-4 py-2">Revenue</th>
+                    <th class="px-4 py-2">No</th>
+                    <th class="px-4 py-2">Product ID</th>
+                    <th class="px-4 py-2">Revenue</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
                     *ngFor="let report of detailRevenueRanking; let i = index"
+                    class="hover:bg-blue-50 border-y"
                   >
-                    <td class="border px-4 py-2">{{ i + 1 }}</td>
-                    <td class="border px-4 py-2">{{ report?.productId }}</td>
-                    <td class="border px-4 py-2">{{ report?.revenue }}</td>
+                    <td class="px-4 py-2 text-center">{{ i + 1 }}</td>
+                    <td class="px-4 py-2">
+                      <div class="flex justify-start">
+                        <img
+                          class="w-10 h-10 object-cover rounded-full"
+                          [src]="report?.coverImagePath"
+                          alt=""
+                        />
+                        <div class="ml-3">
+                          <p class="text-sm font-semibold text-gray-950">
+                            {{ report?.product?.name }}
+                          </p>
+                          <p class="text-sm font-light text-gray-900">
+                            {{ report?.product?._id }}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-2 text-center">
+                      {{ report?.quantity }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -168,16 +179,37 @@
               <table class="row-border hover w-full">
                 <thead class="border-y">
                   <tr>
-                    <th class="border px-4 py-2">No</th>
-                    <th class="border px-4 py-2">Product ID</th>
-                    <th class="border px-4 py-2">Quantity</th>
+                    <th class="px-4 py-2">No</th>
+                    <th class="px-4 py-2">Product</th>
+                    <th class="px-4 py-2">Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let report of detailSalesRanking; let i = index">
-                    <td class="border px-4 py-2">{{ i + 1 }}</td>
-                    <td class="border px-4 py-2">{{ report?.productId }}</td>
-                    <td class="border px-4 py-2">{{ report?.quantity }}</td>
+                  <tr
+                    *ngFor="let report of detailSalesRanking; let i = index"
+                    class="hover:bg-blue-50 border-y"
+                  >
+                    <td class="px-4 py-2 text-center">{{ i + 1 }}</td>
+                    <td class="px-4 py-2">
+                      <div class="flex justify-start">
+                        <img
+                          class="w-10 h-10 object-cover rounded-full"
+                          [src]="report?.coverImagePath"
+                          alt=""
+                        />
+                        <div class="ml-3">
+                          <p class="text-sm font-semibold text-gray-950">
+                            {{ report?.product?.name }}
+                          </p>
+                          <p class="text-sm font-light text-gray-900">
+                            {{ report?.product?._id }}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-2 text-center">
+                      {{ report?.quantity }}
+                    </td>
                   </tr>
                 </tbody>
               </table>

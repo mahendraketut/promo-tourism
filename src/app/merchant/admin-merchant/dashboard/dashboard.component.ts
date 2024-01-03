@@ -37,6 +37,7 @@ export class DashboardComponent {
     this.getAverageMerchantRate(decodedToken.id);
     this.getProduct(decodedToken.id);
     this.getOrder(decodedToken.id);
+    this.getTransaction(decodedToken.id);
   }
 
   // method to get total product based on merchant
@@ -75,5 +76,15 @@ export class DashboardComponent {
     });
   }
 
-  // method to get total transaction
+  // method to get total transaction by merchant id
+  getTransaction(id: string) {
+    this.analyticsService.getTotalTransaction(id).subscribe({
+      next: (res) => {
+        this.transaction = res.data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 }

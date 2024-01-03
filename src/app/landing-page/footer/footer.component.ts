@@ -9,7 +9,7 @@ export class FooterComponent {
   logoFooter: any;
   year: any;
   companyName: any;
-  //Retreive the logo, year and company name.
+
   constructor() {
     this.logoFooter = 'assets/img/logo-landscape.png';
     this.year = new Date().getFullYear();

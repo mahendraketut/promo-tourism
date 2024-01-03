@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { environment } from 'src/app/environment';
 import { AnalyticsService } from 'src/app/services/analytics.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -52,8 +53,43 @@ export class ReportOfficerComponent implements OnInit {
   fetchRevenueAndSalesRanking(index: number) {
     this.monthSelected = this.getMonth(index + 1);
     let data = this.analyticsData[index];
+    //get the revenue ranking inside data and save it into detailRevenueRanking
     this.detailRevenueRanking = data.revenueRanking;
+    console.log('detail revenue rank', this.detailRevenueRanking);
+    // push product data to each index of detail revenue ranking
+    this.detailRevenueRanking.forEach((element: any) => {
+      //getProduct that match with product id in element
+      this.productService.getProduct(element.productId).subscribe({
+        next: (res) => {
+          element.product = res.data;
+          element.coverImagePath =
+            environment.productImgUrl + '/' + res.data.coverImagePath;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    });
+    console.log('detailrevenue', this.detailRevenueRanking);
+    //get the sales ranking inside data and save it into detailSalesRanking
     this.detailSalesRanking = data.salesRanking;
+    // push product data to each index of detail sales ranking
+    this.detailSalesRanking.forEach((element: any) => {
+      //getProduct that match with product id in element
+      this.productService.getProduct(element.productId).subscribe({
+        next: (res) => {
+          element.product = res.data;
+          //push product coverImagePath relativepath to each index of detail sales ranking
+          element.coverImagePath =
+            environment.productImgUrl + '/' + res.data.coverImagePath;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    });
+
+    console.log('detail sales rank', this.detailSalesRanking);
   }
 
   getMonth(month: number): string {

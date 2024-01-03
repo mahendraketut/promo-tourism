@@ -3,6 +3,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { TokenService } from 'src/app/services/token.service';
 import Swal from 'sweetalert2';
+import { environment } from 'src/app/environment';
 
 @Component({
   selector: 'app-product-add',
@@ -15,6 +16,7 @@ export class ProductAddComponent {
   productForm: FormGroup;
   productImages: File[] = [];
   coverImage: File | null = null;
+  tinyAPI: string = environment.tinyMCEAPI;
 
   constructor(
     private productService: ProductService,

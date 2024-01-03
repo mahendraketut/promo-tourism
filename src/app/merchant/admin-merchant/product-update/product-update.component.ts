@@ -26,6 +26,7 @@ export class ProductUpdateComponent {
   productImages: File[] = [];
   coverImage: File | null = null;
   changeImages: boolean = false;
+  tinyAPI: string = environment.tinyMCEAPI;
 
   //constructor
   constructor(
