@@ -63,7 +63,7 @@
           <div class="w-3/4 flex items-center">
             <div class="w-full">
               <h1 class="text-base">Product</h1>
-              <p class="text-3xl font-bold">50</p>
+              <p class="text-3xl font-bold">{{ product }}</p>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@
           <div class="w-3/4 flex items-center">
             <div class="w-full">
               <h1 class="text-base">Order</h1>
-              <p class="text-3xl font-bold">50</p>
+              <p class="text-3xl font-bold">{{ order }}</p>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@
           <div class="w-3/4 flex items-center">
             <div class="w-full">
               <h1 class="text-base">Review</h1>
-              <p class="text-3xl font-bold">4/5</p>
+              <p class="text-3xl font-bold">{{ averageMerchantRate }}/5</p>
             </div>
           </div>
         </div>
@@ -138,7 +138,9 @@
           <div class="w-3/4 flex items-center">
             <div class="w-full">
               <h1 class="text-base">Transaction</h1>
-              <p class="text-3xl font-bold">31.000</p>
+              <p class="text-3xl font-bold">
+                {{ transaction | currency : "MYR" }}
+              </p>
             </div>
           </div>
         </div>
@@ -192,7 +194,7 @@
         <div class="w-3/4 flex items-center">
           <div class="w-full">
             <h1 class="text-base">Product</h1>
-            <p class="text-3xl font-bold">50</p>
+            <p class="text-3xl font-bold">{{ product }}</p>
           </div>
         </div>
       </div>
@@ -217,7 +219,7 @@
         <div class="w-3/4 flex items-center">
           <div class="w-full">
             <h1 class="text-base">Order</h1>
-            <p class="text-3xl font-bold">50</p>
+            <p class="text-3xl font-bold">{{ order }}</p>
           </div>
         </div>
       </div>
@@ -242,7 +244,7 @@
         <div class="w-3/4 flex items-center">
           <div class="w-full">
             <h1 class="text-base">Review</h1>
-            <p class="text-3xl font-bold">4/5</p>
+            <p class="text-3xl font-bold">{{ averageMerchantRate }}/5</p>
           </div>
         </div>
       </div>
@@ -267,7 +269,9 @@
         <div class="w-3/4 flex items-center">
           <div class="w-full">
             <h1 class="text-base">Transaction</h1>
-            <p class="text-3xl font-bold">31.000</p>
+            <p class="text-3xl font-bold">
+              {{ transaction | currency : "MYR" }}
+            </p>
           </div>
         </div>
       </div>
