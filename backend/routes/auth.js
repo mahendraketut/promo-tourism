@@ -1,7 +1,7 @@
 //Routes for authentication
 
 import express from "express";
-import { checkEmail, register, login, changePassword, forgetPassword, validateVerificationCode, getMerchants, acceptMerchant, rejectMerchant, getMerchantById } from "../controllers/auth.controller.js";
+import { checkEmail, register, login, changePassword, forgetPassword, validateVerificationCode, getMerchants, acceptMerchant, rejectMerchant, getMerchantById, getNumberOfMerchants, getNumberOfUsers} from "../controllers/auth.controller.js";
 import bodyParser from "body-parser";
 //import { checkEmail, register, login, logout, changePassword, forgetPassword, validateVerificationCode, getMerchants, acceptMerchant, rejectMerchant, getMerchantById } from "../controllers/auth.controller.js";
 
@@ -22,5 +22,7 @@ router.get('/merchants', getMerchants);
 router.post('/accept', jsonParser, acceptMerchant);
 router.post('/reject', jsonParser, rejectMerchant);
 router.get('/merchant/:id', jsonParser, getMerchantById);
+router.get('/merchants/number', getNumberOfMerchants);
+router.get('/users/number', getNumberOfUsers);
 
 export default router;

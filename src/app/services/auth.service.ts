@@ -258,6 +258,27 @@ export class AuthService {
       .post(api, { newPassword, verificationCode, email })
       .pipe(catchError(this.errorMgmt));
   }
+
+  getNumberOfMerchants(): Observable<any> {
+    let api = `${this.endpoint}/merchants/number`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+
+  getNumberOfUsers(): Observable<any> {
+    let api = `${this.endpoint}/users/number`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
 }
 
 //Get merchants, but it also filters the merchants based on accountStatus

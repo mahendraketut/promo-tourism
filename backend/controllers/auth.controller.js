@@ -428,3 +428,27 @@ export const rejectMerchant = async (req, res, next) => {
     return next(CreateError(500, "Internal Server Error", error));
   }
 };
+
+//Retreive the number of registered merchants.
+export const getNumberOfMerchants = async (req, res, next) => {
+  try {
+    //Finds the number of users with the role of merchant.
+    const merchants = await User.find({ roles: "merchant" });
+    const numberOfMerchants = merchants.length;
+    return next(CreateSuccess(200, "Number of Merchants", numberOfMerchants));
+  } catch (error) {
+    return next(CreateError(500, "Internal Server Error", error));
+  }
+}
+
+//Retreive the number of registered users.
+export const getNumberOfUsers = async (req, res, next) => {
+  try {
+    //Finds the number of users with the role of user.
+    const users = await User.find({ roles: "user" });
+    const numberOfUsers = users.length;
+    return next(CreateSuccess(200, "Number of Users", numberOfUsers));
+  } catch (error) {
+    return next(CreateError(500, "Internal Server Error", error));
+  }
+}
