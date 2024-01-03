@@ -11,4 +11,5 @@ export const environment = {
   reviewUrl: 'http://localhost:3000/api/review',
   currencyExchangeAPI: 'https://api.exchangerate-api.com/v4/latest/MYR',
   analyticsUrl: 'http://localhost:3000/api/analytics',
+  tinyMCEAPI: 'i16a5ggtgv4eg160h6zhazhvzq9qapp2o8zu96orza02lzdl',
 };
