@@ -15,53 +15,47 @@ export class OrderCustomerListComponent implements OnInit {
   orders: any;
 
   constructor(
-    private authService: AuthService,
     private tokenService: TokenService,
-    private orderService: OrderService,
-    private productService: ProductService
+    private orderService: OrderService
   ) {}
 
+  //Retreive user data and orders on init.
   ngOnInit(): void {
     this.getUserData();
     this.getOrders();
   }
 
+  //Function to get user data from token.
   getUserData() {
     const decodedToken = this.tokenService.decodeToken();
     if (decodedToken)
       if (decodedToken) {
-        console.log(decodedToken); // Log the decoded token
         this.userData = decodedToken;
       } else {
-        console.log('Token is not valid or not present');
+        console.error('Error decoding token');
       }
   }
 
+  //Function to get orders by user id.
   getOrders() {
     this.orderService.getOrderByUserId(this.userData.id).subscribe({
       next: (response) => {
-        console.log('Response: ', response.status);
-
-        // Assuming response.status is an array of orders
+        //Sort the orders so the newest are displayed first.
         this.orders = response.status.sort((a, b) => {
-          // Parse createdAt into date objects and handle invalid dates
           const dateA = new Date(a.createdAt);
           const dateB = new Date(b.createdAt);
-
-          // Check if date conversion is successful
+          //Validate the dates
           if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime())) {
-            // Sort in descending order of createdAt
+            //If both are valid dates, compare them.
             return dateB.getTime() - dateA.getTime();
           } else {
-            // Handle invalid date comparison, perhaps by not changing order
+            //If one or both are invalid dates, return 0.
             return 0;
           }
         });
-
-        console.log('Orders: ', this.orders);
       },
       error: (error) => {
-        console.log(error);
+        console.error('There was an error!', error);
       },
     });
   }

@@ -103,8 +103,6 @@ export class RegisterComponent {
         formData.append('roles', 'user');
         formData.append('phoneNo', this.userDataForm.value.userPhone);
         formData.append('address', this.userDataForm.value.userAddress);
-  
-        console.log('User data:', formData);
         this.authService.registerUser(formData).subscribe({
           next: (response) => {
             console.log('User registered successfully!', response);

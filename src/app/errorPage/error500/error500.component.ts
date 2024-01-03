@@ -10,11 +10,9 @@ export class Error500Component {
   constructor(private location: Location) {}
 
   ngOnInit() {
-    // Additional logic for 500 error can be added here if needed
-    console.log('500 Internal Server Error occurred');
   }
-
+  //Go back to previous page.
   goBack(): void {
-    this.location.back(); // Navigates to the previous URL in the browser's history
+    this.location.back();
   }
 }
