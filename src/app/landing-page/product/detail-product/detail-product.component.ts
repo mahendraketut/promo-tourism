@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
-
-// import { GalleryItem, ImageItem } from '@ngx-gallery/core';
-// import { Lightbox } from '@ngx-gallery/lightbox';
-
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +7,6 @@ import { ProductService } from 'src/app/services/product.service';
 import { OrderService } from 'src/app/services/order.service';
 import Swal from 'sweetalert2';
 import { environment } from 'src/app/environment';
-import { data, error } from 'jquery';
 import { Lightbox } from 'ngx-lightbox';
 import { ReviewService } from 'src/app/services/review.service';
 
@@ -29,12 +23,10 @@ export class DetailProductComponent implements OnInit {
   paymentStatus: string = '';
   productImages: any[] = [];
   private lightboxImages: any[] = [];
-  // images: GalleryItem[] = [];
   title: string = '';
   rating: number = 5;
   purchases: number = 999;
   price: number;
-  // discount: number = 250;
   description: any = '';
   stock: number = 0;
   reviewsData: any[] = [];
@@ -52,13 +44,12 @@ export class DetailProductComponent implements OnInit {
   averageMerchantRate: any;
   userData: any;
 
-  swiperConfig = {
-    slidesPerView: 1,
-    spaceBetween: 10,
-    navigation: true,
-    pagination: { clickable: true },
-    // other configurations
-  };
+  // swiperConfig = {
+  //   slidesPerView: 1,
+  //   spaceBetween: 10,
+  //   navigation: true,
+  //   pagination: { clickable: true },
+  // };
 
   constructor(
     private tokenService: TokenService,
@@ -69,14 +60,14 @@ export class DetailProductComponent implements OnInit {
     private orderService: OrderService,
     private lightbox: Lightbox,
     private reviewService: ReviewService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.initConfig();
     this.getUserData();
     this.getProduct();
     this.getAverageReview(this.productId);
   }
-
-  ngOnInit(): void {}
 
   getProduct() {
     // Request to get the id from params and save it into productId
