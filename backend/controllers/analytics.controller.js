@@ -236,7 +236,7 @@ export const getMerchantSalesByMonth = async (req, res) => {
 export const getTransactionTotalByMerchant = async (req, res) => {
 try {
 //Find all orders for the given merchant.
-    const orders = await Order.find({ merchantId: "req.params.id" });
+    const orders = await Order.find({ merchantId: req.params.id });
     let total = 0;
     //Add up the total of all orders.
     orders.forEach((order) => {
