@@ -35,26 +35,52 @@
           <div class="w-full p-5 md:px-20 md:py-10">
             <div class="flex items-center justify-between my-1">
               <h1 class="font-semibold text-2xl">Officer Statistical Report</h1>
-              <div class="relative">
-                <div
-                  class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-                >
-                  <i class="uil uil-calendar-alt text-gray-500"></i>
+              <div class="flex">
+                <div class="relative mr-2">
+                  <div
+                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                  >
+                    <i class="uil uil-calendar-alt text-gray-500"></i>
+                  </div>
+                  <select
+                    id="year"
+                    name="year"
+                    [(ngModel)]="year"
+                    [ngModelOptions]="{ standalone: true }"
+                    (change)="fetchAnalytic()"
+                    class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="default" disabled>Select Year</option>
+                    <!-- Loop through the years array to create options dynamically -->
+                    <ng-container *ngFor="let year of years">
+                      <option [value]="year">{{ year }}</option>
+                    </ng-container>
+                  </select>
                 </div>
-                <select
-                  id="year"
-                  name="year"
-                  [(ngModel)]="year"
-                  [ngModelOptions]="{ standalone: true }"
-                  (change)="fetchAnalytic()"
-                  class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="default" disabled>Select Year</option>
-                  <!-- Loop through the years array to create options dynamically -->
-                  <ng-container *ngFor="let year of years">
-                    <option [value]="year">{{ year }}</option>
-                  </ng-container>
-                </select>
+                <div class="relative">
+                  <div
+                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                  >
+                    <i class="fa-solid fa-store text-gray-500"></i>
+                  </div>
+                  <!-- this where ngx select will be applied -->
+                  <select
+                    id="merchant"
+                    name="merchant"
+                    [(ngModel)]="merchantSelected"
+                    [ngModelOptions]="{ standalone: true }"
+                    (change)="fetchAnalytic()"
+                    class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="default" disabled>Select Merchant</option>
+                    <!-- Loop through the merchants array to create options dynamically -->
+                    <ng-container *ngFor="let merchant of merchants">
+                      <option [value]="merchant?.id">
+                        {{ merchant.text }}
+                      </option>
+                    </ng-container>
+                  </select>
+                </div>
               </div>
             </div>
             <div class="md:flex md:justify-between items-center gap-8 my-10">

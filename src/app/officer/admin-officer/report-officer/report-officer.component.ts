@@ -21,6 +21,8 @@ export class ReportOfficerComponent implements OnInit {
   totalSales: any[] = [];
   years: any[] = [];
   monthSelected: any;
+  merchants: any[] = [];
+  merchantSelected: any = 'all';
   year: number = new Date().getFullYear();
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
@@ -33,40 +35,73 @@ export class ReportOfficerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getAllMerchantData();
     this.fetchAnalytic();
     this.generateYearRange();
   }
 
-  fetchAnalytic() {
-    this.analyticsService.getAllAnalytics(this.year).subscribe({
+  getAllMerchantData() {
+    this.authService.getMerchants().subscribe({
       next: (res) => {
-        this.analyticsData = res.data;
-        console.log('analytics data', this.analyticsData);
-        this.getProductSoldData();
-        this.getTotalSales();
-        this.updateChart();
+        this.merchants.push({
+          id: 'all',
+          text: 'All',
+        });
+        res.forEach((element: any) => {
+          if (element.accountStatus === 'approved') {
+            this.merchants.push({
+              id: element._id,
+              text: element.name,
+            });
+          }
+        });
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }
 
+  fetchAnalytic() {
+    if (this.merchantSelected == 'all') {
+      this.analyticsService.getAllAnalytics(this.year).subscribe({
+        next: (res) => {
+          this.analyticsData = res.data;
+          this.getProductSoldData();
+          this.getTotalSales();
+          this.updateChart();
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    } else {
+      this.analyticsService
+        .getMerchantAnalytics(this.merchantSelected, this.year)
+        .subscribe({
+          next: (res) => {
+            this.analyticsData = res.data;
+            this.getProductSoldData();
+            this.getTotalSales();
+            this.updateChart();
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+    }
+  }
+
   generateYearRange() {
     const currentYear = new Date().getFullYear();
-    // Generate an array with the current year and 3 years before
     this.years = Array.from({ length: 4 }, (v, i) => currentYear - 3 + i);
   }
 
   fetchRevenueAndSalesRanking(index: number) {
     this.monthSelected = this.getMonth(index + 1);
     let data = this.analyticsData[index];
-    //get the revenue ranking inside data and save it into detailRevenueRanking
     this.detailRevenueRanking = data.revenueRanking;
-    console.log('detail revenue rank', this.detailRevenueRanking);
-    // push product data to each index of detail revenue ranking
     this.detailRevenueRanking.forEach((element: any) => {
-      //getProduct that match with product id in element
       this.productService.getProduct(element.productId).subscribe({
         next: (res) => {
           element.product = res.data;
@@ -78,16 +113,11 @@ export class ReportOfficerComponent implements OnInit {
         },
       });
     });
-    console.log('detailrevenue', this.detailRevenueRanking);
-    //get the sales ranking inside data and save it into detailSalesRanking
     this.detailSalesRanking = data.salesRanking;
-    // push product data to each index of detail sales ranking
     this.detailSalesRanking.forEach((element: any) => {
-      //getProduct that match with product id in element
       this.productService.getProduct(element.productId).subscribe({
         next: (res) => {
           element.product = res.data;
-          //push product coverImagePath relativepath to each index of detail sales ranking
           element.coverImagePath =
             environment.productImgUrl + '/' + res.data.coverImagePath;
         },
@@ -96,8 +126,6 @@ export class ReportOfficerComponent implements OnInit {
         },
       });
     });
-
-    console.log('detail sales rank', this.detailSalesRanking);
   }
 
   getMonth(month: number): string {
@@ -146,7 +174,6 @@ export class ReportOfficerComponent implements OnInit {
   }
 
   getProductSoldData() {
-    // Logic to update totalProductsSold
     this.totalProductsSold = this.analyticsData.map(
       (data) => data.totalProductsSold
     );
@@ -155,7 +182,6 @@ export class ReportOfficerComponent implements OnInit {
 
   getTotalSales() {
     this.totalSales = this.analyticsData.map((data) => data.totalSales);
-    console.log('total sales', this.totalSales);
   }
 
   public barChartData: ChartConfiguration<'line'>['data'] = {
