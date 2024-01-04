@@ -44,7 +44,9 @@ export class DashboardOfficerComponent {
 
   // method to get numbers of merchant from services
   getMerchant() {
-    this.authService.getNumberOfMerchants().subscribe((res) => {});
+    this.authService.getNumberOfMerchants().subscribe((res) => {
+      this.merchant = res.data;
+    });
   }
 
   // method to get numbers of product from services
