@@ -57,22 +57,21 @@ export class DetailProductComponent implements OnInit {
     private reviewService: ReviewService
   ) {}
 
+  //Oninit functin to retreive all product information.
+
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
-    console.log('loader initiated', this.isLoading);
     this.productId = this.route.snapshot.paramMap.get('id');
 
     try {
-      console.log('start try init data gan', this.isLoading);
-
-      // Start both the data fetching and a minimum delay
+      //Adds a delay in order to ensure that everything is loaded properly.
       await Promise.all([
         this.getProduct(),
         this.getAverageReview(this.productId),
-        this.delay(1000), // Ensures loader is displayed for at least 2 seconds
+        this.delay(1000),
       ]);
 
-      // Only await getUserData and initConfig if the token is present
+      //retreive user data from token service.
       const token = this.tokenService.getToken();
       if (token) {
         await this.getUserData();
@@ -137,9 +136,6 @@ export class DetailProductComponent implements OnInit {
           console.error('Error fetching product:', error);
           reject(error); // Reject the promise on error
         },
-        complete: () => {
-          console.log('Product data retrieval complete.');
-        },
       });
     });
   }
@@ -177,13 +173,11 @@ export class DetailProductComponent implements OnInit {
           console.error('Error fetching merchant average rate:', error);
           reject(error);
         },
-        complete: () => {
-          console.log('Merchant average rate retrieval complete.');
-        },
       });
     });
   }
 
+  //Retreive the user information.
   getUserData(): Promise<void> {
     return new Promise((resolve, reject) => {
       const decodedToken = this.tokenService.decodeToken();
@@ -191,12 +185,12 @@ export class DetailProductComponent implements OnInit {
         this.userData = decodedToken;
         resolve();
       } else {
-        console.log('Token is not valid or not present');
         reject(new Error('Token is not valid or not present')); 
       }
     });
   }
 
+  //Retreive the average rating for the product
   getAverageReview(productId: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.reviewService.getReviewAverage(productId).subscribe({
@@ -216,7 +210,7 @@ export class DetailProductComponent implements OnInit {
     });
   }
 
-
+  //Retreive all the reviews for the product.
   getReviews(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.reviewService.getReviews(id).subscribe({
@@ -237,21 +231,23 @@ export class DetailProductComponent implements OnInit {
     });
   }
 
+  //Preview images in a lightbox
   openLightBox(index: number) {
     this.lightbox.open(this.lightboxImages, index);
   }
-
+  //Close lightbox
   closeLightBox(): void {
     this.lightbox.close();
   }
 
+  //Convert the price from MYR to USD
   currencyExchange(amountMYR: number): void {
     this.productService.convertMYRtoUSD(amountMYR).subscribe((amountInUSD) => {
       const converted = amountInUSD.toFixed(2);
       this.priceInUSD = converted;
     });
   }
-
+  //Check stock availability
   async checkStock(): Promise<boolean> {
     try {
       this.stock = this.productData.quantity;
@@ -261,13 +257,13 @@ export class DetailProductComponent implements OnInit {
       return false; // Assume false if there's an error
     }
   }
-
+  //Check if the product is available
   isAvailable() {
     if (this.productData.quantity == this.stock) this.isFull = true;
     else this.isFull = false;
   }
 
-  //function increment()
+  //increment the number of product to order.
   increment() {
     if (this.quantity < this.productData.quantity) {
       this.quantity++;
@@ -275,7 +271,7 @@ export class DetailProductComponent implements OnInit {
     }
   }
 
-  //function decrement()
+  //decrement the number of product to order.
   decrement() {
     if (this.quantity > 0) {
       this.quantity--;
@@ -283,6 +279,8 @@ export class DetailProductComponent implements OnInit {
     }
   }
 
+  //ngx-paypal configuration
+  //we mostly follow the documentation from https://www.npmjs.com/package/ngx-paypal
   private initConfig(): void {
     // Initialize PayPal configuration
     this.payPalConfig = {
@@ -334,9 +332,6 @@ export class DetailProductComponent implements OnInit {
 
       // Handler for client authorization
       onClientAuthorization: (data) => {
-        console.log(
-          'Transaction complete'
-        );
         this.paypalResponse = data;
         this.paymentStatus = data.status;
         this.createOrder(); // Call to create the order
@@ -344,7 +339,6 @@ export class DetailProductComponent implements OnInit {
 
       // Handler for payment cancellation
       onCancel: (data, actions) => {
-        console.log('onCancel');
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -354,7 +348,6 @@ export class DetailProductComponent implements OnInit {
 
       // Handler for errors
       onError: (err) => {
-        console.log('OnError', err);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -394,6 +387,7 @@ export class DetailProductComponent implements OnInit {
     };
   }
 
+//Create order
   createOrder(): void {
     const userId = this.tokenService.getUserId();
     const productId = this.productId;
@@ -417,7 +411,7 @@ export class DetailProductComponent implements OnInit {
 
     if (userId) {
       this.orderService.createOrder(data).subscribe({
-        next: (result) => {
+        next: () => {
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -426,7 +420,7 @@ export class DetailProductComponent implements OnInit {
           this.router.navigate(['/order']);
         },
         error: (error) => {
-          console.log(error);
+          console.error('Error creating order:', error);
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
