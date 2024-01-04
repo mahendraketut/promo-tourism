@@ -14,7 +14,6 @@ import {
   providedIn: 'root',
 })
 export class ProductService {
-  // endpoint: string = 'http://localhost:3000/api/product';
   endpoint: string = environment.productUrl;
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) {}
@@ -32,12 +31,13 @@ export class ProductService {
     return this.http.get(api).pipe(catchError(this.errorMgmt));
   }
 
+  //Sends a POST request to the back-end API to add a product.
   addProduct(data: any): Observable<any> {
     let api = `${this.endpoint}/add`;
     return this.http.post(api, data).pipe(catchError(this.errorMgmt));
   }
 
-  // ProductService
+  //Sends a PATCH request to the back-end API to update a product.
   updateProduct(id: any, data: FormData): Observable<any> {
     let api = `${environment.productUrl}/update/${id}`;
     // No need to set 'Content-Type': 'multipart/form-data' as Angular does it automatically with FormData
@@ -50,6 +50,26 @@ export class ProductService {
     let api = `${this.endpoint}/delete/${id}`;
     return this.http.delete(api).pipe(catchError(this.errorMgmt));
     // return this.http.delete(api);
+  }
+
+  //Sends a GET request to the back-end API to retreive all products of a merchant.
+  getProductsByMerchantId(id: any): Observable<any[]> {
+    let api = `${this.endpoint}/merchant/${id}`;
+    return this.http.get(api).pipe(
+      map((response: any) => {
+        const productsResponse = response.data;
+        if (Array.isArray(productsResponse)) {
+          return productsResponse;
+        } else {
+          return [];
+        }
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  getImageUrl(relativePath: string): string {
+    return `${environment.apiUrl}/productimg/${relativePath}`;
   }
 
   //General error handling for for the product service.
@@ -68,30 +88,6 @@ export class ProductService {
     });
   }
 
-  getProductsByMerchantId(id: any): Observable<any[]> {
-    let api = `${this.endpoint}/merchant/${id}`;
-    return this.http.get(api).pipe(
-      map((response: any) => {
-        // Assuming the response is an object that contains an array of products
-        console.log('response raw: ', response);
-        const productsResponse = response.data;
-        if (Array.isArray(productsResponse)) {
-          // If additional processing is needed, do it here
-          console.log('prod res: ', productsResponse);
-          return productsResponse;
-        } else {
-          console.log('The response is not an array.');
-          return []; // Return an empty array if the response is not as expected
-        }
-      }),
-      catchError(this.errorMgmt)
-    );
-  }
-
-  getImageUrl(relativePath: string): string {
-    return `${environment.apiUrl}/productimg/${relativePath}`;
-  }
-
   convertMYRtoUSD(amount: number): Observable<number> {
     return this.http.get(environment.currencyExchangeAPI).pipe(
       map((data: any) => {
@@ -101,7 +97,7 @@ export class ProductService {
       catchError((error) => {
         // Handle any errors here
         console.error('Error in currency conversion:', error);
-        return of(0); // Return 0 or some default value in case of error
+        return of(0);
       })
     );
   }

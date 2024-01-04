@@ -40,20 +40,16 @@ export class ProductUpdateComponent {
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
-      //PRODUCT STOCK IS PRODUCT QUANTITY
       quantity: new FormControl('', Validators.required),
       category: new FormControl('', Validators.required),
     });
   }
-
-  //fixed, dia join product image dari env dulu.
+//Retreive product information and images from the backend.
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('productId');
     this.productService.getProduct(this.productId).subscribe(
       (productData) => {
         this.productData = productData;
-
-        // Assuming the property name is coverImagePath and imagesPath are relative paths
         const coverImageURL =
           environment.productImgUrl +
           '/' +
@@ -93,35 +89,13 @@ export class ProductUpdateComponent {
       }
     );
   }
-
-  onCoverChangeOld(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const files = input.files;
-
-    if (files && files.length > 0) {
-      this.coverPreviews = []; // Clear existing previews
-
-      for (let i = 0; i < files.length; i++) {
-        const selectedFile = files[i];
-        const fileName = selectedFile.name;
-
-        // Read and display image preview
-        const reader = new FileReader();
-        reader.onload = () => {
-          const previewURL = reader.result as string;
-          this.coverPreviews.push({ url: previewURL, fileName });
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    }
-  }
-
+  //This will be triggered if the user updates the cover image.
   onCoverChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const files = input.files;
     if (input.files && input.files.length) {
       this.coverImage = input.files[0];
-      this.coverPreviews = []; // Clear existing previews
+      this.coverPreviews = [];
 
       for (let i = 0; i < files.length; i++) {
         const selectedFile = files[i];
@@ -138,28 +112,7 @@ export class ProductUpdateComponent {
     }
   }
 
-  onFileChangeOld(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const files = input.files;
-
-    if (files && files.length > 0) {
-      this.imagePreviews = []; // Clear existing previews
-
-      for (let i = 0; i < files.length; i++) {
-        const selectedFile = files[i];
-        const fileName = selectedFile.name;
-
-        // Read and display image preview
-        const reader = new FileReader();
-        reader.onload = () => {
-          const previewURL = reader.result as string;
-          this.imagePreviews.push({ url: previewURL, fileName });
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    }
-  }
-
+//This will be triggered if the user updates the product images.
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -171,8 +124,6 @@ export class ProductUpdateComponent {
       for (let i = 0; i < files.length; i++) {
         const selectedFile = files[i];
         const fileName = selectedFile.name;
-
-        // Read and display image preview
         const reader = new FileReader();
         reader.onload = () => {
           const previewURL = reader.result as string;
@@ -183,37 +134,39 @@ export class ProductUpdateComponent {
     }
   }
 
+  //Displays file details
   showFileDetails(file: File): void {
-    // Display file details as needed, e.g., file name, size, type
     console.log(
       `Selected File: ${file.name}, Size: ${file.size} bytes, Type: ${file.type}`
     );
   }
 
+  //Parse the file name from the params url
   getFileNameFromURL(url: string): string {
     const parts = url.split('/');
     return parts[parts.length - 1];
   }
 
+  //Parse the file size from the params url
   getFileSizeFromURL(url: string): string {
     // Extract file size from URL
-    const sizeInBytes = url.length * 0.75; // Approximate size calculation
+    const sizeInBytes = url.length * 0.75;
     const sizeInKb = sizeInBytes / 1024;
     return `${sizeInKb.toFixed(2)} KB`;
   }
 
-  // Method to reset image previews
+  //Reset images
   resetImagePreviews(): void {
     this.imagePreviews = [];
     this.coverPreviews = [];
   }
 
-  //onSubmit
+  //onSubmit function
+  //This will be triggered if the user clicks the submit button.
+  //The products information will be inserted into a form data.
+  //Then, the form data will be sent to the backend using product service.
   onSubmit(): void {
-    // Create a FormData object
     const formData = new FormData();
-
-    // Append form fields to the FormData
     formData.append('name', this.productUpdateForm.get('name')?.value);
     formData.append(
       'description',
@@ -224,21 +177,21 @@ export class ProductUpdateComponent {
     formData.append('category', this.productUpdateForm.get('category')?.value);
 
     formData.append('changeImages', this.changeImages.toString());
-    // Append the cover image if it exists
+    //append new cover images if it exists
     if (this.coverImage) {
       formData.append('cover', this.coverImage);
     }
-
-    // Append product images if they exist
+    //append new product images if it exists
     this.productImages.forEach((file, index) => {
       formData.append(`images[${index}]`, file, file.name);
     });
-
+    //append the owner id (Merchant ID)
     formData.append('owner', this.tokenService.getUserId());
 
+    //Forward the form data to the product service.
     this.productService.updateProduct(this.productId, formData).subscribe({
-      next: (data) => {
-        // Display a success alert with SweetAlert2
+      next: () => {
+        //success
         Swal.fire({
           title: 'Success!',
           text: 'Product updated successfully.',
@@ -246,13 +199,12 @@ export class ProductUpdateComponent {
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
-            // Navigate back to the previous page
+            //Redirects merchant to previous page.
             this.router.navigate(['/merchant/product']);
           }
         });
       },
       error: (error) => {
-        // Display an error alert with SweetAlert2
         Swal.fire({
           title: 'Error!',
           text: 'There was a problem updating the product.',

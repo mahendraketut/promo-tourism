@@ -105,7 +105,6 @@ export const addProduct = async (req, res, next) => {
 };
 
 
-
 //Retreives all the products from the database without any filters.
 //Used by admin/officer and also users to view all products.
 export const getAllProducts = async (req, res, next) => {

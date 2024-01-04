@@ -84,7 +84,7 @@ export class ProductListComponent implements OnInit {
             },
           });
         });
-        this.dtTrigger.next(undefined); // Trigger the DataTables to update
+        this.dtTrigger.next(undefined);
       },
       (error) => {
         console.error('Error fetching products:', error);

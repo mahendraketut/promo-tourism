@@ -32,28 +32,7 @@ export class ProductAddComponent {
     });
   }
 
-  onCoverChangeOld(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const files = input.files;
-
-    if (files && files.length > 0) {
-      this.coverPreviews = []; // Clear existing previews
-
-      for (let i = 0; i < files.length; i++) {
-        const selectedFile = files[i];
-        const fileName = selectedFile.name;
-
-        // Read and display image preview
-        const reader = new FileReader();
-        reader.onload = () => {
-          const previewURL = reader.result as string;
-          this.coverPreviews.push({ url: previewURL, fileName });
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    }
-  }
-
+  //This will be triggered if the user inserted a product cover image.
   onCoverChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -76,28 +55,7 @@ export class ProductAddComponent {
     }
   }
 
-  onFileChangeOld(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const files = input.files;
-
-    if (files && files.length > 0) {
-      this.imagePreviews = []; // Clear existing previews
-
-      for (let i = 0; i < files.length; i++) {
-        const selectedFile = files[i];
-        const fileName = selectedFile.name;
-
-        // Read and display image preview
-        const reader = new FileReader();
-        reader.onload = () => {
-          const previewURL = reader.result as string;
-          this.imagePreviews.push({ url: previewURL, fileName });
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    }
-  }
-
+//This will be triggered if the user inserted the product images.
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -108,8 +66,6 @@ export class ProductAddComponent {
       for (let i = 0; i < files.length; i++) {
         const selectedFile = files[i];
         const fileName = selectedFile.name;
-
-        // Read and display image preview
         const reader = new FileReader();
         reader.onload = () => {
           const previewURL = reader.result as string;
@@ -120,13 +76,16 @@ export class ProductAddComponent {
     }
   }
 
+  //onSubmit function
+  //This will be triggered if the user clicks the submit button.
+  //The products information will be inserted into a form data.
+  //Then, the form data will be sent to the backend using product service.
   onSubmit() {
     if (this.productForm.valid) {
-      // Create FormData object
       const formData = new FormData();
       const userId = this.tokenService.getUserId();
 
-      // Append text fields
+      //Append product details to the formdata.
       formData.append('name', this.productForm.get('name').value);
       formData.append('description', this.productForm.get('description').value);
       formData.append('price', this.productForm.get('price').value);
@@ -134,19 +93,19 @@ export class ProductAddComponent {
       formData.append('category', this.productForm.get('category').value);
       formData.append('owner', userId);
 
-      // Append cover image if available
+      //Append cover image to the formdata.
       if (this.coverImage) {
         formData.append('cover', this.coverImage, this.coverImage.name);
       }
 
-      // Append product images
+      //Append product images to the formdata.
       this.productImages.forEach((file, index) => {
         formData.append(`images[${index}]`, file, file.name);
       });
 
-      // Call the service method to send the form data
+    //Forward the form data to the product service.
       this.productService.addProduct(formData).subscribe({
-        next: (response) => {
+        next: () => {
           Swal.fire('Success!', 'Your product has been added.', 'success');
         },
         error: (error) => {
@@ -157,13 +116,14 @@ export class ProductAddComponent {
     }
   }
 
+  //Displays file details
   showFileDetails(file: File): void {
-    // Display file details as needed, e.g., file name, size, type
     console.log(
       `Selected File: ${file.name}, Size: ${file.size} bytes, Type: ${file.type}`
     );
   }
 
+  //Method to parse the file name from the params url.
   getFileNameFromURL(url: string): string {
     // Extract file name from URL
     const startIndex = url.lastIndexOf('/') + 1;
@@ -172,14 +132,15 @@ export class ProductAddComponent {
     return url.substring(startIndex, endIndex);
   }
 
+  //Method to parse the file size from the params url.
+  //converts it to KB
   getFileSizeFromURL(url: string): string {
-    // Extract file size from URL
-    const sizeInBytes = url.length * 0.75; // Approximate size calculation
+    const sizeInBytes = url.length * 0.75; 
     const sizeInKb = sizeInBytes / 1024;
     return `${sizeInKb.toFixed(2)} KB`;
   }
 
-  // Method to reset image previews
+  //Reset images if the user clicks the clear button.
   resetImagePreviews(): void {
     this.imagePreviews = [];
     this.coverPreviews = [];
