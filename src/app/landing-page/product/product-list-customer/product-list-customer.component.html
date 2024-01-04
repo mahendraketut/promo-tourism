@@ -28,13 +28,6 @@
               />
             </svg>
           </div>
-          <!-- <input
-            type="search"
-            id="default-search"
-            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search travel package, hotels, or travels..."
-            required
-          /> -->
           <input
             [(ngModel)]="searchTerm"
             (input)="onSearch()"
@@ -44,12 +37,6 @@
             placeholder="Search travel package, hotels, or travels..."
             required
           />
-          <!-- <button
-            type="submit"
-            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2"
-          >
-            Search
-          </button> -->
         </div>
       </form>
     </div>
@@ -105,24 +92,6 @@
             <option value="shopping">Shopping</option>
           </select>
         </div>
-        <!-- <div class="relative">
-          <div
-            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-          >
-
-            <i class="uil uil-filter text-gray-500"></i>
-          </div>
-          <select
-            [(ngModel)]="itemsPerPage"
-            (change)="changeItemsPerPage(itemsPerPage)"
-            class="block w-full h-full px-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="50">50</option>
-          </select>
-        </div> -->
       </div>
     </div>
 
@@ -149,69 +118,5 @@
       <h1 class="text-4xl font-semibold mt-5">No Product Found</h1>
       <p class="text-gray-500 mt-2 text-2xl">Please try another keyword</p>
     </div>
-  </div>
-  <div *ngIf="filteredProducts.length !== 0" class="flex justify-center mt-5">
-    <!-- <nav aria-label="Page navigation example">
-      <ul class="inline-flex -space-x-px text-base h-10">
-        <li>
-          <a
-            href="/product"
-            class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-full hover:bg-gray-100"
-            >Previous</a
-          >
-        </li>
-        <li>
-          <a
-            href="/product"
-            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
-            >1</a
-          >
-        </li>
-        <li>
-          <a
-            href="/product"
-            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
-            >2</a
-          >
-        </li>
-        <li>
-          <a
-            href="/product"
-            aria-current="page"
-            class="flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
-            >3</a
-          >
-        </li>
-        <li>
-          <a
-            href="/product"
-            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
-            >4</a
-          >
-        </li>
-        <li>
-          <a
-            href="/product"
-            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100"
-            >5</a
-          >
-        </li>
-        <li>
-          <a
-            href="/product"
-            class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-full hover:bg-gray-100"
-            >Next</a
-          >
-        </li>
-      </ul>
-    </nav> -->
-    <!-- Pagination controls -->
-    <!-- <pagination-controls
-      (pageChange)="onPageChange($event)"
-      (currentPage)="(currentPage)"
-      (totalItems)="(totalItems)"
-      (itemsPerPage)="(itemsPerPage)"
-    >
-    </pagination-controls> -->
   </div>
 </div>
