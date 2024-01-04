@@ -2,10 +2,12 @@
 <div
   class="rounded-2xl my-3 w-full border-gray-200 border-2 p-5 flex items-center justify-start gap-4"
 >
-  <div
-    class="flex items-center justify-center uppercase font-semibold bg-blue-500 text-white text-2xl w-16 h-16 rounded-full"
-  >
-    {{ userData?.initials || userData?.name?.substring(0, 2) }}
+  <div class="flex items-center justify-center w-1/6">
+    <div
+      class="flex items-center justify-center uppercase font-semibold bg-blue-500 text-white text-2xl w-16 h-16 rounded-full"
+    >
+      {{ userData?.initials || userData?.name?.substring(0, 2) }}
+    </div>
   </div>
 
   <div>

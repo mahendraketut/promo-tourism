@@ -283,7 +283,7 @@ export class DetailProductComponent implements OnInit {
           if (!data.data) {
             this.averageMerchantRate = 0;
           } else {
-            this.averageMerchantRate = this.rating = Math.round(data.data);
+            this.averageMerchantRate = Math.round(data.data);
           }
           resolve(); // Resolve the promise when data is successfully fetched
         },

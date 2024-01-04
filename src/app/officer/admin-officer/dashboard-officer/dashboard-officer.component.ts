@@ -26,7 +26,6 @@ export class DashboardOfficerComponent {
   ngOnInit() {
     const decodedToken = this.tokenService.decodeToken();
     if (decodedToken) {
-      console.log(decodedToken); // Log the decoded token
       this.name = decodedToken.name;
     } else {
       console.log('Token is not valid or not present');
@@ -45,9 +44,7 @@ export class DashboardOfficerComponent {
 
   // method to get numbers of merchant from services
   getMerchant() {
-    this.authService.getNumberOfMerchants().subscribe((res) => {
-      this.merchant = res.data;
-    });
+    this.authService.getNumberOfMerchants().subscribe((res) => {});
   }
 
   // method to get numbers of product from services

@@ -21,7 +21,6 @@
         class="relative overflow-x-auto md:overflow-x-hidden md:mx-0"
         #scrollContainer
       >
-        <!-- class utility below can be modified based on your needed. Follow Tailwind Docs for more detail information about styling -->
         <div class="pt-2 grid grid-rows-1 grid-flow-col gap-4 mx">
           <app-product-card
             *ngFor="let i of products"
@@ -30,17 +29,18 @@
             [rating]=""
             [price]="i.price"
             [id]="i._id"
+            class="w-48"
           ></app-product-card>
         </div>
       </div>
-      <!-- below is the left button, you can modify it: start -->
+      <!-- below is the left button: start -->
       <button
         class="hidden absolute top-1/2 -left-8 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
         (click)="scrollLeft()"
       >
         <i class="fas fa-chevron-left"></i>
       </button>
-      <!-- below is the left button, you can modify it: end -->
+      <!-- below is the left button: end -->
       <!-- below is the  right button, you can modify it: start -->
       <button
         class="hidden absolute top-1/2 -right-8 transform -translate-y-1/2 z-10 px-2 py-1 bg-slate-100 rounded-full w-16 h-16 hover:shadow-blue-200 shadow-md focus:outline-none md:block"
