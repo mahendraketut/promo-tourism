@@ -19,6 +19,7 @@ export class ReportOfficerComponent implements OnInit {
   detailSalesRanking: any;
   totalProductsSold: any[] = [];
   totalSales: any[] = [];
+  years: any[] = [];
   monthSelected: any;
   year: number = new Date().getFullYear();
 
@@ -33,6 +34,7 @@ export class ReportOfficerComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAnalytic();
+    this.generateYearRange();
   }
 
   fetchAnalytic() {
@@ -48,6 +50,12 @@ export class ReportOfficerComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+
+  generateYearRange() {
+    const currentYear = new Date().getFullYear();
+    // Generate an array with the current year and 3 years before
+    this.years = Array.from({ length: 4 }, (v, i) => currentYear - 3 + i);
   }
 
   fetchRevenueAndSalesRanking(index: number) {

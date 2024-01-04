@@ -23,6 +23,7 @@ export class ReportMerchantComponent implements OnInit {
   detailSalesRanking: any;
   totalProductsSold: any[] = [];
   totalSales: any[] = [];
+  years: any[] = [];
   monthSelected: any;
   year: number = new Date().getFullYear();
 
@@ -53,6 +54,13 @@ export class ReportMerchantComponent implements OnInit {
       buttons: ['copy', 'print', 'excel', 'pdf'],
     };
     this.fetchAnalytic();
+    this.generateYearRange();
+  }
+
+  generateYearRange() {
+    const currentYear = new Date().getFullYear();
+    // Generate an array with the current year and 3 years before
+    this.years = Array.from({ length: 4 }, (v, i) => currentYear - 3 + i);
   }
 
   fetchAnalytic() {
