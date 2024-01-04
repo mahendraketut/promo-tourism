@@ -165,7 +165,7 @@
                       </div>
                     </td>
                     <td class="px-4 py-2 text-center">
-                      {{ report?.quantity }}
+                      {{ report?.totalSales | currency : "MYR" }}
                     </td>
                   </tr>
                 </tbody>
@@ -183,7 +183,7 @@
                   <tr>
                     <th class="px-4 py-2">No</th>
                     <th class="px-4 py-2">Product</th>
-                    <th class="px-4 py-2">Quantity</th>
+                    <th class="px-4 py-2">Sales</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -210,7 +210,7 @@
                       </div>
                     </td>
                     <td class="px-4 py-2 text-center">
-                      {{ report?.quantity }}
+                      {{ report?.totalSales | currency : "MYR" }}
                     </td>
                   </tr>
                 </tbody>

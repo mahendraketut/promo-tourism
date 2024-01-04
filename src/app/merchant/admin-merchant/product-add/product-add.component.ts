@@ -122,7 +122,6 @@ export class ProductAddComponent {
 
   onSubmit() {
     if (this.productForm.valid) {
-      console.log('form valid');
       // Create FormData object
       const formData = new FormData();
       const userId = this.tokenService.getUserId();
@@ -145,16 +144,13 @@ export class ProductAddComponent {
         formData.append(`images[${index}]`, file, file.name);
       });
 
-      console.log('form data: ', formData);
-
       // Call the service method to send the form data
       this.productService.addProduct(formData).subscribe({
         next: (response) => {
-          console.log('res:', response);
           Swal.fire('Success!', 'Your product has been added.', 'success');
         },
         error: (error) => {
-          console.log('err:', error);
+          console.error('err:', error);
           Swal.fire('Error!', 'Your product has not been added.', 'error');
         },
       });

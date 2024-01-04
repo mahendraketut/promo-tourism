@@ -62,19 +62,6 @@ export class ProductListComponent implements OnInit {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
   }
-  // onDelete(productId:string){
-  //   console.log("masuk ts prod id: ", productId);
-  //   //TODO: tut, tolong tambah swal disini buat nge warning user yakin mau delete, ini gabisa rdi reverse
-  //   this.productService.deleteProduct(productId).subscribe(
-  //     (response) => {
-  //       // console.log('Product deleted:', response);
-  //       this.ngOnInit();
-  //     },
-  //     (error) => {
-  //       console.error('Error deleting product:', error);
-  //     }
-  //   );
-  // }
 
   fetchProducts() {
     const merchantId = this.tokenService.getUserId();
@@ -97,7 +84,6 @@ export class ProductListComponent implements OnInit {
             },
           });
         });
-        console.log('Products for merchant:', this.products);
         this.dtTrigger.next(undefined); // Trigger the DataTables to update
       },
       (error) => {
@@ -119,7 +105,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onDelete(productId: string) {
-    // Confirmation dialog
+    // Show confirmation dialog
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -130,14 +116,15 @@ export class ProductListComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        // If confirmed, proceed with deletion
+        // User clicked 'Yes', proceed with deletion
         this.productService.deleteProduct(productId).subscribe({
           next: (response) => {
-            console.log('Product deleted:', response);
+            this.ngOnDestroy();
+            this.ngOnInit(); // Refresh or better update the local data array
             Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
-            this.ngOnInit(); // Or better, remove the item from the array instead of reloading
           },
           error: (error) => {
+            // Handle error scenario
             console.error('Error deleting product:', error);
             Swal.fire(
               'Error!',
@@ -147,6 +134,7 @@ export class ProductListComponent implements OnInit {
           },
         });
       }
+      // If 'Cancel' is clicked, do nothing
     });
   }
 }

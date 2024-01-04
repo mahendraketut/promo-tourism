@@ -29,11 +29,7 @@ export class OrderListComponent implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private productService: ProductService
-  ) {
-    // this.orders = this.orderService.getOrderByMerchantId(
-    //   this.tokenService.getUserId()
-    // );
-  }
+  ) {}
 
   ngOnInit(): void {
     //the datatable
@@ -61,7 +57,6 @@ export class OrderListComponent implements OnInit {
     this.orderService.getOrderByMerchantId(merchantId).subscribe({
       next: (data) => {
         this.orders = data.data;
-        console.log('Order list : ', this.orders);
         this.dtTrigger.next(null as any);
         //push the product data for each data.productId inside each index of data
         this.orders.forEach((data: any) => {

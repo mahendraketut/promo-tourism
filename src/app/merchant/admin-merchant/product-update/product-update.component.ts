@@ -52,7 +52,6 @@ export class ProductUpdateComponent {
     this.productService.getProduct(this.productId).subscribe(
       (productData) => {
         this.productData = productData;
-        console.log('Product data:', this.productData);
 
         // Assuming the property name is coverImagePath and imagesPath are relative paths
         const coverImageURL =
@@ -62,8 +61,6 @@ export class ProductUpdateComponent {
         const productImagesURL = this.productData?.data?.imagesPath.map(
           (imgPath: string) => environment.productImgUrl + '/' + imgPath
         );
-        console.log('Cover image URL:', coverImageURL);
-        console.log('Product images URL:', productImagesURL);
 
         this.productUpdateForm.patchValue({
           name: this.productData?.data?.name,
@@ -213,9 +210,6 @@ export class ProductUpdateComponent {
 
   //onSubmit
   onSubmit(): void {
-    // Log the form data for debugging
-    console.log('Form data:', this.productUpdateForm.value);
-
     // Create a FormData object
     const formData = new FormData();
 
@@ -241,7 +235,6 @@ export class ProductUpdateComponent {
     });
 
     formData.append('owner', this.tokenService.getUserId());
-    console.log('Formdata: ', formData);
 
     this.productService.updateProduct(this.productId, formData).subscribe({
       next: (data) => {
