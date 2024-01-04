@@ -65,19 +65,17 @@ export class ReportMerchantComponent implements OnInit {
 
   fetchAnalytic() {
     this.merchantData = this.tokenService.getUserId();
-    console.log('merchant data', this.merchantData);
     this.analyticsService
       .getMerchantAnalytics(this.merchantData, this.year)
       .subscribe({
         next: (res) => {
           this.analyticsData = res.data;
-          console.log('analytics data', this.analyticsData);
           this.getProductSoldData();
           this.getTotalSales();
           this.updateChart();
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
         },
       });
   }
@@ -87,7 +85,6 @@ export class ReportMerchantComponent implements OnInit {
     let data = this.analyticsData[index];
     //get the revenue ranking inside data and save it into detailRevenueRanking
     this.detailRevenueRanking = data.revenueRanking;
-    console.log('detail revenue rank', this.detailRevenueRanking);
     // push product data to each index of detail revenue ranking
     this.detailRevenueRanking.forEach((element: any) => {
       //getProduct that match with product id in element
@@ -98,11 +95,10 @@ export class ReportMerchantComponent implements OnInit {
             environment.productImgUrl + '/' + res.data.coverImagePath;
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
         },
       });
     });
-    console.log('detailrevenue', this.detailRevenueRanking);
     //get the sales ranking inside data and save it into detailSalesRanking
     this.detailSalesRanking = data.salesRanking;
     // push product data to each index of detail sales ranking
@@ -116,12 +112,10 @@ export class ReportMerchantComponent implements OnInit {
             environment.productImgUrl + '/' + res.data.coverImagePath;
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
         },
       });
     });
-
-    console.log('detail sales rank', this.detailSalesRanking);
   }
 
   getMonth(month: number): string {
@@ -174,12 +168,10 @@ export class ReportMerchantComponent implements OnInit {
     this.totalProductsSold = this.analyticsData.map(
       (data) => data.totalProductsSold
     );
-    console.log('total products sold', this.totalProductsSold);
   }
 
   getTotalSales() {
     this.totalSales = this.analyticsData.map((data) => data.totalSales);
-    console.log('total sales', this.totalSales);
   }
 
   public barChartData: ChartConfiguration<'line'>['data'] = {

@@ -32,7 +32,7 @@ export class DashboardComponent {
     if (decodedToken) {
       this.name = decodedToken.name;
     } else {
-      console.log('Token is not valid or not present');
+      console.error('Token is not valid or not present');
     }
     this.getAverageMerchantRate(decodedToken.id);
     this.getProduct(decodedToken.id);
@@ -47,7 +47,7 @@ export class DashboardComponent {
         this.product = res.length;
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }
@@ -59,7 +59,7 @@ export class DashboardComponent {
         this.order = res.data.length;
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }
@@ -71,7 +71,7 @@ export class DashboardComponent {
         this.averageMerchantRate = Math.round(res.data);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }
@@ -83,7 +83,7 @@ export class DashboardComponent {
         this.transaction = res.data;
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }
