@@ -65,17 +65,12 @@ export class AuthService {
 
   //method to check user can activate login page
   canActivate(): boolean {
-    console.log('canactivate kepanggil.');
     const token = localStorage.getItem('token');
     if (token) {
-      // If token exists, show swal
-      console.log('error dari can activate');
       this.router.navigate(['/error/403']);
-
       return false;
     }
     // If no token, allow access to the route
-    console.log('aman di canact');
     return true;
   }
 
@@ -130,7 +125,6 @@ export class AuthService {
 
           return merchantsWithoutPasswords;
         } else {
-          console.log('bukan array');
           return [];
         }
       }),
@@ -164,7 +158,6 @@ export class AuthService {
 
           return merchantsWithoutPasswords;
         } else {
-          console.log('bukan array');
           return [];
         }
       }),
@@ -240,8 +233,6 @@ export class AuthService {
   //Forwards the user's email to the back-end.
   //The back-end will then send a verification code to the user's email.
   forgetPasswordFirst(email: string): Observable<any> {
-    console.log('masuk service forgetpass');
-    console.log('masuk service forgetpass');
     let api = `${this.endpoint}/forgetpassword`;
     return this.http.post(api, { email }).pipe(catchError(this.errorMgmt));
   }
@@ -252,7 +243,6 @@ export class AuthService {
     verificationCode: string,
     email: string
   ): Observable<any> {
-    console.log('masuk service forgetpass');
     let api = `${this.endpoint}/val`;
     return this.http
       .post(api, { newPassword, verificationCode, email })
@@ -280,72 +270,3 @@ export class AuthService {
     );
   }
 }
-
-//Get merchants, but it also filters the merchants based on accountStatus
-//Only merchants with accountStatus === 'pending' will be returned.
-// getMerchants(): Observable<any[]> {
-//   let api = `${this.endpoint}/merchants`;
-//   console.log("masuk service get merchants");
-//   return this.http.get<any[]>(api).pipe(
-//     map((response: any) => {
-
-//       const merchantsResponse = response.merchants;
-
-//       if (Array.isArray(merchantsResponse)) {
-//         const filteredMerchants = merchantsResponse.filter((merchant: any) => {
-//           return merchant.accountStatus === 'pending';
-//         });
-
-//         const merchantsWithoutPasswords = filteredMerchants.map((merchant: any) => {
-//           console.log("merchant without pass", merchant);
-//           const { password, ...rest } = merchant;
-//           return rest;
-//         });
-//         return merchantsWithoutPasswords;
-//       } else {
-//         console.log("bukan array");
-//         return [];
-//       }
-//     }),
-//     catchError(this.errorMgmt)
-//   );
-// }
-
-//retreives no filter
-// getMerchants(): Observable<any[]> {
-//   let api = `${this.endpoint}/merchants`;
-//   console.log("masuk service get merchants");
-//   return this.http.get<any[]>(api).pipe(
-//     map((response: any) => {
-//       const merchantsResponse = response.merchants;
-
-//       if (Array.isArray(merchantsResponse)) {
-//         const merchantsWithoutPasswords = merchantsResponse.map((merchant: any) => {
-//           const { password, ...rest } = merchant;
-//           return rest;
-//         });
-//         return merchantsWithoutPasswords;
-//       } else {
-//         console.log("bukan array");
-//         return [];
-//       }
-//     }),
-//     catchError(this.errorMgmt)
-//   );
-// }
-
-// //General error management.
-// errorMgmt(error: HttpErrorResponse) {
-//   let errorMessage = '';
-//   if (error.error instanceof ErrorEvent) {
-//     // Get client-side error
-//     errorMessage = error.error.message;
-//   } else {
-//     // Get server-side error
-//     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-//   }
-//   console.log(errorMessage);
-//   return throwError(() => {
-//     return errorMessage;
-//   });
-// }

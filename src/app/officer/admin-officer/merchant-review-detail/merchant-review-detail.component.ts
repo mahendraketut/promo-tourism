@@ -47,9 +47,6 @@ export class MerchantReviewDetailComponent {
       environment.merchantPdfUrl +
       '/' +
       this.merchantData?.merchant?.reviewsPath;
-
-    console.log('license pdf url:', this.licensePdfUrl);
-    console.log('reviews pdf url:', this.reviewsPdfUrl);
   }
 
   //Retrieve file size by getting file from licensePdfUrl and calculate the size. if size < 1 MB return as KB and vice versa.
@@ -61,7 +58,6 @@ export class MerchantReviewDetailComponent {
     if (xhr.status === 200) {
       fileSize = parseInt(xhr.getResponseHeader('Content-Length'));
     }
-    console.log('fileSize:', fileSize);
     if (fileSize > 1000000) {
       return (fileSize / 1000000).toFixed(2) + ' MB';
     } else {

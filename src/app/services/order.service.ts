@@ -59,7 +59,6 @@ export class OrderService {
   getOrderByUserId(id): Observable<any> {
     console.log('getOrderByUserId: ', id);
     let api = `${this.endpoint}/user/${id}`;
-    console.log('API_URL: ', api);
     return this.http.get(api).pipe(
       map((response: any) => {
         return response;
